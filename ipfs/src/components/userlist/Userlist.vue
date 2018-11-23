@@ -6,14 +6,14 @@
                   <span>筛选查询</span>
                 </div>
                 <div class="user_con">
-                <el-form ref="form" :inline="true" :model="ruleForm" label-width="80px" label-hieght="40px">
-                   <el-form-item label="用户名：">
-                        <el-input v-model="ruleForm.name" placeholder="用户名"></el-input>
+                <el-form ref="form" :inline="true" :model="ruleForm" >
+                   <el-form-item label="用户名" >
+                        <el-input v-model="ruleForm.name" placeholder="用户名" ></el-input>
                     </el-form-item>
-                    <el-form-item label="手机号：">
+                    <el-form-item label="手机号">
                         <el-input v-model="ruleForm.phone" placeholder="手机号"></el-input>
                     </el-form-item>
-                    <el-form-item label="推荐人：">
+                    <el-form-item label="推荐人">
                         <el-input v-model="ruleForm.user" placeholder="推荐人手机号"></el-input>
                     </el-form-item>
                 
@@ -24,7 +24,7 @@
                     </el-form-item>
                     </el-col>
                     
-                    <el-button type="primary" :span="8">查询</el-button>
+                    <el-button type="primary" :span="6">查询</el-button>
                     
                 </el-form-item>  
                
@@ -124,8 +124,8 @@
     width: 100%;
   }
   .user_header{
-      height: 30px;
-      line-height: 30px;
+      height: 60px;
+      line-height: 60px;
       text-align: left;
         background:#eee;
         border-radius:2px;
@@ -148,7 +148,7 @@
       margin:15px 0 0;
   }
   .box-card-two{
-      margin-top:20px;
+      margin-top:10px;
       height: 100vh; 
   }
   .el-table{

@@ -175,8 +175,8 @@
     width: 100%;
   }
   .user_header{
-      height: 30px;
-      line-height: 30px;
+      height: 60px;
+      line-height: 60px;
       text-align: left;
         background:#eee;
         border-radius:2px;

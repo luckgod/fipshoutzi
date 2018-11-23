@@ -14,8 +14,8 @@
                     <el-input type="password" v-model.trim="adminInfo.password"  :maxlength="32" placeholder="请输入密码"></el-input>
                 </el-form-item>
                 <el-form-item >
-                    <el-input v-model="adminInfo.code" :maxlength="6"  style="width: 75%" placeholder="验证码"></el-input> 
-                    <el-button  id="code" @click="getcode()" :disabled="cantclick == true" size="small" style="display: inline-block;height:4.8vh;width:22%; float:right;text-align: center;">获取验证码</el-button> 
+                    <el-input v-model="adminInfo.code" :maxlength="6"  style="width: 70%" placeholder="验证码"></el-input> 
+                    <el-button  id="code" @click="getcode()" :disabled="cantclick == true" size="small" style="display: inline-block;height:4.8vh; float:right;text-align: center;">获取验证码</el-button> 
                 </el-form-item>
                 <el-form-item >
                     <!-- <el-button type="primary" @click="submitForm('adminInfo')" :loading="loading" style="width: 100%;">登录</el-button> -->
