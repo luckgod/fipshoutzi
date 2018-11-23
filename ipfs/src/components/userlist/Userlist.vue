@@ -41,10 +41,14 @@
                         :data="tableData"
                          border
                         style="width: 100%">
-                        <el-table-column
-                            prop="name"
+                        <el-table-column  
                             label="用户名"
-                            width="180">
+                            >
+                               <template slot-scope="scope">
+                                
+                              
+                                
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="phone"
@@ -78,25 +82,17 @@
                                         
                         </el-table-column>
                          <el-table-column
-                            prop="operation"
+                            
                             label="操作">
-                            <template slot-scope="scope" prop="operation">
+                            <template slot-scope="scope" >
                                             <el-switch
-                                         
+                                             v-model="scope.row.Enabled"
                                             active-color="#13ce66"
-                                            inactive-color="#ff4949">
+                                            inactive-color="#ff4949"> 
                                             </el-switch>
                                         </template>
                         </el-table-column>
-                         <el-table-column
-                                fixed="right"
-                                label="操作"
-                                width="100">
-                                <template slot-scope="scope">
-                                    <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                                    <el-button type="text" size="small">编辑</el-button>
-                                </template>
-                                </el-table-column>
+                         
                         </el-table>
                 </div>
             </el-card>
@@ -196,7 +192,7 @@
                         },
                         tableData: [{
                                        
-                                        name:'天太难撒',
+                                        name:'https://avatar.csdn.net/6/5/1/3_qq_43141894.jpg',
                                         phone:'13320589624',
                                         address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
                                         account:'1000.35',
@@ -204,7 +200,7 @@
                                         invitation:'NR6852',
                                         referee:'13356895623',
                                         registration:'2018年8月13日09:52:38',
-                                        Enabled:'是',
+                                        Enabled:true,
                                         operation:'false',
                                     },
                                     {
@@ -217,7 +213,7 @@
                                         invitation:'NR6852',
                                         referee:'13356895623',
                                         registration:'2018年8月13日09:52:38',
-                                        Enabled:'是',
+                                        Enabled:true,
                                         operation:'false',
                                     },  
                                     {
