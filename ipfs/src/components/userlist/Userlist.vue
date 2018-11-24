@@ -41,14 +41,21 @@
                         :data="tableData"
                          border
                         style="width: 100%">
-                        <el-table-column  
+                       
+                        <el-table-column
+                            prop="name"
                             label="用户名"
+                            width="180"
+                            
                             >
-                               <template slot-scope="scope">
-                                
-                              
-                                
+
+                            <template slot-scope="scope">
+                                <img  :src="scope.row.name.imgPath" alt="" style="width: 30px;height: 30px;borderRadius:15px;  display:inline-block; vertical-align:middle;">
+                                <span style=" display:inline-block;vertical-align:middle;">{{scope.row.name.username}}</span>
                             </template>
+                            
+                           
+                                
                         </el-table-column>
                         <el-table-column
                             prop="phone"
@@ -120,12 +127,12 @@
     width: 100%;
   }
   .user_header{
-      height: 60px;
-      line-height: 60px;
-      text-align: left;
-        background:#eee;
-        border-radius:2px;
-        text-indent: 8px; 
+    height: 60px;
+    line-height: 60px;
+    text-align: left;
+    background:#eee;
+    border-radius:2px;
+    text-indent: 8px; 
 
   }
   .el-form .el-form--inline{
@@ -153,6 +160,11 @@
   }
   .el-table__header-wrapper{
       background: #aaaaaa;
+  }
+  .fistlie{
+      width: 20px;
+      height:20px;
+       
   }
 </style>
 <script>
@@ -184,15 +196,26 @@
                         ],
                        
                  },
-
+               
                 msg:'userlist',
                 formInline: {
                         user: '',
                         region: ''
                         },
-                        tableData: [{
-                                       
-                                        name:'https://avatar.csdn.net/6/5/1/3_qq_43141894.jpg',
+                        tableData: [{                                       
+                                        name:{imgPath:'https://avatar.csdn.net/6/5/1/3_qq_43141894.jpg',username:'aaaa'},
+                                        phone:'13320589624',
+                                        address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
+                                        account:'1000.35',
+                                        operation:'',
+                                        invitation:'NR6852',
+                                        referee:'13356895623',
+                                        registration:'2018年8月13日09:52:38',
+                                        Enabled:true,
+                                        operation:'false',
+                                    },
+                                    {                                       
+                                       name:{imgPath:'https://avatar.csdn.net/6/5/1/3_qq_43141894.jpg',username:'aaaa'},
                                         phone:'13320589624',
                                         address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
                                         account:'1000.35',
@@ -205,7 +228,7 @@
                                     },
                                     {
                                        
-                                        name:'天难撒',
+                                       name:{imgPath:'https://avatar.csdn.net/6/5/1/3_qq_43141894.jpg',username:'aaaa'},
                                         phone:'13320589624',
                                         address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
                                         account:'1000.35',
@@ -215,20 +238,8 @@
                                         registration:'2018年8月13日09:52:38',
                                         Enabled:true,
                                         operation:'false',
-                                    },  
-                                    {
-                                       
-                                        name:'天太难',
-                                        phone:'13320589624',
-                                        address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
-                                        account:'1000.35',
-                                        operation:'',
-                                        invitation:'NR6852',
-                                        referee:'13356895623',
-                                        registration:'2018年8月13日09:52:38',
-                                        Enabled:'是',
-                                        operation:'false',
-                                    }, 
+                                    },
+                                   
                                     ]        
             }
         },
