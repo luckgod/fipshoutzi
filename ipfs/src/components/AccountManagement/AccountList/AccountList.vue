@@ -1,8 +1,6 @@
 <template>
 <div>
-    <el-card class="box-card  box-cardheader">
-            <el-button type="success">返回</el-button>
-    </el-card>
+   
 <el-card class="box-card box-cardheaderthree">
                 <div class="user_header">
                    <i class="el-icon-menu"></i>
@@ -24,6 +22,7 @@
                                     </el-option>
                                 </el-select>
                                 <el-button type="primary">查询</el-button>
+                                 <el-button type="success">添加</el-button>
                     </el-form-item>
                    
                 
@@ -75,15 +74,22 @@
                         width="100">
                         <template slot-scope="scope">
                            
-                            <el-button type="text" @click="dialogVisible = true">编辑 Dialog</el-button>
+                            <el-button type="text" @click="dialogVisible = true" >编辑</el-button>
 
                         </template>
                         </el-table-column>
-                         <el-table-column
-                            prop="State"
+                      
+                          <el-table-column
+                            
                             label="状态">
+                            <template slot-scope="scope" >
+                                            <el-switch
+                                             v-model="scope.row.State"
+                                            active-color="#13ce66"
+                                            inactive-color="#ff4949"> 
+                                            </el-switch>
+                                        </template>
                         </el-table-column>
-                         
                         
                         </el-table>
                 </div>
@@ -115,6 +121,22 @@
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="dialogVisible = false">取 消</el-button>
                             <el-button type="primary" @click="dialogVisible = false">提 交</el-button>
+                        </span>
+                    </el-dialog>
+                     <!-- 第三块 -->
+                          <el-dialog
+                         title="广告详情" 
+                        :visible.sync="dialogVisible"
+                        width="30%"
+                        style="line-height:40px;"
+                        :modal="false"
+                        >
+                        <ul style="list-style:none;  text-align: left;">
+                            <li><span>封面：</span><img src="http://img13.360buyimg.com/n2/jfs/t26332/324/2072791091/226362/bcdee29c/5bf6a21aN995e8132.jpg" style="width:50px;height:50px;" alt=""> </li>
+                            <li><span>内容：</span><span>京东JD.COM-专业的综合网上购物商城，销售超数万品牌、4020万种商品，囊括家电、手机、电脑、母婴、服装等13大品类。秉承客户为先的理念，京东所售商品为正品行货、全国联保、机打发票。</span></li>
+                        </ul>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="dialogVisible = false">取 消</el-button>
                         </span>
                     </el-dialog>
 
@@ -153,7 +175,7 @@
                             ContactNumber: '13353339635',
                             AuthorityGroup:'产品部',
                             AddTime:'2017-08-05 15:47:44',
-                            State:'开',
+                            State:true,
                             },
                             {          
                             Number:'windir',
@@ -161,7 +183,7 @@
                             ContactNumber: '13353339635',
                             AuthorityGroup:'产品部',
                             AddTime:'2017-08-05 15:47:44',
-                            State:'开',
+                            State:false,
                             },
                            
                                     ],

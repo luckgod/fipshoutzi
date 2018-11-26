@@ -16,7 +16,7 @@
                      <el-button type="success">提交</el-button>
                     </el-form-item> 
                      <el-form-item  >
-                    <el-button type="primary" :span="6">返回</el-button>
+                    <el-button type="primary" :span="6" @click="$router.go(-1)">返回</el-button>
                     </el-form-item>
                    
                 </el-form-item>  

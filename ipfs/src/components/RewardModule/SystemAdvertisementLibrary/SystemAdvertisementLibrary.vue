@@ -1,7 +1,7 @@
 <template>
 <div>
         <el-card class="box-card  box-cardheader">
-            <el-button type="success">新增广告</el-button>
+            <el-button @click="dialogVisible=true" type="success" >新增广告</el-button>
         </el-card>
  
                   <el-card class="box-card box-card-two">
@@ -22,6 +22,10 @@
                          <el-table-column
                             prop="AdvertisementCover"
                             label="广告封面">
+                             <template slot-scope="scope">
+                                <img  :src="scope.row.AdvertisementCover" alt="" style="width: 100px;height: 50px;">
+                              
+                            </template>
                         </el-table-column>
                          <el-table-column
                             prop="AdvertisingContent"
@@ -63,6 +67,19 @@
                         
                         </el-table>
                 </div>
+                 <!-- 第三块 -->
+                          <el-dialog
+                         title="广告详情" 
+                        :visible.sync="dialogVisible"
+                        width="30%"
+                        style="line-height:40px;"
+                        :modal="false"
+                        >
+                        
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="dialogVisible=false">取 消</el-button>
+                        </span>
+                    </el-dialog>
             </el-card>
 </div>
     
@@ -71,6 +88,7 @@
     export default{
         data() {
             return {
+                 dialogVisible: false,
                  ruleForm: {
                    
                     date1: '',
@@ -105,30 +123,30 @@
                 tableData: [
                             {          
                             AdvertisementSerialNumber:'2',
-                            AdvertisementCover:`<img src="" alt="">`,
+                            AdvertisementCover:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
                             AdvertisingContent:'ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤',
                             LastEditTime:'2018年11月9日18:33:10',
                             RewardTransferTimes:'2',
                             AdvertingClicks:'1235544',
-                            JumpLink:'http：hdjfdk',
+                            JumpLink:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
                             },
                             {          
                             AdvertisementSerialNumber:'2',
-                            AdvertisementCover:`<img src="" alt="">`,
+                            AdvertisementCover:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
                             AdvertisingContent:'ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤',
                             LastEditTime:'2018年11月9日18:33:10',
                             RewardTransferTimes:'2',
                             AdvertingClicks:'1235544',
-                            JumpLink:'http：hdjfdk',
+                            JumpLink:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
                             },
                             {          
                             AdvertisementSerialNumber:'2',
-                            AdvertisementCover:`<img src="" alt="">`,
+                            AdvertisementCover:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
                             AdvertisingContent:'ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤',
                             LastEditTime:'2018年11月9日18:33:10',
                             RewardTransferTimes:'2',
                             AdvertingClicks:'1235544',
-                            JumpLink:'http：hdjfdk',
+                            JumpLink:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
                             },
                            
                                     ] 

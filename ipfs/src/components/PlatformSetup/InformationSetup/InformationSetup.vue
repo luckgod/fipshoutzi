@@ -27,10 +27,20 @@
                          <el-table-column
                             prop="Imges"
                             label="图片">
+                                 <template slot-scope="scope">
+                                <img  :src="scope.row.Imges" alt="" style="width: 100px;height: 50px;">
+                              
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="Forder"
                             label="排序值">
+                                  <template slot-scope="scope">
+                                    <el-button
+                                    size="mini"
+                                   @click="handleEdita(scope.$index, scope.row)">{{scope.row.Forder}}</el-button>
+                                   
+                                </template>
                         </el-table-column>
                         <el-table-column
                                 prop="UpdateTime"
@@ -41,7 +51,7 @@
                         label="操作"
                         width="100">
                         <template slot-scope="scope">
-                            <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+                            <el-button @click="handleClick(scope.row)" type="text" size="small" >编辑</el-button>
                             <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
                         </template>
                         </el-table-column>
@@ -62,14 +72,14 @@
                             {          
                             Number:'123562',
                             Title:'邀请规则',
-                            Imges:'132213213',
+                            Imges:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
                             Forder:'1',
                             UpdateTime:'2018年11月21日16:33:36'
                             },
                             {          
                             Number:'123562',
                             Title:'邀请规则',
-                            Imges:'132213213',
+                            Imges:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
                             Forder:'2',
                             UpdateTime:'2018年11月21日16:33:36'
                             },                   
@@ -79,10 +89,15 @@
          methods: {
             handleClick(row) {
                 console.log(row);
+                this.$router.push('/Index/InformationSetup/DatainformationEditor')
             },
             tianjian(){
                 this.$router.push('/Index/InformationSetup/DatainformationEditor')
-            }
+            },
+             handleEdita(row) {
+                console.log(row);
+               
+            },
         },
     }
 

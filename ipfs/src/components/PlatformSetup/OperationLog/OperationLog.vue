@@ -1,47 +1,9 @@
 <template>
 <div>
         <el-card class="box-card  box-cardheader">
-            <el-button type="success">返回</el-button>
+            <el-button type="success" @click="$router.go(-1)">返回</el-button>
         </el-card>
-        <!-- <el-card class="box-card box-cardheaderthree">
-                <div class="user_header">
-                   <i class="el-icon-menu"></i>
-                  <span>筛选查询</span>
-                </div>
-                <div class="user_con">
-                <el-form ref="form" :inline="true" :model="ruleForm" label-width="100px" label-hieght="40px">
-                   <el-form-item label="领取状态：">
-                       <el-select v-model="value" placeholder="系统奖励">
-                                    <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                    </el-option>
-                                </el-select>
-                    </el-form-item>
-                   
-                
-                <el-form-item label="领取时间：" >
-                    
-                    <el-form-item prop="date1">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-                    </el-form-item>
-                   
-                   
-                </el-form-item>  
-                <el-form-item label="领取时间：" >
-                   
-                    <el-form-item prop="date2">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date2" style="width: 100%;"></el-date-picker>
-                    </el-form-item>
-                   
-                    <el-button type="primary">查询</el-button>
-                </el-form-item> 
-                 </el-form>  
-                </div>
-            </el-card> -->
-            <!-- 第二块 -->
+      
                   <el-card class="box-card box-card-two">
                 <div class="user_header">
                    <i class="el-icon-menu"></i>

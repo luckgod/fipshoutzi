@@ -1,7 +1,7 @@
 <template>
 <div>
     <el-card class="box-card  box-cardheader">
-            <el-button type="success">返回</el-button>
+            <el-button type="success">添加</el-button>
     </el-card>
 
             <!-- 第二块 -->
@@ -39,8 +39,15 @@
                         </template>
                         </el-table-column>
                          <el-table-column
-                            prop="State"
+                            
                             label="状态">
+                            <template slot-scope="scope" >
+                                            <el-switch
+                                             v-model="scope.row.State"
+                                            active-color="#13ce66"
+                                            inactive-color="#ff4949"> 
+                                            </el-switch>
+                                        </template>
                         </el-table-column>
                          
                         
@@ -76,19 +83,19 @@
                             PermissionGroupName:'windir',
                             FunctionDescription:'大梨',
                             ContactNumber: '2017-08-05 15:47:44',
-                            State:'开',
+                            State:true,
                             },
                            {          
                             PermissionGroupName:'windir',
                             FunctionDescription:'大梨',
                             ContactNumber: '2017-08-05 15:47:44',
-                            State:'开',
+                            State:false,
                             },
                             {          
                             PermissionGroupName:'windir',
                             FunctionDescription:'大梨',
                             ContactNumber: '2017-08-05 15:47:44',
-                            State:'开',
+                            State:true,
                             },
                            
                                     ] 

@@ -117,76 +117,31 @@
                         </el-table-column>
                          
                         </el-table>
+                        <div class="block" >
+                            
+                            <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page.sync="currentPage3"
+                            :page-size="100"
+                            layout="prev, pager, next, jumper"
+                            :total="1000"
+                            style="padding-top:40px"
+                            >
+                            </el-pagination>
+                        </div>
                 </div>
             </el-card>
     </div>
 </template>
-<style scoped>
-.text {
-    font-size: 14px;
-  }
-
-  .item {
-    margin-bottom: 18px;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-  .clearfix:after {
-    clear: both
-  }
-  
-  .box-card {
-    width: 100%;
-  }
-  .user_header{
-    height: 60px;
-    line-height: 60px;
-    text-align: left;
-    background:#eee;
-    border-radius:2px;
-    text-indent: 8px; 
-
-  }
-  .el-form .el-form--inline{
-        line-height: 40px;  
-  }
-  .el-form-item {
-  line-height: 40px;  
-  }
-  .el-form-item__label{
-     
-  }
-  .user_con{
-      text-align: left;
-      height: 40px;
-     
-      margin:15px 0 0;
-  }
-  .box-card-two{
-      margin-top:10px;
-      height: 100vh; 
-  }
-  .el-table{
-      line-height: 30px;
-      
-  }
-  .el-table__header-wrapper{
-      background: #aaaaaa;
-  }
-  .fistlie{
-      width: 20px;
-      height:20px;
-       
-  }
-</style>
 <script>
     export default{
         data(){
             return{
+                currentPage1: 5,
+                currentPage2: 5,
+                currentPage3: 5,
+                currentPage4: 4,
                      value1: true,
                     value2: true,
                  ruleForm: {
@@ -282,9 +237,78 @@
                 console.log(index, row);
                 this.$router.push('/Index/Userlist/IndividualAccount')
             },
+             handleSizeChange(val) {
+                    console.log(`每页 ${val} 条`);
+                },
+                handleCurrentChange(val) {
+                    console.log(`当前页: ${val}`);
+                }
         },
 
     }
 
 
 </script>
+
+<style scoped>
+.text {
+    font-size: 14px;
+  }
+
+  .item {
+    margin-bottom: 18px;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+  
+  .box-card {
+    width: 100%;
+  }
+  .user_header{
+    height: 60px;
+    line-height: 60px;
+    text-align: left;
+    background:#eee;
+    border-radius:2px;
+    text-indent: 8px; 
+
+  }
+  .el-form .el-form--inline{
+        line-height: 40px;  
+  }
+  .el-form-item {
+  line-height: 40px;  
+  }
+  .el-form-item__label{
+     
+  }
+  .user_con{
+      text-align: left;
+      height: 40px;
+     
+      margin:15px 0 0;
+  }
+  .box-card-two{
+      margin-top:10px;
+      height: 100vh; 
+  }
+  .el-table{
+      line-height: 30px;
+      
+  }
+  .el-table__header-wrapper{
+      background: #aaaaaa;
+  }
+  .fistlie{
+      width: 20px;
+      height:20px;
+       
+  }
+</style>

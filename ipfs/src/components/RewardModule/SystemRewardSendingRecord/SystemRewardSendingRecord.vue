@@ -86,7 +86,7 @@
                         label="广告详情"
                         width="100">
                         <template slot-scope="scope">
-                            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> 
+                            <el-button type="text" size="small" @click="dialogVisible = true">查看</el-button> 
                         </template>
                         </el-table-column>
                         
@@ -94,6 +94,23 @@
                         
                         </el-table>
                 </div>
+                 <!-- 第三块 -->
+                          <el-dialog
+                         title="广告详情" 
+                        :visible.sync="dialogVisible"
+                        width="30%"
+                        style="line-height:40px;"
+                        :modal="false"
+                        >
+                        <ul style="list-style:none;  text-align: left;">
+                            <li><span>封面：</span><img src="http://img13.360buyimg.com/n2/jfs/t26332/324/2072791091/226362/bcdee29c/5bf6a21aN995e8132.jpg" style="width:50px;height:50px;" alt=""> </li>
+                            <li><span>内容：</span><span>京东JD.COM-专业的综合网上购物商城，销售超数万品牌、4020万种商品，囊括家电、手机、电脑、母婴、服装等13大品类。秉承客户为先的理念，京东所售商品为正品行货、全国联保、机打发票。</span></li>
+                        </ul>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="dialogVisible = false">取 消</el-button>
+                        </span>
+                    </el-dialog>
+
             </el-card>
 </div>
     
@@ -108,6 +125,7 @@
                     date2: '',
                    
                  },
+                 dialogVisible: false,
                  rules: {
                        
                         date1: [
@@ -163,9 +181,7 @@
                               
         },
          methods: {
-            handleClick(row) {
-                console.log(row);
-            }
+            
         },
     }
 

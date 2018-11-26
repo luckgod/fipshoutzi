@@ -1,7 +1,7 @@
 <template>
 <div>
         <el-card class="box-card  box-cardheader">
-            <el-button type="success">添加</el-button>
+            <el-button type="success" @click="$router.push('/Index/CopyBook/TextEditing')">添加</el-button>
         </el-card>
 
             <!-- 第二块 -->
