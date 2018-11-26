@@ -16,8 +16,20 @@
                     <el-form-item label="推荐人">
                         <el-input v-model="ruleForm.user" placeholder="推荐人手机号"></el-input>
                     </el-form-item>
-                
-                <el-form-item label="注册时间" >
+
+                     <el-form-item label="用户状态 ：">
+                       <el-select v-model="value" placeholder="全部">
+                                    <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                    </el-form-item>
+
+
+                    <el-form-item label="注册时间" >
                     <el-col :span="16">
                     <el-form-item prop="date1">
                         <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
@@ -40,6 +52,7 @@
                     <el-table
                         :data="tableData"
                          border
+                        
                         style="width: 100%">
                        
                         <el-table-column
@@ -64,11 +77,19 @@
                         </el-table-column>
                         <el-table-column
                             prop="address"
+                           :show-overflow-tooltip="true"
                             label="SEC地址">
                         </el-table-column>
                         <el-table-column
                             prop="account"
                             label="账户">
+                            <template slot-scope="scope">
+                                    <el-button
+                                    size="mini"
+                                   @click="handleEdit(scope.$index, scope.row)">{{scope.row.account}}</el-button>
+                                   
+                                </template>
+
                         </el-table-column>
                         <el-table-column
                             prop="invitation"
@@ -82,12 +103,7 @@
                             prop="registration"
                             label="注册时间">
                         </el-table-column>
-                         <el-table-column
-                             prop="Enabled"
-                            label="是否启用">
-                                    
-                                        
-                        </el-table-column>
+                       
                          <el-table-column
                             
                             label="操作">
@@ -180,6 +196,21 @@
                     date1: '',
                     date2: '',
                  },
+                 yingchang:true,
+                 options: [{
+                            value: '选项1',
+                            label: '全部'
+                            },
+                            {
+                            value: '选项2',
+                            label: '已启用'
+                            }, 
+                            {
+                            value: '选项3',
+                            label: '未启用'
+                            },
+                            ],
+                value: '',
                  rules: {
                      name: [
                             { required: true, message: '请输入活动名称', trigger: 'blur' },
@@ -203,7 +234,7 @@
                         region: ''
                         },
                         tableData: [{                                       
-                                        name:{imgPath:'https://avatar.csdn.net/6/5/1/3_qq_43141894.jpg',username:'aaaa'},
+                                        name:{imgPath:'https://storage.360buyimg.com/i.imageUpload/636a363539393131353032373536313139393835_sma.jpg',username:'aaaa'},
                                         phone:'13320589624',
                                         address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
                                         account:'1000.35',
@@ -215,7 +246,7 @@
                                         operation:'false',
                                     },
                                     {                                       
-                                       name:{imgPath:'https://avatar.csdn.net/6/5/1/3_qq_43141894.jpg',username:'aaaa'},
+                                       name:{imgPath:'https://storage.360buyimg.com/i.imageUpload/636a363539393131353032373536313139393835_sma.jpg',username:'aaaa'},
                                         phone:'13320589624',
                                         address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
                                         account:'1000.35',
@@ -228,7 +259,7 @@
                                     },
                                     {
                                        
-                                       name:{imgPath:'https://avatar.csdn.net/6/5/1/3_qq_43141894.jpg',username:'aaaa'},
+                                       name:{imgPath:'https://storage.360buyimg.com/i.imageUpload/636a363539393131353032373536313139393835_sma.jpg',username:'aaaa'},
                                         phone:'13320589624',
                                         address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
                                         account:'1000.35',
@@ -246,7 +277,11 @@
         methods: {
             onSubmit(){
                         console.log('submit!');
-            }
+            },
+            handleEdit(index, row) {
+                console.log(index, row);
+                this.$router.push('/Index/Userlist/IndividualAccount')
+            },
         },
 
     }

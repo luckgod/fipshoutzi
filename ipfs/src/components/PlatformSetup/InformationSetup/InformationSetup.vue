@@ -1,7 +1,7 @@
 <template>
 <div>
         <el-card class="box-card  box-cardheader">
-            <el-button type="success">添加</el-button>
+            <el-button type="success" @click="tianjian">添加</el-button>
         </el-card>
 
             <!-- 第二块 -->
@@ -79,6 +79,9 @@
          methods: {
             handleClick(row) {
                 console.log(row);
+            },
+            tianjian(){
+                this.$router.push('/Index/InformationSetup/DatainformationEditor')
             }
         },
     }

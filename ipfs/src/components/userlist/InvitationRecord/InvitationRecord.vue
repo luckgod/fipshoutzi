@@ -1,14 +1,17 @@
 <template>
 <div>
-        <el-card class="box-card  box-cardheader">
-            <el-button type="success">添加</el-button>
+     <el-card class="box-card  box-cardeader">
+         <span>邀请总人数：13人</span>
+      
+            <el-button type="success">返回</el-button>
+            
         </el-card>
 
             <!-- 第二块 -->
                   <el-card class="box-card box-card-two">
                 <div class="user_header">
                    <i class="el-icon-menu"></i>
-                  <span>文案列表</span>
+                  <span> 邀请列表</span>
                 </div>
                 <div>
                     <el-table
@@ -16,27 +19,18 @@
                          border
                         style="width: 100%">
                         <el-table-column
-                            prop="Number"
-                            label="编号"
-                            >
+                            prop="userphone"
+                            label="用户"
+                            width="180">
                         </el-table-column>
-                         <el-table-column
-                            prop="Title"
-                            label="标题">
+                      
+                       
+                          <el-table-column
+                            prop="TimeToCollect"
+                            label="变动时间">
                         </el-table-column>
-                     
                        
                        
-                        <el-table-column
-                       
-                        label="操作"
-                        width="100">
-                        <template slot-scope="scope">
-                            <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
-                            <el-button @click="fonClick(scope.row)" type="text" size="small">删除</el-button>
-                        </template>
-                        </el-table-column>
-                        
                          
                         
                         </el-table>
@@ -49,19 +43,39 @@
     export default{
         data() {
             return {
-                 
-                 
-                tableData: [
-                            {          
-                            Number:'123562',
-                            Title:'邀请规则',
+                 ruleForm: {
+                   
+                    date1: '',
+                   
+                 },
+                 rules: {
+                       
+                        date1: [
+                            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                        ],
+                      
+                       
+                 },
+                 options: [{
+                            value: '选项1',
+                            label: '系统奖励'
+                            }, ],
+                value: '',
+                tableData: [{          
+                            userphone:'13359976958',
+                            TimeToCollect:'2018年8月13日09:52:38',
                             },
                             {          
-                            Number:'2223562',
-                            Title:'邀请规则',
+                            userphone:'13359976958',
+                            TimeToCollect:'2018年8月13日09:52:38',
+                            },
+                            {          
+                            userphone:'13359976958',
+                            TimeToCollect:'2018年8月13日09:52:38',
                             },
                            
                            
+                                   
                                     ] 
             }
                               
@@ -69,10 +83,6 @@
          methods: {
             handleClick(row) {
                 console.log(row);
-                  this.$router.push('/Index/CopyBook/TextEditing')
-            },
-            fonClick(row){
-              
             }
         },
     }
@@ -86,7 +96,7 @@
       height: 60px;
       line-height: 60px;
       text-align: left;
-        background:#eee; 
+        background:#eee;
         border-radius:2px;
         text-indent: 8px; 
 
@@ -113,12 +123,11 @@
   .el-table{
       line-height: 30px;   
   }
-  .box-cardheader{
+   .box-cardeader{
       text-align: left;
       font-size: 24px;
       line-height: 2px;
-    padding:0 ; 
-  }
+    padding:0 ; }
   .box-cardheaderthree{
        margin-top:10px;
   }

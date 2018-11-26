@@ -25,6 +25,7 @@
                         </el-table-column>
                          <el-table-column
                             prop="AdvertisingContent"
+                            show-overflow-tooltip='true'
                             label="广告内容">
                         </el-table-column>
                          <el-table-column
@@ -42,6 +43,7 @@
                         </el-table-column>
                          <el-table-column
                             prop="JumpLink"
+                            show-overflow-tooltip='true'
                             label="跳转链接"
                             width="180">
                         </el-table-column>

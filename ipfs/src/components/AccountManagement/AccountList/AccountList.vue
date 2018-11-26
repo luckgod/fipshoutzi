@@ -74,7 +74,9 @@
                         label="操作"
                         width="100">
                         <template slot-scope="scope">
-                            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> 
+                           
+                            <el-button type="text" @click="dialogVisible = true">编辑 Dialog</el-button>
+
                         </template>
                         </el-table-column>
                          <el-table-column
@@ -85,7 +87,39 @@
                         
                         </el-table>
                 </div>
+                <!-- 第三块 -->
+                          <el-dialog
+                         title="添加/编辑账号" 
+                        :visible.sync="dialogVisible"
+                        width="30%"
+                        style="line-height:40px;"
+                        :modal="false"
+                        >
+                        <el-form ref="form" :model="form" label-width="90px" >
+                                <el-form-item label="账号：">
+                                <el-input v-model="form.name" ></el-input>
+                                </el-form-item>
+                                 <el-form-item label=" 姓名：">
+                                <el-input v-model="form.namea"></el-input>
+                                </el-form-item>
+                                 <el-form-item label="联系方式：">
+                                <el-input v-model="form.nameb"></el-input>
+                                </el-form-item>
+                                 <el-form-item label="登录密码：">
+                                <el-input v-model="form.namec" type="password"></el-input>
+                                </el-form-item>
+                                 <el-form-item label="确认密码：">
+                                <el-input v-model="form.named" type="password"></el-input>
+                                </el-form-item>
+                     </el-form>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="dialogVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="dialogVisible = false">提 交</el-button>
+                        </span>
+                    </el-dialog>
+
             </el-card>
+  
 </div>
     
 </template>
@@ -106,6 +140,8 @@
                       
                        
                  },
+                  dialogVisible: false,
+                    
                  options: [{
                             value: '选项1',
                             label: '系统奖励'
@@ -128,13 +164,27 @@
                             State:'开',
                             },
                            
-                                    ] 
+                                    ],
+                
+                    form: {
+                    name: '',
+                    namea: '',
+                    nameb: '',
+                    namec: '',
+                    named: '',
+                         
+
+                    },
+                    formLabelWidth: '120px'                     
             }
                               
         },
          methods: {
+         
             handleClick(row) {
                 console.log(row);
+             
+            
             }
         },
     }
@@ -184,5 +234,8 @@
   }
   .box-cardheaderthree{
        margin-top:5px;
+  }
+  .el-dialog__header{
+      line-height: 50px;
   }
 </style>
