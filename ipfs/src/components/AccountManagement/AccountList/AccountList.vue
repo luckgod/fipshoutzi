@@ -199,7 +199,7 @@
                         reqUser:'pageSysNotice', 
                         reqMobile :'15070057175',
                         reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
-                         adminCantant:'12345678901',
+                        adminCantant:'12345678901',
                         adminName:'111',
                         adminAcctNo:'111',
                         adminPwd:'111',
