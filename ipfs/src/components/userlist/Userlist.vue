@@ -50,57 +50,57 @@
                 </div>
                 <div>
                     <el-table
-                        :data="tableData"
+                        :data="shuju"
                          border
                         
                         style="width: 100%">
                        
                         <el-table-column
-                            prop="name"
+                            prop="userNickName"
                             label="用户名"
                             width="180"
                             
                             >
 
                             <template slot-scope="scope">
-                                <img  :src="scope.row.name.imgPath" alt="" style="width: 30px;height: 30px;borderRadius:15px;  display:inline-block; vertical-align:middle;">
-                                <span style=" display:inline-block;vertical-align:middle;">{{scope.row.name.username}}</span>
+                                <img  :src="scope.row.userImage" alt="" style="width: 30px;height: 30px;borderRadius:15px;  display:inline-block; vertical-align:middle;">
+                                <span style=" display:inline-block;vertical-align:middle;">{{scope.row.userNickName}}</span>
                             </template>
                             
                            
                                 
                         </el-table-column>
                         <el-table-column
-                            prop="phone"
+                            prop="userMobile"
                             label="手机号"
                             width="180">
                         </el-table-column>
                         <el-table-column
-                            prop="address"
+                            prop="secAddress"
                            :show-overflow-tooltip="true"
                             label="SEC地址">
                         </el-table-column>
                         <el-table-column
-                            prop="account"
+                            prop="totalSec"
                             label="账户">
                             <template slot-scope="scope">
                                     <el-button
                                     size="mini"
-                                   @click="handleEdit(scope.$index, scope.row)">{{scope.row.account}}</el-button>
+                                   @click="handleEdit(scope.$index, scope.row)">{{scope.row.totalSec}}</el-button>
                                    
                                 </template>
 
                         </el-table-column>
                         <el-table-column
-                            prop="invitation"
+                            prop="userCode"
                             label="个人邀请码">
                         </el-table-column>
                          <el-table-column
-                            prop="referee"
+                            prop="userInvitMobile"
                             label="推荐人">
                         </el-table-column>
                          <el-table-column
-                            prop="registration"
+                            prop="creTime"
                             label="注册时间">
                         </el-table-column>
                        
@@ -138,6 +138,7 @@
     export default{
         data(){
             return{
+                shuju:[],
                 currentPage1: 5,
                 currentPage2: 5,
                 currentPage3: 5,
@@ -189,7 +190,7 @@
                         region: ''
                         },
                         tableData: [{                                       
-                                        name:{imgPath:'https://storage.360buyimg.com/i.imageUpload/636a363539393131353032373536313139393835_sma.jpg',username:'aaaa'},
+                                        name:{imgPath:'http://192.168.31.64:8080/upload/1d7a8dae745b492491a9c771b7d85559.jpg',username:'aaaa'},
                                         phone:'13320589624',
                                         address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
                                         account:'1000.35',
@@ -243,6 +244,31 @@
                 handleCurrentChange(val) {
                     console.log(`当前页: ${val}`);
                 }
+        },
+        mounted() {
+            var athis=this
+             var data={
+                        reqUser:'adminCode', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        pageNum:1,
+                        pageSize:'20',
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                        userMobile:'',
+                        //
+                        userInvitMobile:'',
+                        //
+                        userNickName:'',
+                        userState:'',
+                        startTime:'',
+                        endTime:'',
+                    }
+            this.dataApi.ajax('pageUser',data, res => {
+                    
+               console.log(res.vos)
+                athis.shuju=res.vos
+               })
         },
 
     }

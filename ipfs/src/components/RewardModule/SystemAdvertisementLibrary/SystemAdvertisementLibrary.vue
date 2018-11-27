@@ -1,7 +1,7 @@
 <template>
 <div>
         <el-card class="box-card  box-cardheader">
-            <el-button @click="dialogVisible=true" type="success" >新增广告</el-button>
+            <el-button  type="success" @click="addpro">新增广告</el-button>
         </el-card>
  
                   <el-card class="box-card box-card-two">
@@ -11,43 +11,43 @@
                 </div>
                 <div>
                     <el-table
-                        :data="tableData"
+                        :data="tablenumber"
                          border
                         style="width: 100%">
                         <el-table-column
-                            prop="AdvertisementSerialNumber"
+                            prop="adCode"
                             label="广告序号"
                             width="180">
                         </el-table-column>
                          <el-table-column
-                            prop="AdvertisementCover"
+                            prop="adImageAddress"
                             label="广告封面">
                              <template slot-scope="scope">
-                                <img  :src="scope.row.AdvertisementCover" alt="" style="width: 100px;height: 50px;">
+                                <img  :src="scope.row.adImageAddress" alt="" style="width: 100px;height: 50px;">
                               
                             </template>
                         </el-table-column>
                          <el-table-column
-                            prop="AdvertisingContent"
-                            show-overflow-tooltip='true'
+                            prop="adTitle"
+                           
                             label="广告内容">
                         </el-table-column>
                          <el-table-column
-                            prop="LastEditTime"
+                            prop="updTime"
                             label="最后编辑时间">
                         </el-table-column>
                         <el-table-column
-                            prop="RewardTransferTimes"
+                            prop="clickNUm"
                             label="奖励调取次数 ">
                         </el-table-column>
                         <el-table-column
-                            prop="AdvertingClicks"
+                            prop="adClick"
                             label="广告点击次数"
                             width="180">
                         </el-table-column>
                          <el-table-column
-                            prop="JumpLink"
-                            show-overflow-tooltip='true'
+                            prop="adLinkAddress"
+                           
                             label="跳转链接"
                             width="180">
                         </el-table-column>
@@ -77,7 +77,7 @@
                         >
                         
                         <span slot="footer" class="dialog-footer">
-                            <el-button @click="dialogVisible=false">取 消</el-button>
+                            <el-button @click="dialogVisible='false'">取 消</el-button>
                         </span>
                     </el-dialog>
             </el-card>
@@ -88,6 +88,7 @@
     export default{
         data() {
             return {
+                msg:true,
                  dialogVisible: false,
                  ruleForm: {
                    
@@ -148,15 +149,54 @@
                             AdvertingClicks:'1235544',
                             JumpLink:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
                             },
-                           
-                                    ] 
+                                    ],
+                            tablenumber:[],         
             }
                               
         },
          methods: {
             handleClick(row) {
                 console.log(row);
+            },
+            addpro(){
+                this.dialogVisible=true
+                var data={
+                        reqUser:'adminCode', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        adTitle:'1',
+                        adLinkAddress:'10',
+                        adImageAddress:'https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/20d5c57e839fa986939e2e6aec94728b_222_222.jpg',
+                        adMark:'DESC',
+                    }
+            this.dataApi.ajax('addSysAd',data, res => {
+                    
+             
+               console.log(res)
+            //    athis.yaoqingren=res.invitCount
+            //     athis.tablenumber=res.vos
+               })
             }
+        },
+        mounted() {
+            var athis=this
+             var data={
+                        reqUser:'adminCode', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        pageNum:'1',
+                        pageSize:'10',
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                    }
+            this.dataApi.ajax('pageSysAd',data, res => {
+                    
+             
+               console.log(res)
+              
+                athis.tablenumber=res.vos
+               })
+               
         },
     }
 

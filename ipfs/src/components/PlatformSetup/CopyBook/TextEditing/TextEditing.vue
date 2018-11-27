@@ -16,7 +16,7 @@
                      <el-button type="success">提交</el-button>
                     </el-form-item> 
                      <el-form-item  >
-                    <el-button type="primary" :span="6" @click="$router.go(-1)">返回</el-button>
+                    <el-button type="primary" :span="6">返回</el-button>
                     </el-form-item>
                    
                 </el-form-item>  
@@ -54,8 +54,8 @@
                     newsContent: "",
                    
                  }, 
-                  content:null,
-                    editorOption:{}
+                content:null,
+                editorOption:{}
             }
         },
         components: {
@@ -69,6 +69,26 @@
             onEditorChange(){//内容改变事件
             }
 
+        },
+        mounted() {
+            var athis=this
+             var data={
+                        reqUser:'adminCode', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        codexTitle:'1',
+                        codexType:'B',
+                        codexContent:'1111',
+                       
+                        
+                    }
+            this.dataApi.ajax('addCodex',data, res => {
+                    
+            //    console.log(res.invitCount)
+               console.log(res)
+            //    athis.yaoqingren=res.invitCount
+                athis.tablenumber=res.vos
+               })
         },
 
     }

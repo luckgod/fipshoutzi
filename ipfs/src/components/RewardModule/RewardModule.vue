@@ -41,29 +41,29 @@
                 </div>
                 <div>
                     <el-table
-                        :data="tableData"
+                        :data="tablenumber"
                          border
                         style="width: 100%">
                         <el-table-column
-                            prop="AwardNumber"
+                            prop="userRedCode"
                             label="奖励编号"
                             width="180">
                         </el-table-column>
                         <el-table-column
-                            prop="RewardType"
+                            prop="redCode"
                             label="奖励类型"
                             width="180">
                         </el-table-column>
                         <el-table-column
-                            prop="ReceivingUsers"
+                            prop="userMobile"
                             label="领取用户">
                         </el-table-column>
                         <el-table-column
-                            prop="AssociatedUsers"
+                            prop="sendUserMobile"
                             label="关联用户">
                         </el-table-column>
                         <el-table-column
-                            prop="NumberOfSECRecipients"
+                            prop="amount"
                             label="领取SEC数量">
                         </el-table-column>
                         <el-table-column
@@ -75,7 +75,7 @@
                         </template>
                         </el-table-column>
                          <el-table-column
-                            prop="TimeToCollect"
+                            prop="receiveTime"
                             label="领取时间">
                         </el-table-column>
                          
@@ -90,6 +90,7 @@
     export default{
         data() {
             return {
+                tablenumber:[],
                  ruleForm: {
                    
                     date1: '',
@@ -144,6 +145,36 @@
             handleClick(row) {
                 console.log(row);
             }
+        },
+        mounted() {
+            var athis=this
+             var data={
+                        redState:'L',
+                        reqUser:'adminCode', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        pageNum:'1',
+                        pageSize:'10',
+                       
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                        redCode:'',
+                       
+                        redTypeFlag:'',
+                        startTime:'',
+                        endTime:'',
+                        userMobile:'',
+                        sendTime:'',
+                        sendEnd:'',
+                    }
+            this.dataApi.ajax('pageUserReceiveRed',data, res => {
+                    
+             
+               console.log(res)
+              
+                athis.tablenumber=res.vos
+               })
+               
         },
     }
 

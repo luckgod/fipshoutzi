@@ -22,6 +22,24 @@
         }
             }
         },
+         mounted() {
+            var athis=this
+             var data={
+                        reqUser:'pageSysNotice', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        dictCode:'JL',
+                       
+                        
+                    }
+            this.dataApi.ajax('selectChildDict',data, res => {
+                    
+            //    console.log(res.invitCount)
+               console.log(res)
+            //    athis.yaoqingren=res.invitCount
+                athis.tablenumber=res.vos
+               })
+        },
     }
 
 </script>

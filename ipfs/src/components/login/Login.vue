@@ -19,7 +19,7 @@
                 </el-form-item>
                 <el-form-item >
                     <!-- <el-button type="primary" @click="submitForm('adminInfo')" :loading="loading" style="width: 100%;">登录</el-button> -->
-                    <div class="bt"  :loading="loading"  @click="$router.replace('/Index')">登 录</div>
+                    <div class="bt"  :loading="loading"  @click="denglu">登 录</div>
                      <!-- @click="submitForm('adminInfo')" -->
                     <!--<el-button type="default" @click="resetForm('adminInfo')">重置</el-button>-->
                 </el-form-item>
@@ -106,6 +106,24 @@
             document.removeEventListener('keydown', this.keyDownLogin)
         },
         methods: {
+            denglu(){
+                
+                   var _this=this
+                var   hash = this.dataApi.md5("123123");
+                        hash=hash.toUpperCase()
+                        console.log(hash)
+                var data={
+                        adminCantant:'15070057175',
+                        adminPwd:hash,
+                        reqUser:'ipfs',
+                        reqMobile :'ipfs'
+                    }
+                this.dataApi.ajax('adminLogin',data, res => {
+                    
+                console.log(res)
+                
+               })
+            },
             keyDownLogin(e) {
                 if (!e) {
                     e = window.event;
@@ -206,6 +224,7 @@
                     
 
             },
+
         }
     }
 </script>

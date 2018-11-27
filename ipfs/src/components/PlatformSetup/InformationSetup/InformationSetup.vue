@@ -12,23 +12,23 @@
                 </div>
                 <div>
                     <el-table
-                        :data="tableData"
+                        :data="tablenumber"
                          border
                         style="width: 100%">
                         <el-table-column
-                            prop="Number"
+                            prop="noticeCode"
                             label="编号"
                             >
                         </el-table-column>
                          <el-table-column
-                            prop="Title"
+                            prop="noticeTitle"
                             label="标题">
                         </el-table-column>
                          <el-table-column
                             prop="Imges"
                             label="图片">
                                  <template slot-scope="scope">
-                                <img  :src="scope.row.Imges" alt="" style="width: 100px;height: 50px;">
+                                <img  :src="scope.row.noticeImage" alt="" style="width: 100px;height: 50px;">
                               
                             </template>
                         </el-table-column>
@@ -38,12 +38,12 @@
                                   <template slot-scope="scope">
                                     <el-button
                                     size="mini"
-                                   @click="handleEdita(scope.$index, scope.row)">{{scope.row.Forder}}</el-button>
+                                   @click="handleEdita(scope.$index, scope.row)">{{scope.row.noticeSort}}</el-button>
                                    
                                 </template>
                         </el-table-column>
                         <el-table-column
-                                prop="UpdateTime"
+                                prop="updTime"
                                 label="更新时间">
                         </el-table-column>
                         <el-table-column
@@ -83,7 +83,8 @@
                             Forder:'2',
                             UpdateTime:'2018年11月21日16:33:36'
                             },                   
-                            ] 
+                            ] ,
+                            tablenumber:'',
             }                              
         },
          methods: {
@@ -98,6 +99,28 @@
                 console.log(row);
                
             },
+        },
+        mounted() {
+            var athis=this
+             var data={
+                        reqUser:'pageSysNotice', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        pageNum:'1',
+                        pageSize:'10',
+                        sort:'NOTICE_SORT',
+                        desc:'DESC',
+                        noticeType:'Z'
+                       
+                        
+                    }
+            this.dataApi.ajax('pageSysNotice',data, res => {
+                    
+            //    console.log(res.invitCount)
+               console.log(res)
+            //    athis.yaoqingren=res.invitCount
+                athis.tablenumber=res.vos
+               })
         },
     }
 

@@ -10,7 +10,7 @@
 
                   
                      <el-form-item  >
-                     <el-button type="success">提交</el-button>
+                     <el-button type="success" @click="addw">提交</el-button>
                     </el-form-item> 
                      <el-form-item  >
                     <el-button type="primary" :span="6" @click="$router.go(-1)">返回</el-button>
@@ -107,9 +107,32 @@
             onEditorFocus(){//获得焦点事件
             },
             onEditorChange(){//内容改变事件
-            }
+            },
+         addw(){
+             var athis=this
+             var data={
+                        reqUser:'pageSysNotice', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        noticeTitle:'1aa',
+                        noticeContent:'10aa',
+                        noticeType:'Z',
+                        noticeImage:'DESC',
+                        noticeFalg:'T'
+                       
+                        
+                    }
+            this.dataApi.ajax('addSysNotice',data, res => {
+                    
+            //    console.log(res.invitCount)
+               console.log(res)
+            //    athis.yaoqingren=res.invitCount
+                // athis.tablenumber=res.vos
+               })    
 
         },
+       
+        }
 
     }
 

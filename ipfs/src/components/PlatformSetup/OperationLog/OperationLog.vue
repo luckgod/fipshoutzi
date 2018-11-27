@@ -11,28 +11,28 @@
                 </div>
                 <div>
                     <el-table
-                        :data="tableData"
+                        :data="tablenumber"
                          border
                         style="width: 100%">
                         <el-table-column
-                            prop="SerialNumber"
+                            prop="editCode"
                             label="流水号"
                             width="180">
                         </el-table-column>
                          <el-table-column
-                            prop="ActionItem"
+                            prop="editRemark"
                             label="操作项">
                         </el-table-column>
                          <el-table-column
-                            prop="ChangeAValue"
+                            prop="editValue"
                             label="改变值">
                         </el-table-column>
                          <el-table-column
-                            prop="OperatorName"
+                            prop="adminName"
                             label="操作人姓名">
                         </el-table-column>
                         <el-table-column
-                            prop="RewardTransferTimes"
+                            prop="creTime"
                             label="操作时间">
                         </el-table-column>
                        
@@ -46,6 +46,7 @@
     export default{
         data() {
             return {
+                tablenumber:[],
                  ruleForm: {
                    
                     date1: '',
@@ -108,6 +109,28 @@
             handleClick(row) {
                 console.log(row);
             }
+        },
+        mounted() {
+            var athis=this
+             var data={
+                        reqUser:'pageSysNotice', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                         pageNum:'1',
+                        pageSize:'10',
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                        editModel:'A-D',
+                       
+                        
+                    }
+            this.dataApi.ajax('selectSysEdit',data, res => {
+                    
+            //    console.log(res.invitCount)
+               console.log(res)
+            //    athis.yaoqingren=res.invitCount
+                athis.tablenumber=res.vos
+               })
         },
     }
 

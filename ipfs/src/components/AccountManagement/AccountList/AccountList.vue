@@ -22,7 +22,7 @@
                                     </el-option>
                                 </el-select>
                                 <el-button type="primary">查询</el-button>
-                                 <el-button type="success">添加</el-button>
+                                 <el-button type="success" @click="dialogVisible = true">添加</el-button>
                     </el-form-item>
                    
                 
@@ -43,29 +43,29 @@
                 </div>
                 <div>
                     <el-table
-                        :data="tableData"
+                        :data="tablenumber"
                          border
                         style="width: 100%">
                         <el-table-column
-                            prop="Number"
+                            prop="adminAcctNo"
                             label="账号"
                             width="180">
                         </el-table-column>
                         <el-table-column
-                            prop="Name"
+                            prop="adminName"
                             label="姓名"
                             width="180">
                         </el-table-column>
                         <el-table-column
-                            prop="ContactNumber"
+                            prop="adminCantant"
                             label="联系电话">
                         </el-table-column>
                         <el-table-column
-                            prop="AuthorityGroup"
+                            prop="powerName"
                             label="所属权限组">
                         </el-table-column>
                         <el-table-column
-                            prop="AddTime"
+                            prop="creTime"
                             label="添加时间">
                         </el-table-column>
                         <el-table-column
@@ -74,7 +74,7 @@
                         width="100">
                         <template slot-scope="scope">
                            
-                            <el-button type="text" @click="dialogVisible = true" >编辑</el-button>
+                            <el-button type="text"  >编辑</el-button>
 
                         </template>
                         </el-table-column>
@@ -84,9 +84,11 @@
                             label="状态">
                             <template slot-scope="scope" >
                                             <el-switch
-                                             v-model="scope.row.State"
+                                             v-model="scope.row.adminState=='Y'?true:false"
                                             active-color="#13ce66"
-                                            inactive-color="#ff4949"> 
+                                            inactive-color="#ff4949"
+                                            @click="scope.row.adminState=!scope.row.adminState"
+                                            > 
                                             </el-switch>
                                         </template>
                         </el-table-column>
@@ -120,25 +122,10 @@
                      </el-form>
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="dialogVisible = false">取 消</el-button>
-                            <el-button type="primary" @click="dialogVisible = false">提 交</el-button>
+                            <el-button type="primary" @click="handleClick">提 交</el-button>
                         </span>
                     </el-dialog>
-                     <!-- 第三块 -->
-                          <el-dialog
-                         title="广告详情" 
-                        :visible.sync="dialogVisible"
-                        width="30%"
-                        style="line-height:40px;"
-                        :modal="false"
-                        >
-                        <ul style="list-style:none;  text-align: left;">
-                            <li><span>封面：</span><img src="http://img13.360buyimg.com/n2/jfs/t26332/324/2072791091/226362/bcdee29c/5bf6a21aN995e8132.jpg" style="width:50px;height:50px;" alt=""> </li>
-                            <li><span>内容：</span><span>京东JD.COM-专业的综合网上购物商城，销售超数万品牌、4020万种商品，囊括家电、手机、电脑、母婴、服装等13大品类。秉承客户为先的理念，京东所售商品为正品行货、全国联保、机打发票。</span></li>
-                        </ul>
-                        <span slot="footer" class="dialog-footer">
-                            <el-button @click="dialogVisible = false">取 消</el-button>
-                        </span>
-                    </el-dialog>
+                    
 
             </el-card>
   
@@ -149,6 +136,7 @@
     export default{
         data() {
             return {
+                tablenumber:[],
                  ruleForm: {
                    
                     date1: '',
@@ -204,10 +192,51 @@
          methods: {
          
             handleClick(row) {
-                console.log(row);
-             
-            
+                
+                this.dialogVisible = false
+                var athis=this
+             var data={
+                        reqUser:'pageSysNotice', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                         adminCantant:'12345678901',
+                        adminName:'111',
+                        adminAcctNo:'111',
+                        adminPwd:'111',
+                        adminName:'11',
+                       
+                        
+                    }
+            this.dataApi.ajax('adminAdd',data, res => {
+                    
+            //    console.log(res.invitCount)
+               console.log(res)
+            //    athis.yaoqingren=res.invitCount
+                athis.tablenumber=res.vos
+               })
             }
+        },
+        mounted() {
+            var athis=this
+             var data={
+                        reqUser:'pageSysNotice', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                         pageNum:'1',
+                        pageSize:'10',
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                        adminName:'',
+                       
+                        
+                    }
+            this.dataApi.ajax('adminPage',data, res => {
+                    
+            //    console.log(res.invitCount)
+               console.log(res)
+            //    athis.yaoqingren=res.invitCount
+                athis.tablenumber=res.vos
+               })
         },
     }
 

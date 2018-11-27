@@ -83,7 +83,7 @@ export default new Router({
               name: 'CopyBook',
               path: '/Index/CopyBook',   
               component: CopyBook
-            },
+            }, 
             {
               name: 'TextEditing',
               path: '/Index/CopyBook/TextEditing',   

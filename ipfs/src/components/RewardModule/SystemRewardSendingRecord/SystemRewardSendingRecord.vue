@@ -1,7 +1,7 @@
 <template>
 <div>
     <el-card class="box-card  box-cardheader">
-    <h1>平台累计发送奖励：7750.2356 SEC</h1>    
+    <h1>平台累计发送奖励：{{zongjin}} SEC</h1>    
     </el-card>
 <el-card class="box-card box-cardheaderthree">
                 <div class="user_header">
@@ -49,32 +49,32 @@
                 </div>
                 <div>
                     <el-table
-                        :data="tableData"
+                        :data="tablenumber"
                          border
                         style="width: 100%">
                         <el-table-column
-                            prop="AwardNumber"
+                            prop="userRedCode"
                             label="奖励编号"
                             width="180">
                         </el-table-column>
                          <el-table-column
-                            prop="NumberOfSECRecipients"
+                            prop="amount"
                             label="奖励SEC数量">
                         </el-table-column>
                          <el-table-column
-                            prop="PaymentTime"
+                            prop="sendTime"
                             label="发放时间">
                         </el-table-column>
                          <el-table-column
-                            prop="TimeToCollect"
+                            prop="receiveTime"
                             label="领取时间">
                         </el-table-column>
                         <el-table-column
-                            prop="ReceivingUsers"
+                            prop="userMobile"
                             label="领取用户">
                         </el-table-column>
                         <el-table-column
-                            prop="ReceivingStatus"
+                            prop="redState"
                             label="领取状态"
                             width="180">
                         </el-table-column>
@@ -86,7 +86,7 @@
                         label="广告详情"
                         width="100">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small" @click="dialogVisible = true">查看</el-button> 
+                            <el-button type="text" size="small"  @click="handleClick(scope.row)">查看</el-button> 
                         </template>
                         </el-table-column>
                         
@@ -103,8 +103,8 @@
                         :modal="false"
                         >
                         <ul style="list-style:none;  text-align: left;">
-                            <li><span>封面：</span><img src="http://img13.360buyimg.com/n2/jfs/t26332/324/2072791091/226362/bcdee29c/5bf6a21aN995e8132.jpg" style="width:50px;height:50px;" alt=""> </li>
-                            <li><span>内容：</span><span>京东JD.COM-专业的综合网上购物商城，销售超数万品牌、4020万种商品，囊括家电、手机、电脑、母婴、服装等13大品类。秉承客户为先的理念，京东所售商品为正品行货、全国联保、机打发票。</span></li>
+                            <li><span>封面：</span><img :src=taoimg style="width:50px;height:50px;" alt=""> </li>
+                            <li><span>内容：</span><span>{{conne}}</span></li>
                         </ul>
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="dialogVisible = false">取 消</el-button>
@@ -176,12 +176,45 @@
                             ReceivingUsers:'13320589624',
                             ReceivingStatus:'未领取',
                             },     
-                                    ] 
+                                    ],
+                            tablenumber:[], 
+                            zongjin:'',
+                            taoimg:null,
+                            conne:'',        
             }
                               
         },
          methods: {
-            
+            handleClick(row){
+                
+                 this.dialogVisible = true
+                 this.taoimg=row.redImageAddre
+                 this.conne=row.redContent
+            }
+        },
+         mounted() {
+            var athis=this
+             var data={
+                        redTypeFlag:'T',
+                        reqUser:'adminCode', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        pageNum:'1',
+                        pageSize:'10',
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                        redCode:'',
+                        startTime:'',
+                        endTime:'',
+                        userMobile:'',
+                        sendTime:'',
+                        sendEnd:'',
+                    }
+            this.dataApi.ajax('pageUserReceiveRed',data, res => {
+                athis.zongjin=res.sysTotalNumber
+                athis.tablenumber=res.vos
+               })
+               
         },
     }
 

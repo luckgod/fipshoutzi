@@ -1,7 +1,7 @@
 <template>
 <div>
      <el-card class="box-card  box-cardeader">
-         <span>当前奖励余额：750.2356 SEC</span>
+         <span>当前奖励余额：{{rewardNumber}} SEC</span>
          <el-button type="info"  @click="yaoqingyemian">邀请记录</el-button>
             <el-button type="success">返回</el-button>
             
@@ -50,40 +50,33 @@
                 </div>
                 <div>
                     <el-table
-                        :data="tableData"
+                        :data="tabanumber"
                          border
                         style="width: 100%">
                         <el-table-column
-                            prop="SerialNumber"
+                            prop="changeCode"
                             label="流水号"
                             width="180">
                         </el-table-column>
                         <el-table-column
-                            prop="AssociatedAccount"
+                            prop="sourceUserMobile"
                             label="关联账号"
                             width="180">
                         </el-table-column>
                         <el-table-column
-                            prop="ChangeType"
+                            prop="changeValue"
                             label="变动类型">
                         </el-table-column>
                         <el-table-column
-                            prop="VariableQuantity"
+                            prop="changeNumber"
                             label="变动数量">
                         </el-table-column>
                        
                           <el-table-column
-                            prop="TimeToCollect"
+                            prop="creTime"
                             label="变动时间">
                         </el-table-column>
-                        <el-table-column
                        
-                        label="广告详情"
-                        width="100">
-                        <template slot-scope="scope">
-                            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> 
-                        </template>
-                        </el-table-column>
                        
                          
                         
@@ -131,9 +124,11 @@
                             },
                            
                                    
-                                    ] 
+                                    ] ,
+                                    rewardNumber:"",
+                                    tabanumber:[], 
             }
-                              
+                             
         },
          methods: {
             handleClick(row) {
@@ -142,6 +137,40 @@
             yaoqingyemian(){
                 this.$router.push('/Index/Userlist/InvitationRecord')
             }
+        },
+         mounted() {
+            var athis=this
+             var data={
+                        reqUser:'adminCode', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        userMobile:'15070057175',
+                       
+                    }
+            this.dataApi.ajax('singleUserNode',data, res => {
+                    
+              
+                athis.rewardNumber=res.rewardNodeNumber
+               })
+                 var datb={
+                        reqUser:'adminCode', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        pageNum:'1',
+                       pageSize:'10',
+                       sort:'CRE_TIME',
+                       desc:'DESC',
+                       userMobile:'15070057175',
+                       changeType:'Sys_Reward',
+                        startTime:'',
+                        endTime:'',
+                        changeCode:'123'
+                    }
+            this.dataApi.ajax('pageNodeChange',datb, res => {
+                    
+               console.log(res.vos)
+              athis.tabanumber=res.vos
+               })   
         },
     }
 

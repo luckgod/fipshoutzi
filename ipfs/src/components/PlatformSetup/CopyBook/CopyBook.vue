@@ -12,16 +12,16 @@
                 </div>
                 <div>
                     <el-table
-                        :data="tableData"
+                        :data="tablenumber"
                          border
                         style="width: 100%">
                         <el-table-column
-                            prop="Number"
+                            prop="codexCode"
                             label="编号"
                             >
                         </el-table-column>
                          <el-table-column
-                            prop="Title"
+                            prop="codexTitle"
                             label="标题">
                         </el-table-column>
                      
@@ -62,7 +62,8 @@
                             },
                            
                            
-                                    ] 
+                                    ],
+                            tablenumber:[], 
             }
                               
         },
@@ -74,6 +75,26 @@
             fonClick(row){
               
             }
+        },
+         mounted() {
+            var athis=this
+             var data={
+                        reqUser:'adminCode', 
+                        reqMobile :'15070057175',
+                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        pageNum:'1',
+                        pageSize:'10',
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                        
+                    }
+            this.dataApi.ajax('pageCodex',data, res => {
+                    
+            //    console.log(res.invitCount)
+               console.log(res)
+            //    athis.yaoqingren=res.invitCount
+                athis.tablenumber=res.vos
+               })
         },
     }
 

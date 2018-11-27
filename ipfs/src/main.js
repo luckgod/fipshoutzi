@@ -166,6 +166,9 @@ Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
 /* eslint-disable no-new */
+import JsEncrypt from 'jsencrypt'
+Vue.prototype.$jsEncrypt = JsEncrypt
+Vue.prototype.dataApi = require('./assets/js/dataApi').default
 new Vue({
   el: '#app',
   router,
