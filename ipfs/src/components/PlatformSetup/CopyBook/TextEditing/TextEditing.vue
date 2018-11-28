@@ -8,10 +8,7 @@
                 <div class="user_con">
                 <el-form ref="form" :inline="true" :model="ruleForm" >
 
-                   <el-form-item label="文案标题" >
-                        <el-input v-model="ruleForm.name" placeholder=" 文案标题" style="width:400px;"></el-input>
-                        
-                    </el-form-item>
+                  
                      <el-form-item  >
                      <el-button type="success">提交</el-button>
                     </el-form-item> 
@@ -25,6 +22,13 @@
                 </div>
             </el-card>
             <el-card class="box-card box-card-two" >
+                 <el-form ref="form"  :model="ruleForm" style="line-height: 0; text-align:left;" >
+
+                   <el-form-item label="文案标题" label-width="80px">
+                        <el-input v-model="ruleForm.name" placeholder=" 文案标题" style="width:400px;"></el-input> 
+                    </el-form-item>
+                 </el-form>   
+                </el-form-item>  
                 <div class="user_header">
                    <i class="el-icon-menu"></i>
                   <span>文案正文</span>
@@ -73,9 +77,9 @@
         mounted() {
             var athis=this
              var data={
-                        reqUser:'adminCode', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        reqUser:getCookie('adminCode'), 
+                        reqMobile :getCookie('Cantant'),
+                        reqToken:getCookie('toke'),
                         codexTitle:'1',
                         codexType:'B',
                         codexContent:'1111',
@@ -98,7 +102,7 @@
 <style scoped>
 .text {
     font-size: 14px;
-   
+    
   }
 
   .item {

@@ -3,7 +3,7 @@
      <el-card class="box-card  box-cardeader">
          <span>邀请总人数：{{yaoqingren}}人</span>
       
-            <el-button type="success">返回</el-button>
+            <el-button type="success"  @click="$router.go(-1)">返回</el-button>
             
         </el-card>
 
@@ -61,23 +61,6 @@
                             label: '系统奖励'
                             }, ],
                 value: '',
-                tableData: [{          
-                            userphone:'13359976958',
-                            TimeToCollect:'2018年8月13日09:52:38',
-                            },
-                            {          
-                            userphone:'13359976958',
-                            TimeToCollect:'2018年8月13日09:52:38',
-                            },
-                            {          
-                            userphone:'13359976958',
-                            TimeToCollect:'2018年8月13日09:52:38',
-                            },
-                           
-                           
-                                   
-                                    ],
-
                           tablenumber:[], 
                           yaoqingren:'',         
             }
@@ -91,12 +74,12 @@
         mounted() {
             var athis=this
              var data={
-                        reqUser:'adminCode', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        reqUser:getCookie('adminCode'), 
+                        reqMobile :getCookie('Cantant'),
+                        reqToken:getCookie('toke'),
                         pageNum:'1',
                         pageSize:'10',
-                        userMobile:'15070057175'
+                        userMobile:athis.$route.query.queryId
                     }
             this.dataApi.ajax('pageInvitUser',data, res => {
                     

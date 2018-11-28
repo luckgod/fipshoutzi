@@ -33,7 +33,7 @@
                         <el-input v-model="ruleForm.name" placeholder=" 文案标题" style="width:300px;"></el-input>
                         
                     </el-form-item>
-                     <el-upload
+                    <el-upload
                     action="https://jsonplaceholder.typicode.com/posts/"
                     list-type="picture-card"
                     :on-preview="handlePictureCardPreview"
@@ -111,9 +111,9 @@
          addw(){
              var athis=this
              var data={
-                        reqUser:'pageSysNotice', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        reqUser:getCookie('adminCode'), 
+                        reqMobile :getCookie('Cantant'),
+                        reqToken:getCookie('toke'),
                         noticeTitle:'1aa',
                         noticeContent:'10aa',
                         noticeType:'Z',

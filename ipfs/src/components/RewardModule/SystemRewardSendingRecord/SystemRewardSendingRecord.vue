@@ -11,7 +11,7 @@
                 <div class="user_con">
                 <el-form ref="form" :inline="true" :model="ruleForm" label-width="100px" label-hieght="40px">
                    <el-form-item label="领取状态：">
-                       <el-select v-model="value" placeholder="系统奖励">
+                       <el-select v-model="ruleForm.value" placeholder="系统奖励">
                                     <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -20,23 +20,16 @@
                                     </el-option>
                                 </el-select>
                     </el-form-item>
-                   
-                
-                <el-form-item label="领取时间：" >
-                    
+                <el-form-item label="领取时间：" >   
                     <el-form-item prop="date1">
                         <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-                    </el-form-item>
-                   
-                   
+                    </el-form-item>  
                 </el-form-item>  
-                <el-form-item label="领取时间：" >
-                   
+                <el-form-item >                   
                     <el-form-item prop="date2">
                         <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date2" style="width: 100%;"></el-date-picker>
                     </el-form-item>
-                   
-                    <el-button type="primary">查询</el-button>
+                    <el-button type="primary" @click="setdata">查询</el-button>
                 </el-form-item> 
                  </el-form>  
                 </div>
@@ -62,11 +55,11 @@
                             label="奖励SEC数量">
                         </el-table-column>
                          <el-table-column
-                            prop="sendTime"
+                            prop="creTime"
                             label="发放时间">
                         </el-table-column>
                          <el-table-column
-                            prop="receiveTime"
+                            prop="sendTime"
                             label="领取时间">
                         </el-table-column>
                         <el-table-column
@@ -74,24 +67,21 @@
                             label="领取用户">
                         </el-table-column>
                         <el-table-column
-                            prop="redState"
+                           
                             label="领取状态"
                             width="180">
+                         <template slot-scope="scope">
+                          {{ scope.row.redState|capitalize }}
+                        </template>
+
                         </el-table-column>
-                        
-                       
-                       
                         <el-table-column
-                       
                         label="广告详情"
                         width="100">
                         <template slot-scope="scope">
                             <el-button type="text" size="small"  @click="handleClick(scope.row)">查看</el-button> 
                         </template>
                         </el-table-column>
-                        
-                         
-                        
                         </el-table>
                 </div>
                  <!-- 第三块 -->
@@ -103,7 +93,7 @@
                         :modal="false"
                         >
                         <ul style="list-style:none;  text-align: left;">
-                            <li><span>封面：</span><img :src=taoimg style="width:50px;height:50px;" alt=""> </li>
+                            <li><span style="float:left; line-height: 150px;padding-right:20px;">封面:</span><img :src=taoimg style="width:150px;height:150px;" alt=""> </li>
                             <li><span>内容：</span><span>{{conne}}</span></li>
                         </ul>
                         <span slot="footer" class="dialog-footer">
@@ -120,7 +110,7 @@
         data() {
             return {
                  ruleForm: {
-                   
+                    value:'',
                     date1: '',
                     date2: '',
                    
@@ -133,50 +123,22 @@
                         ],
                          date2: [
                             { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-                        ],
-                      
-                       
+                        ],    
                  },
                  options: [{
-                            value: '选项1',
+                            value: '',
                             label: '全部'
                             },
                             {
-                            value: '选项2',
+                            value: 'F',
                             label: '未领取'
                             },
                             {
-                            value: '选项3',
+                            value: 'L',
                             label: '已领取'
                             },
                              ],
-                value: '',
-                tableData: [
-                            {          
-                            AwardNumber:'10002564',
-                            NumberOfSECRecipients:'3',
-                            TimeToCollect:'2018年11月9日18:33:10',
-                            PaymentTime:'2018年11月9日18:33:10',
-                            ReceivingUsers:'13320589624',
-                            ReceivingStatus:'未领取',
-                            },
-                             {          
-                            AwardNumber:'10002564',
-                            NumberOfSECRecipients:'4',
-                            TimeToCollect:'2018年11月9日18:33:10',
-                            PaymentTime:'2018年11月9日18:33:10',
-                            ReceivingUsers:'13320589624',
-                            ReceivingStatus:'未领取',
-                            },
-                             {          
-                            AwardNumber:'10002564',
-                            NumberOfSECRecipients:'5',
-                            TimeToCollect:'2018年11月9日18:33:10',
-                            PaymentTime:'2018年11月9日18:33:10',
-                            ReceivingUsers:'13320589624',
-                            ReceivingStatus:'未领取',
-                            },     
-                                    ],
+                           
                             tablenumber:[], 
                             zongjin:'',
                             taoimg:null,
@@ -185,37 +147,52 @@
                               
         },
          methods: {
-            handleClick(row){
-                
+            handleClick(row){                
                  this.dialogVisible = true
                  this.taoimg=row.redImageAddre
                  this.conne=row.redContent
-            }
-        },
-         mounted() {
-            var athis=this
-             var data={
-                        redTypeFlag:'T',
-                        reqUser:'adminCode', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
-                        pageNum:'1',
-                        pageSize:'10',
-                        sort:'CRE_TIME',
-                        desc:'DESC',
-                        redCode:'',
-                        startTime:'',
-                        endTime:'',
-                        userMobile:'',
-                        sendTime:'',
-                        sendEnd:'',
-                    }
-            this.dataApi.ajax('pageUserReceiveRed',data, res => {
+            },
+            setdata(){
+                console.log()
+                var athis=this
+                var data={
+                            
+                            reqUser:getCookie('adminCode'), 
+                            reqMobile :getCookie('Cantant'),
+                            reqToken:getCookie('toke'),
+                            pageNum:'1',
+                            pageSize:'10',
+                            sort:'CRE_TIME',
+                            desc:'DESC',
+                            redTypeFlag:'T',
+                            redCode:'',
+                            startTime:'',
+                            endTime:'',
+                            redState:this.ruleForm.value,
+                            userMobile:'',
+                            sendTime:'',
+                            sendEnd:'',
+                        }
+                this.dataApi.ajax('pageUserReceiveRed',data, res => {
+                console.log(res)
                 athis.zongjin=res.sysTotalNumber
                 athis.tablenumber=res.vos
                })
-               
+            }
         },
+         mounted() {
+             this.setdata()     
+        },
+        filters: {
+        capitalize: function (value) {
+            if (value!=='F'){
+                return '已领取'
+            }else{
+                return '未领取' 
+            } 
+           
+        }
+        }
     }
 
 </script>

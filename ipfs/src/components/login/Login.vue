@@ -13,10 +13,7 @@
                 <el-form-item label="" prop="password">
                     <el-input type="password" v-model.trim="adminInfo.password"  :maxlength="32" placeholder="请输入密码"></el-input>
                 </el-form-item>
-                <el-form-item >
-                    <el-input v-model="adminInfo.code" :maxlength="6"  style="width: 70%" placeholder="验证码"></el-input> 
-                    <el-button  id="code" @click="getcode()" :disabled="cantclick == true" size="small" style="display: inline-block;height:4.8vh; float:right;text-align: center;">获取验证码</el-button> 
-                </el-form-item>
+               
                 <el-form-item >
                     <!-- <el-button type="primary" @click="submitForm('adminInfo')" :loading="loading" style="width: 100%;">登录</el-button> -->
                     <div class="bt"  :loading="loading"  @click="denglu">登 录</div>
@@ -28,6 +25,99 @@
     </div>
     
 </template>
+<script>
+    export default {
+        data() {
+            return {
+              guding:{
+                Cantant:'',
+                code:'',
+                toke:'',
+                name:''
+              } , 
+               
+               loading:false,
+                adminInfo: {
+                    phone: '',
+                    password: '',
+                    headUserId:'',
+                   
+                },
+                rules2: {
+                    phone: [
+                        {required: true, message:'请填写账号', trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message:'请填写密码', trigger: 'blur'}
+                    ]
+
+                },
+                cantclick:false
+            };
+        },
+        methods: {
+            denglu(){
+                
+                  
+                var _this=this
+                var password = this.dataApi.md5(this.adminInfo.password);
+                    password=password.toUpperCase()
+                        
+                var data={
+                        adminCantant:this.adminInfo.phone,
+                        adminPwd:password,
+                        reqUser:'ipfs',
+                        reqMobile :'ipfs'
+                    }
+                this.dataApi.ajax('adminLogin',data, res => {
+                    
+              
+                    if(res.respState==='F'){
+                           this.$notify({
+                        title: '警告',
+                        message: res.respMsg,
+                        type: 'warning'
+                        }); 
+                    }else{
+                    
+                    _this.guding.code=res.adminCode
+                    _this.guding.Cantant=res.adminCantant
+                    _this.guding.toke=res.adminToken
+                    _this.guding.name=res.adminName
+                    
+                   
+                    setCookie('adminCode',res.adminCode)
+                    setCookie('Cantant',res.adminCantant)
+                    setCookie('toke',res.adminToken)
+                    setCookie('name',res.adminName)
+                    // _this.guding.name=res.adminToken
+                    // console.log(_this._data.guding.Cantant)
+                    // console.log(_this._data.guding.toke)
+                    // console.log(_this._data.guding.code)
+                    // console.log(res)
+                         
+                    _this.$store.commit('login',_this.guding)
+                    //  console.log(_this.$store.state)
+
+                    this.$notify({
+                        title: '成功登录',
+                        message:'开始管理',
+                        type: 'success'
+                        });
+                        this.$router.push('/Index/Userlist')
+                    }
+                    
+               })
+            
+              
+            },
+            
+          
+        },
+     
+        
+    }
+</script>
 <style>
 
 .el-form-item__label {
@@ -60,8 +150,8 @@
     width:23%;
     position: absolute;
     right:20%;
-    top: 32%;
-    height: 45%;
+    top: 35%;
+    height: 25%;
     border-radius: 0;
     box-shadow:0 8px 18px 0 rgba(0,0,0,.12), 0 0 20px 0 rgba(0,0,0,.04);
     padding-top: 2vh;
@@ -71,160 +161,3 @@
 
 
 </style>
-<script>
-    export default {
-        data() {
-            return {
-                loading: false,
-                //imgSrc:HOST+'admin/common/captcha',
-                adminInfo: {
-                    phone: '',
-                    password: '',
-                    // imgCode:'',
-                    headUserId:'',
-                    code:''
-                },
-                rules2: {
-                    phone: [
-                        {required: true, message:'请填写账号', trigger: 'blur'}
-                    ],
-                    password: [
-                        {required: true, message:'请填写密码', trigger: 'blur'}
-                    ]
-
-                },
-                cantclick:false
-            };
-        },
-        created() {
-            document.addEventListener('keydown', this.keyDownLogin)
-        },
-        mounted() {
-
-        },
-        destroyed() {
-            document.removeEventListener('keydown', this.keyDownLogin)
-        },
-        methods: {
-            denglu(){
-                
-                   var _this=this
-                var   hash = this.dataApi.md5("123123");
-                        hash=hash.toUpperCase()
-                        console.log(hash)
-                var data={
-                        adminCantant:'15070057175',
-                        adminPwd:hash,
-                        reqUser:'ipfs',
-                        reqMobile :'ipfs'
-                    }
-                this.dataApi.ajax('adminLogin',data, res => {
-                    
-                console.log(res)
-                
-               })
-            },
-            keyDownLogin(e) {
-                if (!e) {
-                    e = window.event;
-                }
-                if ((e.keyCode || e.which) === 13) {
-                    this.submitForm('adminInfo');
-                }
-            },
-            submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (!valid) {
-                        console.log('error submit!!');
-                        return false;
-                    }
-
-                    this.login();
-
-                });
-            },
-            // resetForm(formName) {
-            //     this.$refs[formName].resetFields();
-            // },
-            login() {
-                 if (!this.adminInfo.phone) {
-                     this.$message({
-                          message: '请输入管理员账号',
-                          type: 'warning'
-                        });
-                    return;
-                }
-                if (!this.adminInfo.code) {
-                     this.$message({
-                          message: '验证码不能为空',
-                          type: 'warning'
-                        });
-                    return;
-                }
-                var pswd=this.encrypt(this.adminInfo.password);
-                this.dataApi.ajax('adminLogin',{
-                    acctno:this.adminInfo.phone,
-                    adminPwd:pswd,
-                    code:this.adminInfo.code
-                }, res => {
-                    if (res.responseType === 'S') {
-                         this.showMsg('登录成功')
-                         sessionStorage.setItem('permission',JSON.stringify(res))
-                         this.$router.replace('/home')
-                    } 
-                })
-                
-            },
-            // code(e){
-            //     e.target.src = this.imgSrc+'?'+ new Date().getTime()
-            // }
-             encrypt(str) {
-                var code = 956132157;
-                var result=''
-                for (var i = 0; i < str.length; i++) {//遍历字符数组
-                     result += (str.charCodeAt(i) ^ code);//对每个数组元素进行异或运算，异或的值可以自己选择
-                }
-                return result;
-            },
-            getcode(){
-                if (!this.adminInfo.phone) {
-                     this.$message({
-                          message: '请输入管理员账号',
-                          type: 'warning'
-                        });
-                    return;
-                }
-                var _this=this
-                var data={
-                        acctno:this.adminInfo.phone
-                    }
-                this.dataApi.ajax('sendAdminMsg',data, res => {
-                    if (res.responseType === 'S') {
-                         
-                         var i = 60;
-                            var Code=document.getElementById("code");
-                            var timer = setInterval(function(){
-                                if(i== 0){
-                                    Code.innerText="获取验证码"
-                                    // Code.style.backgroundColor='#0AC0EF';
-                                    
-                                    clearInterval(timer)
-                                    _this.cantclick=false
-                                   
-                                }else{
-                                   Code.innerText=Math.floor(i)+'秒';
-                                    --i;
-                                    Code.style.width='80px';
-                                    _this.cantclick=true;
-                                }
-                            },1000);
-                    } 
-               })
-                
-                    
-
-            },
-
-        }
-    }
-</script>

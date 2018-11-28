@@ -75,7 +75,33 @@
                         style="line-height:40px;"
                         :modal="false"
                         >
+                        <!-- tupian -->
+                        <div class="tanchuang">
+                         <span>图片:</span>
+                        <el-upload
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                list-type="picture-card"
+                                :on-preview="handlePictureCardPreview"
+                                :on-remove="handleRemove">
+                                <i class="el-icon-plus"></i>
+                                </el-upload>
+                                <el-dialog >
+                                   
+                                <img width="100%" :src="dialogImageUrl" alt="">
+                                </el-dialog>
+                        </div>          
                         
+                        <!-- shurukuang -->
+                        <el-form ref="form"  label-width="80px">
+                            <el-form-item label="内容:">
+                                <el-input v-model="form.name" style="width:70%;"></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <el-form ref="form"  label-width="80px">
+                            <el-form-item label="链接:">
+                                <el-input v-model="form.name" style="width:70%;"></el-input>
+                            </el-form-item>
+                        </el-form>
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="dialogVisible='false'">取 消</el-button>
                         </span>
@@ -88,8 +114,10 @@
     export default{
         data() {
             return {
-                msg:true,
+                    msg:true,
                  dialogVisible: false,
+                dialogImageUrl: '',
+               
                  ruleForm: {
                    
                     date1: '',
@@ -120,50 +148,26 @@
                             label: '已领取'
                             },
                              ],
-                value: '',
-                tableData: [
-                            {          
-                            AdvertisementSerialNumber:'2',
-                            AdvertisementCover:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
-                            AdvertisingContent:'ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤',
-                            LastEditTime:'2018年11月9日18:33:10',
-                            RewardTransferTimes:'2',
-                            AdvertingClicks:'1235544',
-                            JumpLink:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
-                            },
-                            {          
-                            AdvertisementSerialNumber:'2',
-                            AdvertisementCover:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
-                            AdvertisingContent:'ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤',
-                            LastEditTime:'2018年11月9日18:33:10',
-                            RewardTransferTimes:'2',
-                            AdvertingClicks:'1235544',
-                            JumpLink:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
-                            },
-                            {          
-                            AdvertisementSerialNumber:'2',
-                            AdvertisementCover:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
-                            AdvertisingContent:'ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤ipfs是时代在召唤',
-                            LastEditTime:'2018年11月9日18:33:10',
-                            RewardTransferTimes:'2',
-                            AdvertingClicks:'1235544',
-                            JumpLink:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
-                            },
-                                    ],
-                            tablenumber:[],         
+                value:'',
+                tablenumber:[], 
+                form:{
+                    name:''
+                },
+                     
             }
                               
         },
          methods: {
             handleClick(row) {
                 console.log(row);
+                this.dialogVisible=true
             },
             addpro(){
                 this.dialogVisible=true
                 var data={
-                        reqUser:'adminCode', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        reqUser:getCookie('adminCode'), 
+                        reqMobile :getCookie('Cantant'),
+                        reqToken:getCookie('toke'),
                         adTitle:'1',
                         adLinkAddress:'10',
                         adImageAddress:'https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/20d5c57e839fa986939e2e6aec94728b_222_222.jpg',
@@ -176,14 +180,21 @@
             //    athis.yaoqingren=res.invitCount
             //     athis.tablenumber=res.vos
                })
-            }
+            },
+            handleRemove(file, fileList) {
+            console.log(file, fileList);
+            },
+            handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            
+      }
         },
         mounted() {
             var athis=this
              var data={
-                        reqUser:'adminCode', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        reqUser:getCookie('adminCode'), 
+                        reqMobile :getCookie('Cantant'),
+                        reqToken:getCookie('toke'),
                         pageNum:'1',
                         pageSize:'10',
                         sort:'CRE_TIME',
@@ -245,4 +256,14 @@
   .box-cardheaderthree{
        margin-top:10px;
   }
+  /* tanchaung */
+  .tanchuang span{
+
+      float: left;
+      margin-left:10%;
+      line-height:120px;
+  }
+   .tanchuang{
+       padding-bottom: 8%;
+   }
 </style>

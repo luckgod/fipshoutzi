@@ -365,4 +365,16 @@ function goBack() {
       }else{
          return 0;
       }
+}
+function setCookie(c_name,value,expiredays)
+{
+var exdate=new Date()
+exdate.setDate(exdate.getDate()+expiredays)
+document.cookie=c_name+ "=" +escape(value)+
+((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+}
+function getCookie(name) 
+{ 
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)"); 
+　　 return (arr=document.cookie.match(reg))?unescape(arr[2]):null;
 } 

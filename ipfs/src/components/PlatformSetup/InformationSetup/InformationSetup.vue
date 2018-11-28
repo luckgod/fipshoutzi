@@ -84,7 +84,7 @@
                             UpdateTime:'2018年11月21日16:33:36'
                             },                   
                             ] ,
-                            tablenumber:'',
+                            tablenumber:[],
             }                              
         },
          methods: {

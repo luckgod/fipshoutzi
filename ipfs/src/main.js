@@ -6,7 +6,9 @@ import  VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-
+import Vuex from 'vuex'
+import store from './store'
+Vue.use(Vuex)
 Vue.use(VueQuillEditor)
 
 
@@ -172,6 +174,7 @@ Vue.prototype.dataApi = require('./assets/js/dataApi').default
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

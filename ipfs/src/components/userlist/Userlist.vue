@@ -7,18 +7,17 @@
                 </div>
                 <div class="user_con">
                 <el-form ref="form" :inline="true" :model="ruleForm" >
-                   <el-form-item label="用户名" >
-                        <el-input v-model="ruleForm.name" placeholder="用户名" ></el-input>
+                   <el-form-item label="用户名">
+                        <el-input v-model="ruleForm.name" placeholder="用户名" style="width:80px"></el-input>
                     </el-form-item>
                     <el-form-item label="手机号">
-                        <el-input v-model="ruleForm.phone" placeholder="手机号"></el-input>
+                        <el-input v-model="ruleForm.phone" placeholder="手机号" style="width:125px"></el-input>
                     </el-form-item>
                     <el-form-item label="推荐人">
-                        <el-input v-model="ruleForm.user" placeholder="推荐人手机号"></el-input>
+                        <el-input v-model="ruleForm.user" placeholder="推荐人手机号" style="width:125px"></el-input>
                     </el-form-item>
-
-                     <el-form-item label="用户状态 ：">
-                       <el-select v-model="value" placeholder="全部">
+                     <el-form-item label="用户状态 ：" >
+                       <el-select v-model="ruleForm.value" placeholder="全部" style="width:100px">
                                     <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -27,19 +26,23 @@
                                     </el-option>
                                 </el-select>
                     </el-form-item>
-
-
                     <el-form-item label="注册时间" >
-                    <el-col :span="16">
-                    <el-form-item prop="date1">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
+                    <el-col :span="11">
+                        <el-form-item prop="date1">
+                            <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width:140px"></el-date-picker>
+                        </el-form-item>
+                    </el-col>  
                     </el-form-item>
-                    </el-col>
-                    
-                    <el-button type="primary" :span="6">查询</el-button>
-                    
-                </el-form-item>  
-               
+                    <el-form-item>
+                            <el-col :span="11">
+                                <el-form-item prop="date2">
+                                    <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date2" style="width: 140px;"></el-date-picker>
+                                </el-form-item>
+                        </el-col>
+                    </el-form-item>
+                     <el-form-item  >
+                          <el-button type="primary" :span="6" @click="cha">查询</el-button>
+                     </el-form-item>
                  </el-form>  
                 </div>
             </el-card>
@@ -52,7 +55,7 @@
                     <el-table
                         :data="shuju"
                          border
-                        
+                       
                         style="width: 100%">
                        
                         <el-table-column
@@ -109,9 +112,13 @@
                             label="操作">
                             <template slot-scope="scope" >
                                             <el-switch
-                                             v-model="scope.row.Enabled"
+                                            v-model="scope.row.Enabled"
                                             active-color="#13ce66"
-                                            inactive-color="#ff4949"> 
+                                            inactive-color="#ff4949"
+                                            active-value="Y"
+                                            inactive-value="N"
+                                            @change="changeSwitch(scope.row)"
+                                            > 
                                             </el-switch>
                                         </template>
                         </el-table-column>
@@ -138,137 +145,97 @@
     export default{
         data(){
             return{
+               
                 shuju:[],
                 currentPage1: 5,
                 currentPage2: 5,
                 currentPage3: 5,
                 currentPage4: 4,
-                     value1: true,
-                    value2: true,
-                 ruleForm: {
+                value1: true,
+                value2: true,
+                value6: '',
+                 ruleForm: { 
                     name:'',
                     phone:'',
-                    user:'',   
+                    user:'',
+                    value:'',   
                     date1: '',
                     date2: '',
                  },
-                 yingchang:true,
-                 options: [{
-                            value: '选项1',
-                            label: '全部'
-                            },
-                            {
-                            value: '选项2',
-                            label: '已启用'
-                            }, 
-                            {
-                            value: '选项3',
+                
+                 options: [
+                      {
+                            value: 'Y',
                             label: '未启用'
                             },
+                            {
+                            value: 'N',
+                            label: '已启用'
+                            }, 
+                           
                             ],
-                value: '',
-                 rules: {
-                     name: [
-                            { required: true, message: '请输入活动名称', trigger: 'blur' },
-                            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-                        ],
-                        region: [
-                            { required: true, message: '请选择活动区域', trigger: 'change' }
-                        ],
-                        date1: [
-                            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-                        ],
-                        date2: [
-                            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-                        ],
-                       
-                 },
-               
-                msg:'userlist',
+                    value: '',
                 formInline: {
                         user: '',
                         region: ''
                         },
-                        tableData: [{                                       
-                                        name:{imgPath:'http://192.168.31.64:8080/upload/1d7a8dae745b492491a9c771b7d85559.jpg',username:'aaaa'},
-                                        phone:'13320589624',
-                                        address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
-                                        account:'1000.35',
-                                        operation:'',
-                                        invitation:'NR6852',
-                                        referee:'13356895623',
-                                        registration:'2018年8月13日09:52:38',
-                                        Enabled:true,
-                                        operation:'false',
-                                    },
-                                    {                                       
-                                       name:{imgPath:'https://storage.360buyimg.com/i.imageUpload/636a363539393131353032373536313139393835_sma.jpg',username:'aaaa'},
-                                        phone:'13320589624',
-                                        address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
-                                        account:'1000.35',
-                                        operation:'',
-                                        invitation:'NR6852',
-                                        referee:'13356895623',
-                                        registration:'2018年8月13日09:52:38',
-                                        Enabled:true,
-                                        operation:'false',
-                                    },
-                                    {
-                                       
-                                       name:{imgPath:'https://storage.360buyimg.com/i.imageUpload/636a363539393131353032373536313139393835_sma.jpg',username:'aaaa'},
-                                        phone:'13320589624',
-                                        address: 'SQFyDKf5J79hSBqnPn4SwxcNV8TCuUCBRD',
-                                        account:'1000.35',
-                                        operation:'',
-                                        invitation:'NR6852',
-                                        referee:'13356895623',
-                                        registration:'2018年8月13日09:52:38',
-                                        Enabled:true,
-                                        operation:'false',
-                                    },
-                                   
-                                    ]        
+                        
             }
         },
         methods: {
             onSubmit(){
-                        console.log('submit!');
+                console.log('submit!');
             },
             handleEdit(index, row) {
-                console.log(index, row);
-                this.$router.push('/Index/Userlist/IndividualAccount')
+                console.log(index, row.userMobile);
+             
+                this.$router.push({
+                                path:'/Index/Userlist/IndividualAccount',
+                                query: {
+                                    queryId:row.userMobile,                                    
+                                }
+                            })
             },
-             handleSizeChange(val) {
-                    console.log(`每页 ${val} 条`);
-                },
-                handleCurrentChange(val) {
-                    console.log(`当前页: ${val}`);
-                }
-        },
-        mounted() {
-            var athis=this
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            },
+            cha(){
+                // console.log(this.ruleForm)
+                 var athis=this
+
              var data={
-                        reqUser:'adminCode', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        reqUser:getCookie('adminCode'), 
+                        reqMobile :getCookie('Cantant'),
+                        reqToken:getCookie('toke'),
                         pageNum:1,
                         pageSize:'20',
                         sort:'CRE_TIME',
                         desc:'DESC',
-                        userMobile:'',
-                        //
-                        userInvitMobile:'',
-                        //
-                        userNickName:'',
-                        userState:'',
+                        userMobile:this.ruleForm.phone,
+                        userInvitMobile:this.ruleForm.user,
+                        userNickName:this.ruleForm.name,
+                        userState:this.ruleForm.value,
                         startTime:'',
                         endTime:'',
                     }
-            this.dataApi.ajax('pageUser',data, res => {
-                    
-               console.log(res.vos)
+            this.dataApi.ajax('pageUser',data, res => {    
+                // console.log(res.vos)
                 athis.shuju=res.vos
                })
+            },
+            changeSwitch(data){
+            console.log(data.Enabled)
+            console.log(this.$store.state)
+            },
+        },
+       
+        
+        mounted() {
+            this.cha()
+            
         },
 
     }

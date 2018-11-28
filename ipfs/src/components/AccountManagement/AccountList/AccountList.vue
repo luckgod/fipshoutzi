@@ -21,7 +21,7 @@
                                     :value="item.value">
                                     </el-option>
                                 </el-select>
-                                <el-button type="primary">查询</el-button>
+                                <el-button type="primary" @click="seledat">查询</el-button>
                                  <el-button type="success" @click="dialogVisible = true">添加</el-button>
                     </el-form-item>
                    
@@ -105,19 +105,19 @@
                         >
                         <el-form ref="form" :model="form" label-width="90px" >
                                 <el-form-item label="账号：">
-                                <el-input v-model="form.name" ></el-input>
+                                <el-input v-model="form.usernumber" ></el-input>
                                 </el-form-item>
                                  <el-form-item label=" 姓名：">
-                                <el-input v-model="form.namea"></el-input>
+                                <el-input v-model="form.name"></el-input>
                                 </el-form-item>
                                  <el-form-item label="联系方式：">
-                                <el-input v-model="form.nameb"></el-input>
+                                <el-input v-model="form.phone"></el-input>
                                 </el-form-item>
                                  <el-form-item label="登录密码：">
-                                <el-input v-model="form.namec" type="password"></el-input>
+                                <el-input v-model="form.password" type="password"></el-input>
                                 </el-form-item>
                                  <el-form-item label="确认密码：">
-                                <el-input v-model="form.named" type="password"></el-input>
+                                <el-input v-model="form.password2" type="password"></el-input>
                                 </el-form-item>
                      </el-form>
                         <span slot="footer" class="dialog-footer">
@@ -138,7 +138,7 @@
             return {
                 tablenumber:[],
                  ruleForm: {
-                   
+                    name:'',
                     date1: '',
                    
                  },
@@ -157,31 +157,14 @@
                             label: '系统奖励'
                             }, ],
                 value: '',
-                tableData: [{          
-                            Number:'windir',
-                            Name:'大梨',
-                            ContactNumber: '13353339635',
-                            AuthorityGroup:'产品部',
-                            AddTime:'2017-08-05 15:47:44',
-                            State:true,
-                            },
-                            {          
-                            Number:'windir',
-                            Name:'大梨',
-                            ContactNumber: '13353339635',
-                            AuthorityGroup:'产品部',
-                            AddTime:'2017-08-05 15:47:44',
-                            State:false,
-                            },
-                           
-                                    ],
+               
                 
                     form: {
+                    usernumber: '',
                     name: '',
-                    namea: '',
-                    nameb: '',
-                    namec: '',
-                    named: '',
+                    phone: '',
+                    password: '',
+                    password2: '',
                          
 
                     },
@@ -192,51 +175,65 @@
          methods: {
          
             handleClick(row) {
-                
-                this.dialogVisible = false
+                if(this.form.password !== this.form.password2){
+                     this.$notify({
+                            title: '提示',
+                            message: '俩次密码不一致',
+                            offset: 100
+                            });
+                            this.form.password=null
+                            this.form.password2=null
+                }else{
                 var athis=this
-             var data={
-                        reqUser:'pageSysNotice', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
-                        adminCantant:'12345678901',
-                        adminName:'111',
-                        adminAcctNo:'111',
-                        adminPwd:'111',
-                        adminName:'11',
-                       
+                var data={
+                        reqUser:getCookie('adminCode'), 
+                        reqMobile :getCookie('Cantant'),
+                        reqToken:getCookie('toke'),
+                        adminCantant:this.form.phone,
+                        adminName:this.form.name,
+                        adminAcctNo:this.form.usernumber,
+                        adminPwd:this.form.password,    
                         
                     }
             this.dataApi.ajax('adminAdd',data, res => {
-                    
-            //    console.log(res.invitCount)
-               console.log(res)
-            //    athis.yaoqingren=res.invitCount
-                athis.tablenumber=res.vos
+               if(res.respState==='S'){
+                   this.$notify({
+                            title: '提示',
+                            message: '操作成功',
+                            offset: 100
+                            });
+                  this.dialogVisible = false
+               }else{
+                    this.$notify({
+                            title: '提示',
+                            message: res.respMsg,
+                            offset: 100
+                            });
+               }     
+               })
+                }
+            },
+            seledat(){ 
+                    var athis=this
+                    var data={
+                                reqUser:getCookie('adminCode'), 
+                                reqMobile :getCookie('Cantant'),
+                                reqToken:getCookie('toke'),
+                                pageNum:'1',
+                                pageSize:'10',
+                                sort:'CRE_TIME',
+                                desc:'DESC',
+                                adminName:this.ruleForm.name,
+                            
+                                
+                            }
+                    this.dataApi.ajax('adminPage',data, res => {
+                        athis.tablenumber=res.vos
                })
             }
         },
         mounted() {
-            var athis=this
-             var data={
-                        reqUser:'pageSysNotice', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
-                         pageNum:'1',
-                        pageSize:'10',
-                        sort:'CRE_TIME',
-                        desc:'DESC',
-                        adminName:'',
-                       
-                        
-                    }
-            this.dataApi.ajax('adminPage',data, res => {
-                    
-            //    console.log(res.invitCount)
-               console.log(res)
-            //    athis.yaoqingren=res.invitCount
-                athis.tablenumber=res.vos
-               })
+            this.seledat()
         },
     }
 

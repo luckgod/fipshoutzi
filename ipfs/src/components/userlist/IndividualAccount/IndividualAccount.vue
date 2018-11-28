@@ -3,7 +3,7 @@
      <el-card class="box-card  box-cardeader">
          <span>当前奖励余额：{{rewardNumber}} SEC</span>
          <el-button type="info"  @click="yaoqingyemian">邀请记录</el-button>
-            <el-button type="success">返回</el-button>
+            <el-button type="success" @click="$router.go(-1)">返回</el-button>
             
         </el-card>
 <el-card class="box-card box-cardheaderthree">
@@ -17,7 +17,7 @@
                         <el-input v-model="ruleForm.user" placeholder="流水号"></el-input>
                     </el-form-item>
                    <el-form-item label="变动类型 ：">
-                       <el-select v-model="value" placeholder="系统奖励">
+                       <el-select v-model="ruleForm.value" placeholder="系统奖励">
                                     <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -27,15 +27,19 @@
                                 </el-select>
                     </el-form-item>
                    
-                
-                <el-form-item label="奖励时间 ：" >
+                <el-form-item label="奖励时间 ：">
+                         <el-form-item prop="date1">
+                            <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
+                        </el-form-item>
+                </el-form-item>
+                <el-form-item  >
                     <el-col :span="16">
                     <el-form-item prop="date1">
                         <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                     </el-col>
                     
-                    <el-button type="primary" :span="8">查询</el-button>
+                    <el-button type="primary" :span="8" @click="selec">查询</el-button>
                     
                 </el-form-item>  
                
@@ -76,10 +80,6 @@
                             prop="creTime"
                             label="变动时间">
                         </el-table-column>
-                       
-                       
-                         
-                        
                         </el-table>
                 </div>
             </el-card>
@@ -91,13 +91,17 @@
         data() {
             return {
                  ruleForm: {
-                   
-                    date1: '',
-                   
+                        user:'',
+                        value:'',
+                        date1:'',
+                        date2:'',
                  },
                  rules: {
                        
                         date1: [
+                            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                        ],
+                         date2: [
                             { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
                         ],
                       
@@ -108,25 +112,9 @@
                             label: '系统奖励'
                             }, ],
                 value: '',
-                tableData: [{          
-                            SerialNumber:'435437452111112543',
-                            AssociatedAccount:'微信',
-                            ChangeType: '系统奖励',
-                            VariableQuantity:'1000',
-                            TimeToCollect:'2018年8月13日09:52:38',
-                            },
-                            {          
-                            SerialNumber:'435437452111112543',
-                            AssociatedAccount:'微信',
-                            ChangeType: '系统奖励',
-                            VariableQuantity:'1000',
-                            TimeToCollect:'2018年8月13日09:52:38',
-                            },
-                           
-                                   
-                                    ] ,
-                                    rewardNumber:"",
-                                    tabanumber:[], 
+               
+                rewardNumber:"",
+                tabanumber:[], 
             }
                              
         },
@@ -135,42 +123,50 @@
                 console.log(row);
             },
             yaoqingyemian(){
-                this.$router.push('/Index/Userlist/InvitationRecord')
-            }
-        },
-         mounted() {
-            var athis=this
+                
+                this.$router.push({
+                                path:'/Index/Userlist/InvitationRecord',
+                                query: {
+                                    queryId:this.$route.query.queryId,                                    
+                                }
+                            })
+            },
+           
+            selec(){
+             
+                var athis=this
              var data={
-                        reqUser:'adminCode', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
-                        userMobile:'15070057175',
-                       
+                         reqUser:getCookie('adminCode'), 
+                        reqMobile :getCookie('Cantant'),
+                        reqToken:getCookie('toke'),
+                        userMobile:athis.$route.query.queryId, 
                     }
             this.dataApi.ajax('singleUserNode',data, res => {
-                    
-              
                 athis.rewardNumber=res.rewardNodeNumber
                })
                  var datb={
-                        reqUser:'adminCode', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                        reqUser:getCookie('adminCode'), 
+                        reqMobile :getCookie('Cantant'),
+                        reqToken:getCookie('toke'),
                         pageNum:'1',
-                       pageSize:'10',
-                       sort:'CRE_TIME',
-                       desc:'DESC',
-                       userMobile:'15070057175',
-                       changeType:'Sys_Reward',
+                        pageSize:'10',
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                        userMobile:athis.$route.query.queryId,
+                        changeType:'Sys_Reward',
                         startTime:'',
                         endTime:'',
-                        changeCode:'123'
+                        changeCode:athis.ruleForm.user,
                     }
             this.dataApi.ajax('pageNodeChange',datb, res => {
                     
-               console.log(res.vos)
+            //    console.log(res.vos)
               athis.tabanumber=res.vos
                })   
+            }
+        },
+         mounted() {
+             this.selec()
         },
     }
 

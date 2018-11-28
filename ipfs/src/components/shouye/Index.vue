@@ -10,7 +10,7 @@
               </div>
               <div class="header_right">
 
-                <span>先生</span>
+                <span>{{$store.state.admin_info.admin_name}}</span>
             </div>
             </div>
           </el-header>
@@ -93,7 +93,8 @@ export default {
   name: 'Index',
   data () {
     return {
-      msg: 'Index'
+      msg: 'Index',
+    
     }
   },
   methods: {
@@ -103,8 +104,10 @@ export default {
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       }
-    }
-  
+    },
+  mounted() {
+    
+  },
 }
 </script>
 
