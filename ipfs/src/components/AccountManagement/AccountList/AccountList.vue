@@ -149,7 +149,17 @@
                             <el-button type="primary" @click="handleClicka">提 交</el-button>
                         </span>
                     </el-dialog>
-                    
+                     <div class="block">
+   
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="wen"
+      :page-size="size"
+      layout="prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
+  </div>
 
             </el-card>
   
@@ -210,7 +220,10 @@
                             adminState:'',
                             adminPwd:'',                         
                     },
-                    formLabelWidth: '120px'                     
+                    formLabelWidth: '120px' ,
+                    wen:1 ,
+                    size:2,
+                    total:1,                   
             }
                               
         },
@@ -259,8 +272,8 @@
                     var athis=this
                     var data={
                                 
-                                pageNum:'1',
-                                pageSize:'10',
+                                pageNum:this.wen,
+                                pageSize:this.size,
                                 sort:'CRE_TIME',
                                 desc:'DESC',
                                 adminName:this.ruleForm.name,
@@ -269,6 +282,7 @@
                                 }
                     this.dataApi.ajax('adminPage',data, res => {
                       
+                        this.total=res.count
                         athis.tablenumber=res.vos
                })
             },
@@ -276,7 +290,11 @@
                     this.dataApi.ajax('adminEdit',data, res => {
                        
                         if(res.respState==='S'){
-                          
+                             this.$notify({
+                                title: '成功',
+                                message: '修改成功',
+                                type: 'success'
+                                });
                             
 
                         }else{
@@ -337,7 +355,15 @@
                 this.forma.adminCantant=row.adminCantant
                 this.forma.adminName=row.adminName
                 this.forma.adminPwd=row.adminPwd
-            }
+            },
+             handleSizeChange(val) {
+                    console.log(`每页 ${val} 条`);
+                },
+                handleCurrentChange(val) {
+                    console.log(`当前页: ${val}`);
+                    this.wen=val
+                    this.seledat()
+                }
         },
         mounted() {
            this.seledat()
