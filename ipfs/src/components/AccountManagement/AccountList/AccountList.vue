@@ -15,23 +15,15 @@
                    <el-form-item label="奖励类型 ：">
                        <el-select v-model="value" placeholder="系统奖励">
                                     <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
                                     </el-option>
                                 </el-select>
                                 <el-button type="primary" @click="seledat">查询</el-button>
                                  <el-button type="success" @click="dialogVisible = true">添加</el-button>
                     </el-form-item>
-                   
-                
-                
-                    
-                   
-                    
-               
-               
                  </el-form>  
                 </div>
             </el-card>
@@ -74,7 +66,7 @@
                         width="100">
                         <template slot-scope="scope">
                            
-                            <el-button type="text"  >编辑</el-button>
+                            <el-button type="text"  @click="handleClickb(scope.row)">编辑</el-button>
 
                         </template>
                         </el-table-column>
@@ -84,10 +76,12 @@
                             label="状态">
                             <template slot-scope="scope" >
                                             <el-switch
-                                             v-model="scope.row.adminState=='Y'?true:false"
+                                             v-model="scope.row.adminState"
                                             active-color="#13ce66"
                                             inactive-color="#ff4949"
-                                            @click="scope.row.adminState=!scope.row.adminState"
+                                            active-value="D"
+                                            inactive-value="Y"
+                                            @change="changeSwitch(scope.row)"
                                             > 
                                             </el-switch>
                                         </template>
@@ -97,7 +91,7 @@
                 </div>
                 <!-- 第三块 -->
                           <el-dialog
-                         title="添加/编辑账号" 
+                         title="添加账号" 
                         :visible.sync="dialogVisible"
                         width="30%"
                         style="line-height:40px;"
@@ -125,6 +119,36 @@
                             <el-button type="primary" @click="handleClick">提 交</el-button>
                         </span>
                     </el-dialog>
+                <!-- 第si块 -->
+                     <el-dialog
+                         title="编辑账号" 
+                        :visible.sync="dialogVisiblea"
+                        width="30%"
+                        style="line-height:40px;"
+                        :modal="false"
+                        >
+                        <el-form ref="form" :model="form" label-width="90px" >
+                                <el-form-item label="账号：">
+                                <el-input v-model="forma.usernumber" ></el-input>
+                                </el-form-item>
+                                 <el-form-item label=" 姓名：">
+                                <el-input v-model="forma.name"></el-input>
+                                </el-form-item>
+                                 <el-form-item label="联系方式：">
+                                <el-input v-model="forma.phone"></el-input>
+                                </el-form-item>
+                                 <el-form-item label="登录密码：">
+                                <el-input v-model="forma.password" type="password"></el-input>
+                                </el-form-item>
+                                 <el-form-item label="确认密码：">
+                                <el-input v-model="forma.password2" type="password"></el-input>
+                                </el-form-item>
+                     </el-form>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="dialogVisiblea=false">取 消</el-button>
+                            <el-button type="primary" @click="handleClicka">提 交</el-button>
+                        </span>
+                    </el-dialog>
                     
 
             </el-card>
@@ -150,7 +174,8 @@
                       
                        
                  },
-                  dialogVisible: false,
+                  dialogVisible:false,
+                  dialogVisiblea:false,
                     
                  options: [{
                             value: '选项1',
@@ -160,13 +185,30 @@
                
                 
                     form: {
-                    usernumber: '',
-                    name: '',
-                    phone: '',
-                    password: '',
-                    password2: '',
-                         
-
+                            usernumber: '',
+                            name: '',
+                            phone: '',
+                            password: '',
+                            password2: '',
+                            adminCode:'',
+                            adminName:'',
+                            adminCantant:'',
+                            adminAcctNo:'',
+                            adminState:'',
+                            adminPwd:'',
+                    },
+                    forma: {
+                            usernumber: '',
+                            name: '',
+                            phone: '',
+                            password: '',
+                            password2: '',
+                            adminCode:'',
+                            adminName:'',
+                            adminCantant:'',
+                            adminAcctNo:'',
+                            adminState:'',
+                            adminPwd:'',                         
                     },
                     formLabelWidth: '120px'                     
             }
@@ -185,14 +227,14 @@
                             this.form.password2=null
                 }else{
                 var athis=this
+                 var password = this.dataApi.md5(this.form.password);
+                        password=password.toUpperCase()
                 var data={
-                        reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
+                       
                         adminCantant:this.form.phone,
                         adminName:this.form.name,
                         adminAcctNo:this.form.usernumber,
-                        adminPwd:this.form.password,    
+                        adminPwd:password,    
                         
                     }
             this.dataApi.ajax('adminAdd',data, res => {
@@ -216,9 +258,7 @@
             seledat(){ 
                     var athis=this
                     var data={
-                                reqUser:getCookie('adminCode'), 
-                                reqMobile :getCookie('Cantant'),
-                                reqToken:getCookie('toke'),
+                                
                                 pageNum:'1',
                                 pageSize:'10',
                                 sort:'CRE_TIME',
@@ -226,14 +266,82 @@
                                 adminName:this.ruleForm.name,
                             
                                 
-                            }
+                                }
                     this.dataApi.ajax('adminPage',data, res => {
+                      
                         athis.tablenumber=res.vos
                })
+            },
+            bianji(data){
+                    this.dataApi.ajax('adminEdit',data, res => {
+                       
+                        if(res.respState==='S'){
+                          
+                            
+
+                        }else{
+                            this.$notify({
+                                        title: '警告',
+                                        message: res.respMsg,
+                                        type: 'warning'
+                                        });
+                        }
+                       
+               })
+            },
+            changeSwitch(row){
+               
+                 var data={
+                                
+                                adminCode:row.adminCode,
+                                adminName:row.adminName,
+                                adminCantant:row.adminCantant,
+                                adminAcctNo:row.adminAcctNo,
+                                adminState:row.adminState,
+                                adminPwd:row.adminPwd,
+                            
+                                
+                            }
+                        this.bianji(data)
+            },
+            handleClicka(){
+               
+                var data={
+                                
+                    adminCode:this.forma.adminCode,
+                    adminName:this.forma.name,
+                    adminCantant:this.forma.phone,
+                    adminAcctNo:this.forma.usernumber,
+                    adminState:this.forma.adminState,
+                    adminPwd:this.forma.password2,
+                            
+                                
+                            }
+                  this.bianji(data)
+                  this.dialogVisiblea = false            
+            },
+            handleClickb(row){
+               
+
+                this.dialogVisiblea=true
+                this.forma.adminCode=row.adminCode
+                this.forma.usernumber=row.adminAcctNo
+                this.forma.phone=row.adminCantant
+                this.forma.adminState=row.adminState
+                this.forma.creUser=row.creUser
+                this.forma.creTime=row.creTime
+                this.forma.name=row.adminName
+                this.forma.password=row.adminPwd
+                this.forma.password2=row.adminPwd
+                this.forma.adminAcctNo=row.adminAcctNo
+                this.forma.adminCantant=row.adminCantant
+                this.forma.adminName=row.adminName
+                this.forma.adminPwd=row.adminPwd
             }
         },
         mounted() {
-            this.seledat()
+           this.seledat()
+            
         },
     }
 

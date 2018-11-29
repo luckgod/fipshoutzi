@@ -74,9 +74,7 @@
         mounted() {
             var athis=this
              var data={
-                        reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
+                       
                         pageNum:'1',
                         pageSize:'10',
                         userMobile:athis.$route.query.queryId

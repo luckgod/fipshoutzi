@@ -103,9 +103,9 @@
         mounted() {
             var athis=this
              var data={
-                        reqUser:'pageSysNotice', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                         reqUser:getCookie('adminCode'), 
+                        reqMobile :getCookie('Cantant'),
+                        reqToken:getCookie('toke'),
                         pageNum:'1',
                         pageSize:'10',
                         sort:'NOTICE_SORT',

@@ -171,6 +171,14 @@ Vue.prototype.$message = Message;
 import JsEncrypt from 'jsencrypt'
 Vue.prototype.$jsEncrypt = JsEncrypt
 Vue.prototype.dataApi = require('./assets/js/dataApi').default
+Vue.prototype.showMsg = function (msg, type = 'success') {
+  Vue.prototype.$notify({
+      message:msg,
+      type:type
+  })
+}
+
+
 new Vue({
   el: '#app',
   router,

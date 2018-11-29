@@ -29,14 +29,14 @@
                     <el-form-item label="注册时间" >
                     <el-col :span="11">
                         <el-form-item prop="date1">
-                            <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width:140px"></el-date-picker>
+                            <el-date-picker type="date" placeholder="开始日期" v-model="startTime1" style="width:140px"></el-date-picker>
                         </el-form-item>
                     </el-col>  
                     </el-form-item>
                     <el-form-item>
                             <el-col :span="11">
                                 <el-form-item prop="date2">
-                                    <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date2" style="width: 140px;"></el-date-picker>
+                                    <el-date-picker type="date" placeholder="结束日期" v-model="endTime1" style="width: 140px;"></el-date-picker>
                                 </el-form-item>
                         </el-col>
                     </el-form-item>
@@ -112,14 +112,16 @@
                             label="操作">
                             <template slot-scope="scope" >
                                             <el-switch
-                                            v-model="scope.row.Enabled"
-                                            active-color="#13ce66"
-                                            inactive-color="#ff4949"
-                                            active-value="Y"
-                                            inactive-value="N"
+                                            v-model="scope.row.userState"
+                                            active-color="#ff4949"
+                                            inactive-color="#13ce66"
+                                            active-value="D"
+                                            inactive-value="Y"
                                             @change="changeSwitch(scope.row)"
                                             > 
+                                            
                                             </el-switch>
+                                           
                                         </template>
                         </el-table-column>
                          
@@ -161,15 +163,26 @@
                     value:'',   
                     date1: '',
                     date2: '',
+                    pageNum:1,
+                    pageSize:'20',
+                    sort:'CRE_TIME',
+                    desc:'DESC',
+                    startTime:'',
+                    endTime:'',
                  },
                 
                  options: [
-                      {
-                            value: 'Y',
-                            label: '未启用'
+                            {
+                            value: '',
+                            label: '全部'
                             },
                             {
-                            value: 'N',
+                            value: 'D',
+                            label: '未启用'
+                            },
+                            
+                            {
+                            value: 'Y',
                             label: '已启用'
                             }, 
                            
@@ -179,6 +192,8 @@
                         user: '',
                         region: ''
                         },
+                        startTime1:'',
+                        endTime1:''
                         
             }
         },
@@ -187,7 +202,7 @@
                 console.log('submit!');
             },
             handleEdit(index, row) {
-                console.log(index, row.userMobile);
+                // console.log(index, row.userMobile);
              
                 this.$router.push({
                                 path:'/Index/Userlist/IndividualAccount',
@@ -203,32 +218,57 @@
                 console.log(`当前页: ${val}`);
             },
             cha(){
-                // console.log(this.ruleForm)
-                 var athis=this
 
-             var data={
-                        reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
-                        pageNum:1,
-                        pageSize:'20',
-                        sort:'CRE_TIME',
-                        desc:'DESC',
-                        userMobile:this.ruleForm.phone,
-                        userInvitMobile:this.ruleForm.user,
-                        userNickName:this.ruleForm.name,
-                        userState:this.ruleForm.value,
-                        startTime:'',
-                        endTime:'',
+             if (this.startTime1&&!this.endTime1) {
+                     this.showMsg('请选择结束时间','warning');
+                     return;
+                }
+                if (!this.startTime1&&this.endTime1) {
+                     this.showMsg('请选择开始时间','warning');
+                     return;
+                }
+                if (this.startTime1 && this.endTime1) {
+                   this.ruleForm.startTime=dateFormat(this.startTime1)
+                   this.ruleForm.endTime=dateFormat(this.endTime1) 
+                    if (this.ruleForm.startTime>this.ruleForm.endTime) {
+                         this.showMsg('开始时间不能大于结束时间','warning');
+                         return;
                     }
-            this.dataApi.ajax('pageUser',data, res => {    
-                // console.log(res.vos)
-                athis.shuju=res.vos
+                }else{
+                    this.ruleForm.startTime=''
+                    this.ruleForm.endTime=''
+                }
+            this.dataApi.ajax('pageUser',this.ruleForm, res => {    
+               
+                this.shuju=res.vos
                })
             },
-            changeSwitch(data){
-            console.log(data.Enabled)
-            console.log(this.$store.state)
+            changeSwitch(a){
+               
+                  var athis=this
+                    var data={
+                                
+                                userMobile:a.userMobile,
+                                userState:a.userState,
+                               
+                            }
+                    this.dataApi.ajax('editUserByAdmin',data, res => {  
+                           console.log(res)  
+                      if(res.respState==='S'){
+                       
+                            this.$notify({
+                                            title: '成功',
+                                            message: '修改成功',
+                                            type: 'success'
+                                            });
+                      }else{
+                          this.$notify({
+                                        title: '警告',
+                                        message: res.respMsg,
+                                        type: 'warning'
+                                        });
+                      }
+                    })
             },
         },
        

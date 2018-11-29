@@ -1,9 +1,10 @@
 <template>
 <div>
         <el-card class="box-card  box-cardheader">
-            <el-button type="success" @click="$router.push('/Index/CopyBook/TextEditing')">添加</el-button>
+            <el-button type="success" @click="$router.push({path:'/Index/CopyBook/TextEditing',query: {tip:'A'}})">添加</el-button>
         </el-card>
 
+                  
             <!-- 第二块 -->
                   <el-card class="box-card box-card-two">
                 <div class="user_header">
@@ -33,7 +34,7 @@
                         width="100">
                         <template slot-scope="scope">
                             <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
-                            <el-button @click="fonClick(scope.row)" type="text" size="small">删除</el-button>
+                            
                         </template>
                         </el-table-column>
                         
@@ -49,8 +50,6 @@
     export default{
         data() {
             return {
-                 
-                 
                 tableData: [
                             {          
                             Number:'123562',
@@ -59,18 +58,23 @@
                             {          
                             Number:'2223562',
                             Title:'邀请规则',
-                            },
-                           
-                           
-                                    ],
+                            }, 
+                            ],
                             tablenumber:[], 
-            }
-                              
+            }                    
         },
          methods: {
             handleClick(row) {
                 console.log(row);
-                  this.$router.push('/Index/CopyBook/TextEditing')
+                  
+                   this.$router.push({
+                                 path:'/Index/CopyBook/TextEditing',
+                                 query: {
+                                     queryId:row.codexCode,
+                                     
+                                     tip:'B'                                    
+                                 }
+                             })
             },
             fonClick(row){
               
@@ -79,20 +83,15 @@
          mounted() {
             var athis=this
              var data={
-                        reqUser:'adminCode', 
-                        reqMobile :'15070057175',
-                        reqToken:'b5d9fc7fbaf74046b2a17c6c49590d10',
+                       
                         pageNum:'1',
                         pageSize:'10',
                         sort:'CRE_TIME',
                         desc:'DESC',
                         
                     }
-            this.dataApi.ajax('pageCodex',data, res => {
-                    
-            //    console.log(res.invitCount)
-               console.log(res)
-            //    athis.yaoqingren=res.invitCount
+            this.dataApi.ajax('pageCodex',data, res => {                
+               
                 athis.tablenumber=res.vos
                })
         },

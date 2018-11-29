@@ -65,46 +65,14 @@
                         
                 var data={
                         adminCantant:this.adminInfo.phone,
-                        adminPwd:password,
-                        reqUser:'ipfs',
-                        reqMobile :'ipfs'
+                        adminPwd:password
                     }
                 this.dataApi.ajax('adminLogin',data, res => {
                     
               
-                    if(res.respState==='F'){
-                           this.$notify({
-                        title: '警告',
-                        message: res.respMsg,
-                        type: 'warning'
-                        }); 
-                    }else{
-                    
-                    _this.guding.code=res.adminCode
-                    _this.guding.Cantant=res.adminCantant
-                    _this.guding.toke=res.adminToken
-                    _this.guding.name=res.adminName
-                    
-                   
-                    setCookie('adminCode',res.adminCode)
-                    setCookie('Cantant',res.adminCantant)
-                    setCookie('toke',res.adminToken)
-                    setCookie('name',res.adminName)
-                    // _this.guding.name=res.adminToken
-                    // console.log(_this._data.guding.Cantant)
-                    // console.log(_this._data.guding.toke)
-                    // console.log(_this._data.guding.code)
-                    // console.log(res)
-                         
-                    _this.$store.commit('login',_this.guding)
-                    //  console.log(_this.$store.state)
-
-                    this.$notify({
-                        title: '成功登录',
-                        message:'开始管理',
-                        type: 'success'
-                        });
-                        this.$router.push('/Index/Userlist')
+                    if(res.respState==='S'){
+                        localStorage.setItem('permission',JSON.stringify(res))
+                         this.$router.push('/Index/Userlist')
                     }
                     
                })

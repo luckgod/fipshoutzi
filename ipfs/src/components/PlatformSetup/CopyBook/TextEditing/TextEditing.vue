@@ -10,7 +10,7 @@
 
                   
                      <el-form-item  >
-                     <el-button type="success">提交</el-button>
+                     <el-button type="success" @click="sub">提交</el-button>
                     </el-form-item> 
                      <el-form-item  >
                     <el-button type="primary" :span="6">返回</el-button>
@@ -25,7 +25,7 @@
                  <el-form ref="form"  :model="ruleForm" style="line-height: 0; text-align:left;" >
 
                    <el-form-item label="文案标题" label-width="80px">
-                        <el-input v-model="ruleForm.name" placeholder=" 文案标题" style="width:400px;"></el-input> 
+                        <el-input v-model="tit" placeholder=" 文案标题" style="width:400px;"></el-input> 
                     </el-form-item>
                  </el-form>   
                 </el-form-item>  
@@ -54,45 +54,91 @@
         data(){
             return{
                  ruleForm: {
-                    name:'', 
+                    
                     newsContent: "",
                    
-                 }, 
+                 },
+                tit:'',  
                 content:null,
                 editorOption:{}
             }
         },
         components: {
-      
+            
         },
         methods: {
+            sub(){
+                 var athis=this
+                if(this.$route.query.tip==='A'){
+                     //console.log(this.$route.query)
+                     var data={
+                        codexType:'B',
+                         codexTitle:this.tit,
+                         codexContent:this.content,    
+                     }
+                    this.dataApi.ajax('addCodex',data, res => {
+                            if(res.respState=='S'){
+                                 this.$notify({
+                                        title: '成功',
+                                        message: '添加成功',
+                                        type: 'success'
+                                        });
+                                
+                            }else{
+                                 this.$notify({
+                                    title: '警告',
+                                    message:res.respMsg,
+                                    type: 'warning'
+                                    });
+                            }
+                        
+                        
+                        })
+                }else{
+
+                    var data={
+                        codexType:'B',
+                         codexTitle:this.tit,
+                         codexCode:'',
+                         codexContent:this.content,
+                         codexState:'Y',    
+                     }
+                    this.dataApi.ajax('editCodex',data, res => {
+                            if(res.respState==='S'){
+                                 this.$notify({
+                                        title: '成功',
+                                        message: '添加成功',
+                                        type: 'success'
+                                        });
+                                
+                            }else{
+                                 this.$notify({
+                                    title: '警告',
+                                    message:res.respMsg,
+                                    type: 'warning'
+                                    });
+                            }
+                        
+                        
+                        })
+                }
+                
+            },
             onEditorBlur(){//失去焦点事件
             },
             onEditorFocus(){//获得焦点事件
+
+
             },
             onEditorChange(){//内容改变事件
+
+
             }
 
         },
         mounted() {
-            var athis=this
-             var data={
-                        reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
-                        codexTitle:'1',
-                        codexType:'B',
-                        codexContent:'1111',
-                       
-                        
-                    }
-            this.dataApi.ajax('addCodex',data, res => {
-                    
-            //    console.log(res.invitCount)
-               console.log(res)
-            //    athis.yaoqingren=res.invitCount
-                athis.tablenumber=res.vos
-               })
+            
+              
         },
 
     }

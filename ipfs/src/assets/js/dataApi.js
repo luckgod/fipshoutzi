@@ -88,19 +88,21 @@ function cryptData(data,act) {
     data = data || {};
     let reqChannel = 'web';
     let reqToken = generateMixed(32);
-    // if (localStorage.getItem('permission')) {
-    //     data.reqUser = JSON.parse(localStorage.getItem('permission')).adminCode;
-    //     data.reqToken = JSON.parse(localStorage.getItem('permission')).adminToken;
+    if (localStorage.getItem('permission')) {
+        data.reqUser = JSON.parse(localStorage.getItem('permission')).adminCode;
+        data.reqToken = JSON.parse(localStorage.getItem('permission')).adminToken;
+        data.reqMobile=JSON.parse(localStorage.getItem('permission')).adminCantant;
 
-    // }else{
-    //      data.reqUser = 1;
-    //      data.reqToken=reqToken
-    //      location.hash = '/login';
-    // }
+    }else{
+         data.reqUser = 1;
+         data.reqToken=reqToken;
+         data.reqMobile='ipfs';
+         location.hash = '/login';
+    }
     
     //默认数据
-    data.reqToken='2cdc8e4007d54b5683bfef37bedc7c7c';
-    data.reqUser='0000000018';
+    // data.reqToken='2cdc8e4007d54b5683bfef37bedc7c7c';
+    // data.reqUser='0000000018';
 
     let AesKey = generateMixed(16);
     data.reqChannel = reqChannel;
@@ -163,10 +165,10 @@ let showMessage = function (res) {
               location.hash = '/login';
               return
         }
-        // vm.$message({
-        //     message: res.respMsg,
-        //     type: 'warning'
-        // });
+        vm.$message({
+            message: res.respMsg,
+            type: 'warning'
+        });
     }else if (res.responseType > 0) {
         
         if (res.respcode==30006) {
@@ -215,7 +217,7 @@ let ajax = function (act, data, callback, progressFunc) {
 //             res.pageNum=1
 //         }
         callback(res)
-        // showMessage(res)
+        showMessage(res)
     }).catch(response => {
         if (response instanceof Error) {
             // Something happened in setting up the request that triggered an Error

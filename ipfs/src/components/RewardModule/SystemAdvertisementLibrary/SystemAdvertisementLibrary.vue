@@ -1,7 +1,7 @@
 <template>
 <div>
         <el-card class="box-card  box-cardheader">
-            <el-button  type="success" @click="addpro">新增广告</el-button>
+            <el-button  type="success" @click="dialogVisible='true'">新增广告</el-button>
         </el-card>
  
                   <el-card class="box-card box-card-two">
@@ -59,7 +59,7 @@
                         width="100">
                         <template slot-scope="scope">
                             <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
-                            <el-button type="text" size="small">禁用</el-button> 
+                            <el-button @click="handleClicka(scope.row)"  type="text" size="small">禁用</el-button> 
                         </template>
                         </el-table-column>
                         
@@ -78,35 +78,77 @@
                         <!-- tupian -->
                         <div class="tanchuang">
                          <span>图片:</span>
-                        <el-upload
+                                <el-upload
+                                class="avatar-uploader"
                                 action="https://jsonplaceholder.typicode.com/posts/"
-                                list-type="picture-card"
-                                :on-preview="handlePictureCardPreview"
-                                :on-remove="handleRemove">
-                                <i class="el-icon-plus"></i>
+                                :show-file-list="false"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload">
+                                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                 </el-upload>
-                                <el-dialog >
-                                   
-                                <img width="100%" :src="dialogImageUrl" alt="">
-                                </el-dialog>
                         </div>          
                         
                         <!-- shurukuang -->
                         <el-form ref="form"  label-width="80px">
                             <el-form-item label="内容:">
-                                <el-input v-model="form.name" style="width:70%;"></el-input>
+                                <el-input v-model="form.con" style="width:70%;"></el-input>
                             </el-form-item>
                         </el-form>
                         <el-form ref="form"  label-width="80px">
                             <el-form-item label="链接:">
-                                <el-input v-model="form.name" style="width:70%;"></el-input>
+                                <el-input v-model="form.linj" style="width:70%;"></el-input>
                             </el-form-item>
                         </el-form>
                         <span slot="footer" class="dialog-footer">
-                            <el-button @click="dialogVisible='false'">取 消</el-button>
+                            <el-button @click="addpro">确 定</el-button>
+                            <el-button @click="dialogVisible='true'">取 消</el-button>
+                              
                         </span>
                     </el-dialog>
+                    <!-- 第四块 -->
+                    <el-dialog
+                         title="广告详情" 
+                        :visible.sync="dialogVisiblea"
+                        width="30%"
+                        style="line-height:40px;"
+                        :modal="false"
+                        >
+                        <!-- tupian -->
+                        <div class="tanchuang">
+                         <span>图片:</span>
+                       <el-upload
+                                class="avatar-uploader"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :show-file-list="false"
+                                :on-success="handleAvatarSuccessa"
+                                :before-upload="beforeAvatarUploada">
+                                <img v-if="bimageUrl" :src="bimageUrl" class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                </el-upload>
+                        </div>          
+                        
+                        <!-- shurukuang -->
+                       <el-form ref="form"  label-width="80px">
+                            <el-form-item label="内容a:">
+                                <el-input v-model="forma.con" style="width:70%;"></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <el-form ref="form"  label-width="80px">
+                            <el-form-item label="链接:">
+                                <el-input v-model="forma.linj" style="width:70%;"></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button @click="addproa">确 定</el-button>
+                            <el-button @click="dialogVisiblea='true'">取 消</el-button>
+                              
+                        </span>
+                    </el-dialog>        
+            <!-- shurukuang -->
+                        
             </el-card>
+
 </div>
     
 </template>
@@ -115,9 +157,11 @@
         data() {
             return {
                     msg:true,
-                 dialogVisible: false,
-                dialogImageUrl: '',
-               
+                    dialogVisible:false,
+                    dialogVisiblea:false,
+                    imageUrl: '',
+                    bimageUrl: '',
+                   
                  ruleForm: {
                    
                     date1: '',
@@ -131,9 +175,7 @@
                         ],
                          date2: [
                             { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-                        ],
-                      
-                       
+                        ],                           
                  },
                  options: [{
                             value: '选项1',
@@ -151,7 +193,16 @@
                 value:'',
                 tablenumber:[], 
                 form:{
-                    name:''
+                    con:'',
+                    linj:'',
+                },
+                forma:{
+                    con:'',
+                    linj:'',
+                    adCode:'',
+                    adTitle:'',
+                    adState:'',
+
                 },
                      
             }
@@ -159,42 +210,148 @@
         },
          methods: {
             handleClick(row) {
-                console.log(row);
-                this.dialogVisible=true
+                console.log(row)
+               this.dialogVisiblea=true
+                this.forma.adCode=row.adCode
+                this.forma.adTitle=row.adTitle
+                this.forma.linj=row.adLinkAddress
+                this.forma.con=row.adTitle
+                this.forma.adState=row.adState
+                this.bimageUrl=row.adImageAddress
+                       
+            },
+             addproa(){
+               this.xiugai(this.forma.adState)
+             },
+            xiugai( zhi){
+                 var athis=this
+                var data={
+                       
+                        adCode:this.forma.adCode,
+                        adTitle:this.forma.adTitle,
+                        adLinkAddress:this.forma.linj,
+                        adImageAddress:this.bimageUrl,
+                        adState:zhi,
+                        }
+                        this.dataApi.ajax('editSysAd',data, res => {
+                                if(res.respState==='S'){
+                                        this.$notify({
+                                        title: '成功',
+                                        message: '提交成功',
+                                        type: 'success'
+                                        });
+                                athis.dialogVisiblea=false
+                                }
+                        })
+            },
+             handleClicka(row) {
+                 this.forma.adCode=row.adCode
+                this.forma.adTitle=row.adTitle
+                this.forma.linj=row.adLinkAddress
+                this.forma.con=row.adTitle
+                 this.bimageUrl=row.adImageAddress
+                if(row.adState==='T'){
+                   this.xiugai('J')
+                     
+                }else{
+                 this.$notify({
+                                 title: '警告',
+                                 message: '已禁用',
+                                 type: 'success'
+                                });   
+                }
             },
             addpro(){
-                this.dialogVisible=true
+               
+                var athis=this
                 var data={
-                        reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
-                        adTitle:'1',
-                        adLinkAddress:'10',
-                        adImageAddress:'https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/20d5c57e839fa986939e2e6aec94728b_222_222.jpg',
+                       
+                        adTitle:this.form.con,
+                        adLinkAddress:this.form.linj,
+                        adImageAddress:this.imageUrl,
                         adMark:'DESC',
-                    }
-            this.dataApi.ajax('addSysAd',data, res => {
-                    
+                        }
+                        this.dataApi.ajax('addSysAd',data, res => {
+                                if(res.respState==='S'){
+                                        this.$notify({
+                                        title: '成功',
+                                        message: '提交成功',
+                                        type: 'success'
+                                        });
+                                     athis.dialogVisible=false
+                                }
+                        })
+              
+               
+                },
+                handleAvatarSuccess(res, file){
+                            
+                this.dataApi.upload('upload',file.raw,res=>{
+                 if(res.respState==='S'){
+                    this.imageUrl=res.localPath
+                        this.$notify({
+                             title: '成功',
+                            message: '图片上传成功',
+                             type: 'success'
+                             });
+                        }else{
+                            this.$notify.error({
+                            title: '错误',
+                            message:res.respMsg,
+                            });
+                            }
+                             })
+
+                        },
+                        beforeAvatarUpload(file) {
+                            const isJPG = file.type === 'image/jpeg';
+                            const isLt2M = file.size / 1024 / 1024 < 2;
+
+                            if (!isJPG) {
+                            this.$message.error('上传头像图片只能是 JPG 格式!');
+                            }
+                            if (!isLt2M) {
+                            this.$message.error('上传头像图片大小不能超过 2MB!');
+                            }
+                            return isJPG && isLt2M;
+                        },
+                handleAvatarSuccessa(res, file){
+                            
+                this.dataApi.upload('upload',file.raw,res=>{
+                 if(res.respState==='S'){
+                    this.bimageUrl=res.localPath
+                        this.$notify({
+                             title: '成功',
+                            message: '图片上传成功',
+                             type: 'success'
+                             });
+                        }else{
+                            this.$notify.error({
+                            title: '错误',
+                            message:res.respMsg,
+                            });
+                            }
+                             })
+
+                        },
+                        beforeAvatarUploada(file) {
+                            const isJPG = file.type === 'image/jpeg';
+                            const isLt2M = file.size / 1024 / 1024 < 2;
+
+                            if (!isJPG) {
+                            this.$message.error('上传头像图片只能是 JPG 格式!');
+                            }
+                            if (!isLt2M) {
+                            this.$message.error('上传头像图片大小不能超过 2MB!');
+                            }
+                            return isJPG && isLt2M;
+                        }
              
-               console.log(res)
-            //    athis.yaoqingren=res.invitCount
-            //     athis.tablenumber=res.vos
-               })
-            },
-            handleRemove(file, fileList) {
-            console.log(file, fileList);
-            },
-            handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            
-      }
         },
         mounted() {
             var athis=this
              var data={
-                        reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
+                       
                         pageNum:'1',
                         pageSize:'10',
                         sort:'CRE_TIME',
@@ -203,10 +360,12 @@
             this.dataApi.ajax('pageSysAd',data, res => {
                     
              
-               console.log(res)
+            //    console.log(res)
               
                 athis.tablenumber=res.vos
                })
+
+               
                
         },
     }
@@ -266,4 +425,27 @@
    .tanchuang{
        padding-bottom: 8%;
    }
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 </style>
