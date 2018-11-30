@@ -1,7 +1,7 @@
 <template>
 <div>
         <el-card class="box-card  box-cardheader">
-            <el-button  type="success" @click="dialogVisible='true'">新增广告</el-button>
+            <el-button  type="success" @click="dialogVisible=true">新增广告</el-button>
         </el-card>
  
                   <el-card class="box-card box-card-two">
@@ -102,7 +102,7 @@
                         </el-form>
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="addpro">确 定</el-button>
-                            <el-button @click="dialogVisible='true'">取 消</el-button>
+                            <el-button @click="dialogVisible=true">取 消</el-button>
                               
                         </span>
                     </el-dialog>
@@ -125,7 +125,7 @@
                                 :before-upload="beforeAvatarUploada">
                                 <img v-if="bimageUrl" :src="bimageUrl" class="avatar">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                </el-upload>
+                        </el-upload>
                         </div>          
                         
                         <!-- shurukuang -->
@@ -141,12 +141,22 @@
                         </el-form>
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="addproa">确 定</el-button>
-                            <el-button @click="dialogVisiblea='true'">取 消</el-button>
+                            <el-button @click="dialogVisiblea=true">取 消</el-button>
                               
                         </span>
                     </el-dialog>        
             <!-- shurukuang -->
+                   <div class="block">
                         
+                        <el-pagination
+                       
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="data.pageNum"
+                        :page-size="data.pageSize"
+                        layout="prev, pager, next, jumper"
+                        :total="data.total">
+                        </el-pagination>
+                </div>      
             </el-card>
 
 </div>
@@ -204,11 +214,24 @@
                     adState:'',
 
                 },
+                data:{
+                                    
+                                        pageNum:1,
+                                        pageSize:10,
+                                        sort:'CRE_TIME',
+                                        total:0,
+                                        desc:'DESC',
+                                    }
                      
             }
                               
         },
          methods: {
+              handleCurrentChange(val) {
+                   
+                    this.data.pageNum=val
+                    this.setdata()
+                },
             handleClick(row) {
                 console.log(row)
                this.dialogVisiblea=true
@@ -345,26 +368,23 @@
                             this.$message.error('上传头像图片大小不能超过 2MB!');
                             }
                             return isJPG && isLt2M;
+                        },
+                        setdata(){
+                                    
+                             
+                            this.dataApi.ajax('pageSysAd',this.data, res => {
+                                    
+                            
+                            //    console.log(res)
+                              this.data.total=res.count
+                                this.tablenumber=res.vos
+                            })
                         }
              
         },
         mounted() {
-            var athis=this
-             var data={
-                       
-                        pageNum:'1',
-                        pageSize:'10',
-                        sort:'CRE_TIME',
-                        desc:'DESC',
-                    }
-            this.dataApi.ajax('pageSysAd',data, res => {
-                    
-             
-            //    console.log(res)
-              
-                athis.tablenumber=res.vos
-               })
-
+            
+            this.setdata()
                
                
         },

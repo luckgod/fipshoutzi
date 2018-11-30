@@ -13,10 +13,13 @@
                     <el-table
                         :data="tablenumber"
                          border
+                         :stripe='true'
+                        
                         style="width: 100%">
                         <el-table-column
                             prop="editCode"
                             label="流水号"
+                            :show-overflow-tooltip='true'
                             width="180">
                         </el-table-column>
                          <el-table-column
@@ -25,6 +28,7 @@
                         </el-table-column>
                          <el-table-column
                             prop="editValue"
+                            :show-overflow-tooltip='true'
                             label="改变值">
                         </el-table-column>
                          <el-table-column
@@ -38,6 +42,17 @@
                        
                         </el-table>
                 </div>
+                <div class="block">
+    
+                <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page.sync="ruleForm.wen"
+                :page-size="ruleForm.pageSize"
+                layout="prev, pager, next, jumper"
+                :total="ruleForm.total">
+                </el-pagination>
+            </div>
             </el-card>
 </div>
     
@@ -48,89 +63,54 @@
             return {
                 tablenumber:[],
                  ruleForm: {
-                   
-                    date1: '',
-                    date2: '',
+                        pageNum:1,
+                        pageSize:5,
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                        editModel:'A-D',
+                        total:1,
+                        wen:2,
+                      
                    
                  },
-                 rules: {
-                       
-                        date1: [
-                            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-                        ],
-                         date2: [
-                            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-                        ],
+                   
                       
                        
-                 },
-                 options: [{
-                            value: '选项1',
-                            label: '全部'
-                            },
-                            {
-                            value: '选项2',
-                            label: '未领取'
-                            },
-                            {
-                            value: '选项3',
-                            label: '已领取'
-                            },
-                             ],
-                value: '',
-                tableData: [
-                            {          
-                            SerialNumber:'565626',
-                            ActionItem:'每日系统奖励个数',
-                            ChangeAValue:'100000',
-                            OperatorName:'管理员A',
-                            RewardTransferTimes:'2018年11月15日11:32:42',
-                            },
-                             {          
-                            SerialNumber:'565626',
-                            ActionItem:'每日系统奖励个数',
-                            ChangeAValue:'100',
-                            OperatorName:'管理员A',
-                            RewardTransferTimes:'2018年11月15日11:32:42',
-                            },
-                             {          
-                            SerialNumber:'565626',
-                            ActionItem:'每日系统奖励个数',
-                            ChangeAValue:'2000',
-                            OperatorName:'管理员A',
-                            RewardTransferTimes:'2018年11月15日11:32:42',
-                            },
-                           
-                                    ] 
+                 
+                 
+               
+               
             }
                               
         },
          methods: {
-            handleClick(row) {
-                console.log(row);
+             handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                  
+                
+                 this.ruleForm.pageNum=val
+                
+                 this.inita()
+                 
+            },
+            inita(){
+                 this.dataApi.ajax('selectSysEdit',this.ruleForm, res => {
+                this.ruleForm.total=res.count
+               
+                
+               
+              
+                console.log(res)
+                this.tablenumber=res.vos
+               })
             }
         },
         mounted() {
-            var athis=this
-             var data={
-                        reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
-                         pageNum:'1',
-                        pageSize:'10',
-                        sort:'CRE_TIME',
-                        desc:'DESC',
-                        editModel:'A-D',
-                       
-                        
-                    }
-            this.dataApi.ajax('selectSysEdit',data, res => {
-                    
-            //    console.log(res.invitCount)
-               console.log(res)
-            //    athis.yaoqingren=res.invitCount
-                athis.tablenumber=res.vos
-               })
+           
+             this.inita()
+           
         },
     }
 

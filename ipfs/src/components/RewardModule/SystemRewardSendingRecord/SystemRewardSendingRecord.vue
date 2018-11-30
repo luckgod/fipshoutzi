@@ -82,7 +82,19 @@
                             <el-button type="text" size="small"  @click="handleClick(scope.row)">查看</el-button> 
                         </template>
                         </el-table-column>
+                         
                         </el-table>
+                        <div class="block">
+                        
+                        <el-pagination
+                       
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="data.pageNum"
+                        :page-size="data.pageSize"
+                        layout="prev, pager, next, jumper"
+                        :total="data.total">
+                        </el-pagination>
+                </div>
                 </div>
                  <!-- 第三块 -->
                           <el-dialog
@@ -142,41 +154,45 @@
                             tablenumber:[], 
                             zongjin:'',
                             taoimg:null,
-                            conne:'',        
+                            conne:'',
+                 data:{
+                            
+                          
+                            pageNum:1,
+                            pageSize:10,
+                            sort:'CRE_TIME',
+                            desc:'DESC',
+                            redTypeFlag:'T',
+                            redCode:'',
+                            total:0,
+                            startTime:'',
+                            endTime:'',
+                            redState:'',
+                            userMobile:'',
+                            sendTime:'',
+                            sendEnd:'',
+                        }                    
             }
                               
         },
          methods: {
+              handleCurrentChange(val) {
+                   
+                    this.data.pageNum=val
+                    this.setdata()
+                },
             handleClick(row){                
                  this.dialogVisible = true
                  this.taoimg=row.redImageAddre
                  this.conne=row.redContent
             },
             setdata(){
-                console.log()
-                var athis=this
-                var data={
-                            
-                            reqUser:getCookie('adminCode'), 
-                            reqMobile :getCookie('Cantant'),
-                            reqToken:getCookie('toke'),
-                            pageNum:'1',
-                            pageSize:'10',
-                            sort:'CRE_TIME',
-                            desc:'DESC',
-                            redTypeFlag:'T',
-                            redCode:'',
-                            startTime:'',
-                            endTime:'',
-                            redState:this.ruleForm.value,
-                            userMobile:'',
-                            sendTime:'',
-                            sendEnd:'',
-                        }
-                this.dataApi.ajax('pageUserReceiveRed',data, res => {
-                console.log(res)
-                athis.zongjin=res.sysTotalNumber
-                athis.tablenumber=res.vos
+                this.data.redState=this.ruleForm.value,
+                this.dataApi.ajax('pageUserReceiveRed',this.data, res => {
+                    // console.log(res)
+                this.data.total=res.count
+                this.zongjin=res.sysTotalNumber
+                this.tablenumber=res.vos
                })
             }
         },

@@ -24,9 +24,9 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'Index',
-      component: Index,
+      path: '/login',
+      name: 'login',
+      component: login,
     },
     {
       path:'/login',
@@ -118,7 +118,7 @@ export default new Router({
     },
     {
       path:'*',
-      redirect:'/Index'
+      redirect:'/login'
     }
   ]
 })

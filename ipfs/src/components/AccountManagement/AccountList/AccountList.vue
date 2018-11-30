@@ -37,6 +37,8 @@
                     <el-table
                         :data="tablenumber"
                          border
+                        :stripe='true'
+                        :show-overflow-tooltip='true'
                         style="width: 100%">
                         <el-table-column
                             prop="adminAcctNo"
@@ -46,16 +48,18 @@
                         <el-table-column
                             prop="adminName"
                             label="姓名"
-                            width="180">
+                            width="100">
                         </el-table-column>
                         <el-table-column
                             prop="adminCantant"
-                            label="联系电话">
+                            label="联系电话"
+                            width="180"
+                            >
                         </el-table-column>
-                        <el-table-column
+                        <!-- <el-table-column
                             prop="powerName"
                             label="所属权限组">
-                        </el-table-column>
+                        </el-table-column> -->
                         <el-table-column
                             prop="creTime"
                             label="添加时间">
@@ -73,7 +77,9 @@
                       
                           <el-table-column
                             
-                            label="状态">
+                            label="状态"
+                            width="100"
+                            >
                             <template slot-scope="scope" >
                                             <el-switch
                                              v-model="scope.row.adminState"
@@ -222,7 +228,7 @@
                     },
                     formLabelWidth: '120px' ,
                     wen:1 ,
-                    size:2,
+                    size:5,
                     total:1,                   
             }
                               
@@ -239,9 +245,9 @@
                             this.form.password=null
                             this.form.password2=null
                 }else{
-                var athis=this
-                 var password = this.dataApi.md5(this.form.password);
-                        password=password.toUpperCase()
+               
+                var password = this.dataApi.md5(this.form.password);
+                password=password.toUpperCase()
                 var data={
                        
                         adminCantant:this.form.phone,
@@ -258,6 +264,7 @@
                             offset: 100
                             });
                   this.dialogVisible = false
+                   this.seledat() 
                }else{
                     this.$notify({
                             title: '提示',
@@ -269,7 +276,7 @@
                 }
             },
             seledat(){ 
-                    var athis=this
+                    
                     var data={
                                 
                                 pageNum:this.wen,
@@ -278,12 +285,13 @@
                                 desc:'DESC',
                                 adminName:this.ruleForm.name,
                             
-                                
+ 
                                 }
                     this.dataApi.ajax('adminPage',data, res => {
                       
                         this.total=res.count
-                        athis.tablenumber=res.vos
+                        this.tablenumber=res.vos
+                        console.log(res)
                })
             },
             bianji(data){
@@ -296,7 +304,7 @@
                                 type: 'success'
                                 });
                             
-
+                         this.seledat() 
                         }else{
                             this.$notify({
                                         title: '警告',
@@ -324,20 +332,52 @@
             },
             handleClicka(){
                
-                var data={
+                    
+                    if(this.forma.password2!==this.forma.password){
+                         this.$notify({
+                            title: '警告',
+                            message: '请输入相同的密码',
+                            type: 'warning'
+                            })
+                    }else{
+                        if(this.forma.password2!==''&&this.forma.password!==''){
+                             var password = this.dataApi.md5(this.forma.password2);
+                        password=password.toUpperCase()
+                        var data={
                                 
-                    adminCode:this.forma.adminCode,
-                    adminName:this.forma.name,
-                    adminCantant:this.forma.phone,
-                    adminAcctNo:this.forma.usernumber,
-                    adminState:this.forma.adminState,
-                    adminPwd:this.forma.password2,
+                            adminCode:this.forma.adminCode,
+                            adminName:this.forma.name,
+                            adminCantant:this.forma.phone,
+                            adminAcctNo:this.forma.usernumber,
+                            adminState:this.forma.adminState,
+                            adminPwd:password,
                             
                                 
                             }
-                  this.bianji(data)
-                  this.dialogVisiblea = false            
-            },
+                        this.bianji(data)
+                        
+                        this.dialogVisiblea = false
+                        }else{
+                        var password = this.dataApi.md5(this.forma.password2);
+                        password=password.toUpperCase()
+                        var data={
+                                
+                            adminCode:this.forma.adminCode,
+                            adminName:this.forma.name,
+                            adminCantant:this.forma.phone,
+                            adminAcctNo:this.forma.usernumber,
+                            adminState:this.forma.adminState,
+                          
+                            
+                                
+                            }
+                        this.bianji(data)
+                        this.dialogVisiblea = false
+                        }
+                        
+                    }
+                     this.seledat()            
+                    },
             handleClickb(row){
                
 
@@ -349,18 +389,18 @@
                 this.forma.creUser=row.creUser
                 this.forma.creTime=row.creTime
                 this.forma.name=row.adminName
-                this.forma.password=row.adminPwd
-                this.forma.password2=row.adminPwd
+                // this.forma.password=row.adminPwd
+                // this.forma.password2=row.adminPwd
                 this.forma.adminAcctNo=row.adminAcctNo
                 this.forma.adminCantant=row.adminCantant
                 this.forma.adminName=row.adminName
                 this.forma.adminPwd=row.adminPwd
             },
              handleSizeChange(val) {
-                    console.log(`每页 ${val} 条`);
+                    // console.log(`每页 ${val} 条`);
                 },
                 handleCurrentChange(val) {
-                    console.log(`当前页: ${val}`);
+                    // console.log(`当前页: ${val}`);
                     this.wen=val
                     this.seledat()
                 }

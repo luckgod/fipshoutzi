@@ -87,6 +87,17 @@
                          
                         
                         </el-table>
+                        <div class="block">
+                        
+                        <el-pagination
+                       
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="data.pageNum"
+                        :page-size="data.pageSize"
+                        layout="prev, pager, next, jumper"
+                        :total="data.total">
+                        </el-pagination>
+                </div>
                 </div>
                   <!-- 第三块 -->
                           <el-dialog
@@ -104,6 +115,7 @@
                             <el-button @click="dialogVisible = false">取 消</el-button>
                         </span>
                     </el-dialog>
+                    
             </el-card>
 </div>
     
@@ -126,6 +138,22 @@
                       
                        
                  },
+                 data:{
+                        
+                        pageNum:1,
+                        pageSize:1,
+                        total:0,
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                        redCode:'',
+                        redState:'L',
+                        redTypeFlag:'',
+                        startTime:'',
+                        endTime:'',
+                        userMobile:'',
+                        sendTime:'',
+                        sendEnd:'',
+                    },
                  options: [{
                             value: '选项1',
                             label: '系统奖励'
@@ -139,34 +167,22 @@
                               
         },
          methods: {
+              handleCurrentChange(val) {
+                    console.log(`当前页: ${val}`);
+                    this.data.pageNum=val
+                    this.setdata()
+                },
             handleClick(row) {
                 console.log(row);
                 this.dialogVisible=true
                 this.taoimg=row.redImageAddre
                 this.conne=row.redContent
             },
-            setdata(){
-            var athis=this
-             var data={
-                        reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
-                        pageNum:'1',
-                        pageSize:'10',
-                        sort:'CRE_TIME',
-                        desc:'DESC',
-                        redCode:'',
-                        redState:'L',
-                        redTypeFlag:'',
-                        startTime:'',
-                        endTime:'',
-                        userMobile:'',
-                        sendTime:'',
-                        sendEnd:'',
-                    }
-                this.dataApi.ajax('pageUserReceiveRed',data, res => {
-                console.log(res)
-                athis.tablenumber=res.vos
+            setdata(){           
+             
+                this.dataApi.ajax('pageUserReceiveRed',this.data, res => {                
+                this.data.total=res.count
+                this.tablenumber=res.vos
                })
             }
         },

@@ -39,7 +39,7 @@
                     </el-form-item>
                     </el-col>
                     
-                    <el-button type="primary" :span="8" @click="selec">查询</el-button>
+                    <el-button type="primary" :span="8" @click="seleac">查询</el-button>
                     
                 </el-form-item>  
                
@@ -82,6 +82,18 @@
                         </el-table-column>
                         </el-table>
                 </div>
+                <!-- fenye -->
+                <div class="block">
+                        
+                        <el-pagination
+                       
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="datb.pageNum"
+                        :page-size="datb.pageSize"
+                        layout="prev, pager, next, jumper"
+                        :total="datb.total">
+                        </el-pagination>
+                    </div>
             </el-card>
 </div>
     
@@ -114,13 +126,32 @@
                 value: '',
                
                 rewardNumber:"",
-                tabanumber:[], 
+                tabanumber:[],
+                datb:{
+                        
+                        pageNum:1,
+                        pageSize:1,
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                        total:0,
+                        userMobile:this.$route.query.queryId,
+                        changeType:'Sys_Reward',
+                        startTime:'',
+                        endTime:'',
+                        changeCode:'',
+                    } 
             }
                              
         },
          methods: {
+           
+            handleCurrentChange(val) {
+                  
+                    this.datb.pageNum=val
+                      this.seleca()
+                },
             handleClick(row) {
-                console.log(row);
+              
             },
             yaoqingyemian(){
                 
@@ -134,39 +165,41 @@
            
             selec(){
              
-                var athis=this
+                
              var data={
-                         reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
-                        userMobile:athis.$route.query.queryId, 
+                        
+                        userMobile:this.$route.query.queryId, 
                     }
             this.dataApi.ajax('singleUserNode',data, res => {
-                athis.rewardNumber=res.rewardNodeNumber
+                console.log(res)
+                this.rewardNumber=res.rewardNodeNumber
                })
-                 var datb={
-                        reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
-                        pageNum:'1',
-                        pageSize:'10',
-                        sort:'CRE_TIME',
-                        desc:'DESC',
-                        userMobile:athis.$route.query.queryId,
-                        changeType:'Sys_Reward',
-                        startTime:'',
-                        endTime:'',
-                        changeCode:athis.ruleForm.user,
-                    }
-            this.dataApi.ajax('pageNodeChange',datb, res => {
+                  
+             
+            },
+             seleca(){
+                    this.datb.changeCode=this.ruleForm.user
+                   this.dataApi.ajax('pageNodeChange',this.datb, res => {
                     
-            //    console.log(res.vos)
-              athis.tabanumber=res.vos
-               })   
-            }
+                console.log(res)
+                this.datb.total=res.count
+            this.tabanumber=res.vos
+                }) 
+             },
+             seleac(){
+                   2
+                   this.datb.changeCode=this.ruleForm.user
+                   this.dataApi.ajax('pageNodeChange',this.datb, res => {
+                    
+                console.log(res)
+                this.datb.total=res.count
+                this.tabanumber=res.vos
+                }) 
+             }
         },
          mounted() {
              this.selec()
+            this.seleca()
         },
     }
 

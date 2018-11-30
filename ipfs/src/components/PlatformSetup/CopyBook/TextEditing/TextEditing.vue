@@ -13,7 +13,7 @@
                      <el-button type="success" @click="sub">提交</el-button>
                     </el-form-item> 
                      <el-form-item  >
-                    <el-button type="primary" :span="6">返回</el-button>
+                    <el-button type="primary" :span="6" @click="$router.go(-1)">返回</el-button>
                     </el-form-item>
                    
                 </el-form-item>  
@@ -83,6 +83,7 @@
                                         message: '添加成功',
                                         type: 'success'
                                         });
+                                this.$router.push('/Index/CopyBook')
                                 
                             }else{
                                  this.$notify({
@@ -99,7 +100,7 @@
                     var data={
                         codexType:'B',
                          codexTitle:this.tit,
-                         codexCode:'',
+                         codexCode:this.$route.query.queryId,
                          codexContent:this.content,
                          codexState:'Y',    
                      }
@@ -107,10 +108,10 @@
                             if(res.respState==='S'){
                                  this.$notify({
                                         title: '成功',
-                                        message: '添加成功',
+                                        message: '修改成功',
                                         type: 'success'
                                         });
-                                
+                                this.$router.push('/Index/CopyBook')
                             }else{
                                  this.$notify({
                                     title: '警告',
@@ -133,11 +134,27 @@
             onEditorChange(){//内容改变事件
 
 
+            },
+            chushihua(){
+                
+                        var data={
+                            codexCode:this.$route.query.queryId
+                        }
+
+                    this.dataApi.ajax('singleCodex',data, res => {
+                      
+                           this.tit=res.codexTitle
+                           this.content=res.codexContent
+                        
+                        
+                        })
             }
 
         },
         mounted() {
-            
+            if(this.$route.query.tip=='B'){
+                this.chushihua()
+            }
               
         },
 

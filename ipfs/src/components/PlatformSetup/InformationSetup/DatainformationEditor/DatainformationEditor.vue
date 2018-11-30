@@ -13,7 +13,7 @@
                      <el-button type="success" @click="addw">提交</el-button>
                     </el-form-item> 
                      <el-form-item  >
-                    <el-button type="primary" :span="6" @click="$router.go(-1)">返回</el-button>
+                    <!-- <el-button type="primary" :span="6" @click="$router.go(-1)">返回</el-button> -->
                     </el-form-item>
                    
                 </el-form-item>  
@@ -30,42 +30,43 @@
                      <el-form ref="form"  :model="ruleForm"  style=" text-align: left;">
 
                    <el-form-item label="文案标题" style="padding-top:50px">
-                        <el-input v-model="ruleForm.name" placeholder=" 文案标题" style="width:300px;"></el-input>
+                        <el-input v-model="data.noticeTitle" placeholder=" 文案标题" style="width:300px;"></el-input>
                         
                     </el-form-item>
                     <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    list-type="picture-card"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove"
-                    style='padding-left:65px;height:160px;'>
-                <i class="el-icon-plus"></i>
-                </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
-                <img width="100%" :src="dialogImageUrl" alt="">
-                </el-dialog>
-                    <el-tabs type="border-card" style="line-height:0; margin-top:20px;">
-                    <el-tab-pane label="图文">
-                         <template>
-                            <quill-editor 
-                            v-model="content" 
-                            ref="myQuillEditor" 
-                            :options="editorOption" 
-                            @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
-                            @change="onEditorChange($event)"
-                            style="line-height:0; text-align: left;"
-                            >
-                            </quill-editor>
-                        </template> 
-                    </el-tab-pane>
-                    <el-tab-pane label="链接">
-                        <el-form-item label="链接" style="padding-top:20px">
-                        <el-input v-model="ruleForm.name" placeholder="https：..." style="width:300px;"></el-input>
+                                class="avatar-uploader"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :show-file-list="false"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload">
+                                <img v-if="data.noticeImage" :src="data.noticeImage" >
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                </el-upload>
+                            <el-dialog :visible.sync="dialogVisible">
+                            <img width="100%" :src="dialogImageUrl" alt="">
+                            </el-dialog>
+                                <el-tabs type="border-card" style="line-height:0; margin-top:20px;" v-model="activeName2" @tab-click="handleClicke">
+                                        <el-tab-pane label="图文">
+                                            <template>
+                                                <quill-editor 
+                                                v-model="titcon" 
+                                                ref="myQuillEditor" 
+                                                :options="editorOption" 
+                                                @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
+                                                @change="onEditorChange($event)"
+                                                style="line-height:0; text-align: left;"
+                                                >
+                                                </quill-editor>
+                                            </template> 
+                                        </el-tab-pane>
+                                        <el-tab-pane label="链接">
+                                            <el-form-item label="链接" style="padding-top:20px">
+                                            <el-input v-model="linkcon" placeholder="https：..." style="width:300px;"></el-input>
+                                
+                                        </el-form-item>
+                                        </el-tab-pane>
                         
-                    </el-form-item>
-                    </el-tab-pane>
-                   
-                    </el-tabs>
+                            </el-tabs>
                 
                 </el-form> 
                   
@@ -84,10 +85,22 @@
                     newsContent: "",
                    
                  },
+                 imageUrl:'',
                  dialogImageUrl: '',
+                 activeName2:'',
                 dialogVisible: false ,
                  content:null,
-                editorOption:{}
+                editorOption:{},
+                titcon:'',
+                linkcon:'',
+                data:{
+                        noticeTitle:'',
+                        noticeContent:'',
+                        noticeType:'Z',
+                        noticeImage:'',
+                        noticeFalg:'T'  
+                },
+               
                  
             }
         },
@@ -95,44 +108,159 @@
       
         },
         methods: {
+            handleClicke(tab, event){
+                console.log(this.activeName2==0);
+                if(this.activeName2==0){
+                    this.data.noticeFalg='T'
+                   
+                   
+                }else{
+                    this.data.noticeFalg='L'
+                   
+                }
+                
+            },
             handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
-      },
-       onEditorBlur(){//失去焦点事件
+                // console.log(file, fileList);
+            },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
+            onEditorBlur(){//失去焦点事件
             },
             onEditorFocus(){//获得焦点事件
             },
             onEditorChange(){//内容改变事件
             },
          addw(){
-             var athis=this
-             var data={
-                        reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
-                        noticeTitle:'1aa',
-                        noticeContent:'10aa',
-                        noticeType:'Z',
-                        noticeImage:'DESC',
-                        noticeFalg:'T'
-                       
-                        
+            if( this.$route.query.tip=='T'){
+                        if(this.data.noticeFalg=='T'){
+                        this.data.noticeContent=this.titcon
+                    }else{
+                        this.data.noticeContent=this.linkcon
                     }
-            this.dataApi.ajax('addSysNotice',data, res => {
+
+                    this.dataApi.ajax('addSysNotice',this.data, res => {
+                            
+                
+                    console.log(this.data.noticeImage)
+                    if(res.respState=='S'){
+                            this.$notify({
+                            title: '成功',
+                            message: '这是一条成功的提示消息',
+                            type: 'success'
+                            });
+                            this.$router.push('/Index/InformationSetup')
+                            // router.go(-1)
+                    }else{
+                        this.$notify.error({
+                                title: '错误',
+                                message: respMsg,
+                                });
+                    }
+                   
+                    })   
+        }else{
+             if(this.data.noticeFalg=='T'){
+                        this.data.noticeContent=this.titcon
+                    }else{
+                        this.data.noticeContent=this.linkcon
+                    }
+                   
+                        var data={
+                            noticeCode:this.$route.query.noticeCode,
+                            noticeTitle:this.data.noticeTitle,
+                            noticeContent:this.data.noticeContent,
+                            noticeImage:this.data.noticeImage,
+                            noticeFalg:this.data.noticeFalg,
+
+                        }
+                    this.dataApi.ajax('editSysNotice',data, res => {
+                            
+                
                     
-            //    console.log(res.invitCount)
-               console.log(res)
-            //    athis.yaoqingren=res.invitCount
-                // athis.tablenumber=res.vos
-               })    
+                    if(res.respState=='S'){
+                            this.$notify({
+                            title: '成功',
+                            message: '这是一条成功的提示消息',
+                            type: 'success'
+                            });
+                            this.$router.push('/Index/InformationSetup')
+                            // router.go(-1)
+                    }else{
+                        this.$notify.error({
+                                title: '错误',
+                                message: respMsg,
+                                });
+                    }
+                   
+                    })     
+        }
+
+
+             
 
         },
+        bianji(){
+           
+            var data={
+                noticeCode: this.$route.query.noticeCode,
+            }
+             this.dataApi.ajax('singleSysNotice',data, res => {
+                        console.log(res)
+                        this.data.noticeImage=res.noticeImage
+                        this.data.noticeTitle=res.noticeTitle
+                        
+                        if(this.activeName2==0){
+                             this.titcon=res.noticeContent   
+                        }else{
+                             this.linkcon=res.noticeContent  
+                        }
+              
+                   
+               })    
+        },
+        handleAvatarSuccess(res, file){
+                            
+        this.dataApi.upload('upload',file.raw,res=>{
+                 if(res.respState==='S'){
+                    
+                        this.$notify({
+                            title: '成功',
+                            message: '图片上传成功',
+                            type: 'success'
+                        });
+                            this.data.noticeImage=res.localPath  
+                           
+                        }else{
+                            this.$notify.error({
+                            title: '错误',
+                            message:res.respMsg,
+                            })
+                        }
+                        })
+
+        },
+        beforeAvatarUpload(file) {
+                            const isJPG = file.type === 'image/jpeg';
+                            const isLt2M = file.size / 1024 / 1024 < 2;
+
+                            if (!isJPG) {
+                            this.$message.error('上传头像图片只能是 JPG 格式!');
+                            }
+                            if (!isLt2M) {
+                            this.$message.error('上传头像图片大小不能超过 2MB!');
+                            }
+                            return isJPG && isLt2M;
+        },
        
-        }
+        },
+        mounted() {
+            if(this.$route.query.tip=='B'){
+                this.bianji()
+            }
+        },
 
     }
 

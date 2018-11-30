@@ -198,7 +198,7 @@
         },
         methods: {
             onSubmit(){
-                console.log('submit!');
+                // console.log('submit!');
             },
             handleEdit(index, row) {
                 // console.log(index, row.userMobile);
@@ -211,11 +211,12 @@
                             })
             },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                // console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
-                console.log( this.ruleForm.wen);
-                this.ruleForm.wen=val
+                // console.log( this.ruleForm.wen);
+                this.ruleForm.pageNum=val
+                
                 this.cha()
                
             },
@@ -243,13 +244,13 @@
                 
             
             this.dataApi.ajax('pageUser',this.ruleForm, res => {
+                 
                 if(res.respState==='S'){
-              
-                 this.ruleForm.pageNum=res.pageNum  
-                 this.ruleForm.pageSize=res.pageSize             
-                 this.ruleForm.total=res.pageCount
-                
-              
+                    
+                this.ruleForm.pageNum=res.pageNum  
+                this.ruleForm.pageSize=res.pageSize             
+                this.ruleForm.total=res.pageCount
+
                 this.shuju=res.vos
                 }    
                
@@ -267,7 +268,7 @@
                                
                             }
                     this.dataApi.ajax('editUserByAdmin',data, res => {  
-                           console.log(res)  
+                        //    console.log(res)  
                       if(res.respState==='S'){
                        
                             this.$notify({

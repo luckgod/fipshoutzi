@@ -42,6 +42,17 @@
                         
                         </el-table>
                 </div>
+                 <div class="block">
+                        
+                        <el-pagination
+                       
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="data.pageNum"
+                        :page-size="data.pageSize"
+                        layout="prev, pager, next, jumper"
+                        :total="data.total">
+                        </el-pagination>
+                </div>
             </el-card>
 </div>
     
@@ -50,20 +61,25 @@
     export default{
         data() {
             return {
-                tableData: [
-                            {          
-                            Number:'123562',
-                            Title:'邀请规则',
-                            },
-                            {          
-                            Number:'2223562',
-                            Title:'邀请规则',
-                            }, 
-                            ],
-                            tablenumber:[], 
+                
+                tablenumber:[],
+                    data:{
+                       
+                        pageNum:1,
+                        pageSize:10,
+                        tatal:0,
+                        sort:'CRE_TIME',
+                        desc:'DESC',
+                        
+                    } 
             }                    
         },
          methods: {
+              handleCurrentChange(val){
+                   
+                    this.data.pageNum=val
+                    this.setdata()
+                },
             handleClick(row) {
                 console.log(row);
                   
@@ -76,24 +92,20 @@
                                  }
                              })
             },
-            fonClick(row){
-              
+          
+            setdata(){
+                    this.dataApi.ajax('pageCodex',this.data, res => {  
+                        console.log(res)              
+                this.data.total=res.count
+                this.tablenumber=res.vos
+               })
             }
         },
          mounted() {
-            var athis=this
-             var data={
-                       
-                        pageNum:'1',
-                        pageSize:'10',
-                        sort:'CRE_TIME',
-                        desc:'DESC',
-                        
-                    }
-            this.dataApi.ajax('pageCodex',data, res => {                
-               
-                athis.tablenumber=res.vos
-               })
+             this.setdata()
+           
+              
+           
         },
     }
 

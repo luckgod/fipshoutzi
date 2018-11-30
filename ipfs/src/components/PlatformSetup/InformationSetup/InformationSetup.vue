@@ -33,12 +33,12 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            prop="Forder"
+                            prop="noticeSort"
                             label="排序值">
                                   <template slot-scope="scope">
                                     <el-button
                                     size="mini"
-                                   @click="handleEdita(scope.$index, scope.row)">{{scope.row.noticeSort}}</el-button>
+                                  @click="handleClicka(scope.row)" >{{scope.row.noticeSort}}</el-button>
                                    
                                 </template>
                         </el-table-column>
@@ -52,13 +52,24 @@
                         width="100">
                         <template slot-scope="scope">
                             <el-button @click="handleClick(scope.row)" type="text" size="small" >编辑</el-button>
-                            <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
+                            <el-button @click="handleClickb(scope.row)" type="text" size="small">删除</el-button>
                         </template>
                         </el-table-column>
                         
                          
                         
                         </el-table>
+                </div>
+                 <div class="block">
+                        
+                        <el-pagination
+                       
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="form.pageNum"
+                        :page-size="form.pageSize"
+                        layout="prev, pager, next, jumper"
+                        :total="form.total">
+                        </el-pagination>
                 </div>
             </el-card>
 </div>
@@ -68,59 +79,114 @@
     export default{
         data() {
             return {
-                tableData: [
-                            {          
-                            Number:'123562',
-                            Title:'邀请规则',
-                            Imges:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
-                            Forder:'1',
-                            UpdateTime:'2018年11月21日16:33:36'
-                            },
-                            {          
-                            Number:'123562',
-                            Title:'邀请规则',
-                            Imges:'http://img13.360buyimg.com/n2/jfs/t26629/164/2138223226/151881/a7a8aa78/5bf7c677N1ee0bdc4.jpg',
-                            Forder:'2',
-                            UpdateTime:'2018年11月21日16:33:36'
-                            },                   
-                            ] ,
-                            tablenumber:[],
+                form:{
+                        pageNum:1,
+                        pageSize:2,
+                        sort:'NOTICE_SORT',
+                        desc:'DESC',
+                        total:0,
+                        noticeType:'Z'
+                },
+                data:{
+                    noticeCode:'',
+                    noticeTitle:'',
+                    noticeContent:'',
+                    noticeState:'',
+                    noticeSort:'',
+                    noticeImage:'',
+                    noticeFalg:'',
+
+                },
+                noticeCode:'',
+                tablenumber:[],
             }                              
         },
          methods: {
+               handleCurrentChange(val){
+                   
+                    this.form.pageNum=val
+                    this. updata()
+                },
             handleClick(row) {
-                console.log(row);
-                this.$router.push('/Index/InformationSetup/DatainformationEditor')
+               
+               
+                 this.$router.push({
+                             path:'/Index/InformationSetup/DatainformationEditor',
+                             query:{
+                             noticeCode:row.noticeCode,
+                             tip:'B'
+                             }
+                         })
             },
             tianjian(){
-                this.$router.push('/Index/InformationSetup/DatainformationEditor')
+              
+                this.$router.push({
+                             path:'/Index/InformationSetup/DatainformationEditor',
+                             query:{
+                            
+                             tip:'T'
+                             }
+                         })
             },
-             handleEdita(row) {
-                console.log(row);
+             handleClicka(scope) {
+                console.log(scope);
+                
+                 
+                this.$prompt('排序值', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    
+                    }).then(({ value }) => {
+                this.data.noticeSort=value
+                this.data.noticeCode=scope.noticeCode
+                this.data.noticeTitle=scope.noticeTitle
+                this.data.creTime=scope.creTime
+                this.data.noticeImage=scope.noticeImage
+                this.data.noticeType=scope.noticeType
                
+                this.xiugai() 
+                    this.$message({
+                        type: 'success',
+                        message: '排序值: ' + value
+                    });
+                    }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });       
+                    });
+                  
             },
+            handleClickb(row){
+                   
+                   
+                 this.dataApi.ajax('delSysNotice',row, res => {
+                console.log(res.respState)
+                if(res.respState=='S'){
+                    this.$notify({
+                            title: '成功',
+                            message: '删除成功',
+                            type: 'success'
+                            });
+                }
+               
+               })
+            },
+            updata(){
+                this.dataApi.ajax('pageSysNotice',this.form, res => {
+                this.form.total=res.count
+                this.tablenumber=res.vos
+               })
+            },
+            xiugai(){
+                this.dataApi.ajax('editSysNotice',this.data, res => {
+               console.log(res)
+               }) 
+            }
         },
         mounted() {
-            var athis=this
-             var data={
-                         reqUser:getCookie('adminCode'), 
-                        reqMobile :getCookie('Cantant'),
-                        reqToken:getCookie('toke'),
-                        pageNum:'1',
-                        pageSize:'10',
-                        sort:'NOTICE_SORT',
-                        desc:'DESC',
-                        noticeType:'Z'
-                       
-                        
-                    }
-            this.dataApi.ajax('pageSysNotice',data, res => {
-                    
-            //    console.log(res.invitCount)
-               console.log(res)
-            //    athis.yaoqingren=res.invitCount
-                athis.tablenumber=res.vos
-               })
+           this.updata()
+            
         },
     }
 

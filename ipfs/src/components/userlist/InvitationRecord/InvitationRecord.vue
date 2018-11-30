@@ -35,6 +35,17 @@
                         
                         </el-table>
                 </div>
+                <div class="block">
+                        
+                        <el-pagination
+                       
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="data.pageNum"
+                        :page-size="data.pageSize"
+                        layout="prev, pager, next, jumper"
+                        :total="data.total">
+                        </el-pagination>
+                </div>
             </el-card>
 </div>
     
@@ -62,30 +73,42 @@
                             }, ],
                 value: '',
                           tablenumber:[], 
-                          yaoqingren:'',         
+                          yaoqingren:'',
+                 data:{
+                       
+                        pageNum:1,
+                        pageSize:1,
+                        total:0,
+                        userMobile:'',
+                    }         
             }
                               
         },
          methods: {
+              handleCurrentChange(val) {
+                    console.log(`当前页: ${val}`);
+                    this.data.pageNum=val
+                      this.seleca()
+                },
             handleClick(row) {
                 console.log(row);
+            },
+            seleca(){
+                 
+            this.data.userMobile=this.$route.query.queryId
+            this.dataApi.ajax('pageInvitUser',this.data, res => {
+                    
+            
+               console.log(res)
+                this.data.total=res.count
+                this.yaoqingren=res.invitCount
+                this.tablenumber=res.vos
+               })
             }
         },
         mounted() {
-            var athis=this
-             var data={
-                       
-                        pageNum:'1',
-                        pageSize:'10',
-                        userMobile:athis.$route.query.queryId
-                    }
-            this.dataApi.ajax('pageInvitUser',data, res => {
-                    
-               console.log(res.invitCount)
-               console.log(res)
-               athis.yaoqingren=res.invitCount
-                athis.tablenumber=res.vos
-               })
+            this.seleca()
+            
         },
     }
 
