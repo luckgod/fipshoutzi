@@ -37,13 +37,14 @@
                                 class="avatar-uploader"
                                 action="https://jsonplaceholder.typicode.com/posts/"
                                 :show-file-list="false"
+                           
                                 :on-success="handleAvatarSuccess"
                                 :before-upload="beforeAvatarUpload">
-                                <img v-if="data.noticeImage" :src="data.noticeImage" >
-                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                <img v-if="data.noticeImage" :src="data.noticeImage" style="width:200px;hieght:200px;">
+                                <i v-else class="el-icon-plus avatar-uploader-icon" style="width:200px;hieght:200px;"></i>
                                 </el-upload>
                             <el-dialog :visible.sync="dialogVisible">
-                            <img width="100%" :src="dialogImageUrl" alt="">
+                            <img width="100%" :src="dialogImageUrl" alt="" >
                             </el-dialog>
                                 <el-tabs type="border-card" style="line-height:0; margin-top:20px;" v-model="activeName2" @tab-click="handleClicke">
                                         <el-tab-pane label="图文">

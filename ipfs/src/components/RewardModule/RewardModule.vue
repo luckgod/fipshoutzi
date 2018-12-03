@@ -141,7 +141,7 @@
                  data:{
                         
                         pageNum:1,
-                        pageSize:1,
+                        pageSize:10,
                         total:0,
                         sort:'CRE_TIME',
                         desc:'DESC',
@@ -179,7 +179,28 @@
                 this.conne=row.redContent
             },
             setdata(){           
-             
+                if (this.ruleForm.date1&&!this.ruleForm.date2) {
+                     this.showMsg('请选择结束时间','warning');
+                     return;
+                }
+                if (!this.ruleForm.date1&&this.ruleForm.date2) {
+                     this.showMsg('请选择开始时间','warning');
+                     return;
+                }
+               
+                if (this.ruleForm.date1 && this.ruleForm.date2) {
+                    
+                    if (this.ruleForm.date1>this.ruleForm.date2) {
+                         this.showMsg('开始时间不能大于结束时间','warning');
+                         return;
+                    }else{
+                    this.data.startTime=dateFormat(this.ruleForm.date1)
+                    this.data.endTime=dateFormat(this.ruleForm.date2)
+                    }
+                }else{
+                    this.data.startTime=''
+                    this.data.endTime=''
+                }
                 this.dataApi.ajax('pageUserReceiveRed',this.data, res => {                
                 this.data.total=res.count
                 this.tablenumber=res.vos

@@ -35,11 +35,11 @@
                 <el-form-item  >
                     <el-col :span="16">
                     <el-form-item prop="date1">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
+                        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date2" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                     </el-col>
                     
-                    <el-button type="primary" :span="8" @click="seleac">查询</el-button>
+                    <el-button type="primary" :span="8" @click="seleca">查询</el-button>
                     
                 </el-form-item>  
                
@@ -130,7 +130,7 @@
                 datb:{
                         
                         pageNum:1,
-                        pageSize:1,
+                        pageSize:10,
                         sort:'CRE_TIME',
                         desc:'DESC',
                         total:0,
@@ -178,24 +178,40 @@
              
             },
              seleca(){
-                    this.datb.changeCode=this.ruleForm.user
-                   this.dataApi.ajax('pageNodeChange',this.datb, res => {
+                 console.log()
+                    if (this.ruleForm.date1&&!this.ruleForm.date2) {
+                     this.showMsg('请选择结束时间','warning');
+                     return;
+                }
+                if (!this.ruleForm.date1&&this.ruleForm.date2) {
+                     this.showMsg('请选择开始时间','warning');
+                     return;
+                }
+               
+                if (this.ruleForm.date1 && this.ruleForm.date2) {
                     
-                console.log(res)
-                this.datb.total=res.count
-            this.tabanumber=res.vos
-                }) 
-             },
-             seleac(){
-                   2
-                   this.datb.changeCode=this.ruleForm.user
+                    if (this.ruleForm.date1>this.ruleForm.date2) {
+                         this.showMsg('开始时间不能大于结束时间','warning');
+                         return;
+                    }else{
+                    this.datb.startTime=dateFormat(this.ruleForm.date1)
+                    this.datb.endTime=dateFormat(this.ruleForm.date2)
+                    }
+                }else{
+                    this.datb.startTime=''
+                    this.datb.endTime=''
+                }
+
+
+                    this.datb.changeCode=this.ruleForm.user
                    this.dataApi.ajax('pageNodeChange',this.datb, res => {
                     
                 console.log(res)
                 this.datb.total=res.count
                 this.tabanumber=res.vos
                 }) 
-             }
+             },
+            
         },
          mounted() {
              this.selec()

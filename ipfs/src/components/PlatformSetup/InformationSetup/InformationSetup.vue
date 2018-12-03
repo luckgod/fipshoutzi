@@ -81,7 +81,7 @@
             return {
                 form:{
                         pageNum:1,
-                        pageSize:2,
+                        pageSize:10,
                         sort:'NOTICE_SORT',
                         desc:'DESC',
                         total:0,
@@ -168,6 +168,7 @@
                             message: '删除成功',
                             type: 'success'
                             });
+                             this. updata()
                 }
                
                })

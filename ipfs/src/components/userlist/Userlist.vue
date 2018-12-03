@@ -8,16 +8,16 @@
                 <div class="user_con">
                 <el-form ref="form" :inline="true" :model="ruleForm" >
                    <el-form-item label="用户名">
-                        <el-input v-model="ruleForm.name" placeholder="用户名" style="width:80px"></el-input>
+                        <el-input v-model="ruleForm.userNickName" placeholder="用户名" style="width:100px"></el-input>
                     </el-form-item>
                     <el-form-item label="手机号">
-                        <el-input v-model="ruleForm.phone" placeholder="手机号" style="width:125px"></el-input>
+                        <el-input v-model="ruleForm.userMobile" placeholder="手机号" style="width:125px"></el-input>
                     </el-form-item>
                     <el-form-item label="推荐人">
-                        <el-input v-model="ruleForm.user" placeholder="推荐人手机号" style="width:125px"></el-input>
+                        <el-input v-model="ruleForm.userInvitMobile" placeholder="推荐人手机号" style="width:125px"></el-input>
                     </el-form-item>
                      <el-form-item label="用户状态 ：" >
-                       <el-select v-model="ruleForm.value" placeholder="全部" style="width:100px">
+                       <el-select v-model="ruleForm.userState" placeholder="全部" style="width:100px">
                                     <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -154,14 +154,14 @@
                 value2: true,
                 value6: '',
                  ruleForm: { 
-                    name:'',
-                    phone:'',
-                    user:'',
-                    value:'',   
+                    userNickName:'',
+                    userMobile:'',
+                    userInvitMobile:'',
+                    userState:'',   
                     date1: '',
                     date2: '',
                     pageNum:1,
-                    pageSize:1,
+                    pageSize:10,
                     total:0,
                     wen:1,
                     sort:'CRE_TIME',
@@ -225,7 +225,7 @@
              if (this.startTime1&&!this.endTime1) {
                      this.showMsg('请选择结束时间','warning');
                      return;
-                }
+                }   
                 if (!this.startTime1&&this.endTime1) {
                      this.showMsg('请选择开始时间','warning');
                      return;
@@ -242,7 +242,8 @@
                     this.ruleForm.endTime=''
                 }
                 
-            
+            console.log()
+            console.log()
             this.dataApi.ajax('pageUser',this.ruleForm, res => {
                  
                 if(res.respState==='S'){

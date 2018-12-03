@@ -43,11 +43,13 @@
                 <div>
                     <el-table
                         :data="tablenumber"
+                         v-loading="ruleForm.loading"
                          border
                         style="width: 100%">
                         <el-table-column
                             prop="userRedCode"
                             label="奖励编号"
+                             :show-overflow-tooltip='true'
                             width="180">
                         </el-table-column>
                          <el-table-column
@@ -125,6 +127,7 @@
                     value:'',
                     date1: '',
                     date2: '',
+                    loading:true,
                    
                  },
                  dialogVisible: false,
@@ -187,12 +190,41 @@
                  this.conne=row.redContent
             },
             setdata(){
+                if (this.ruleForm.date1&&!this.ruleForm.date2) {
+                     this.showMsg('请选择结束时间','warning');
+                     return;
+                }
+                if (!this.ruleForm.date1&&this.ruleForm.date2) {
+                     this.showMsg('请选择开始时间','warning');
+                     return;
+                }
+               
+                if (this.ruleForm.date1 && this.ruleForm.date2) {
+                    
+                    if (this.ruleForm.date1>this.ruleForm.date2) {
+                         this.showMsg('开始时间不能大于结束时间','warning');
+                         return;
+                    }else{
+                    this.data.startTime=dateFormat(this.ruleForm.date1)
+                    this.data.endTime=dateFormat(this.ruleForm.date2)
+                    }
+                }else{
+                    this.data.startTime=''
+                    this.data.endTime=''
+                }
+               
+              
+                
+               
                 this.data.redState=this.ruleForm.value,
                 this.dataApi.ajax('pageUserReceiveRed',this.data, res => {
-                    // console.log(res)
-                this.data.total=res.count
+                 if(res.respState=='S'){
+                      this.ruleForm.loading=false
+                      this.data.total=res.count
                 this.zongjin=res.sysTotalNumber
                 this.tablenumber=res.vos
+                 }
+               
                })
             }
         },

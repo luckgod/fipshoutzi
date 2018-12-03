@@ -35,6 +35,7 @@
                 </div>
                 <div>
                     <el-table
+                        v-loading="ruleForm.loading"
                         :data="tablenumber"
                          border
                         :stripe='true'
@@ -85,8 +86,8 @@
                                              v-model="scope.row.adminState"
                                             active-color="#13ce66"
                                             inactive-color="#ff4949"
-                                            active-value="D"
-                                            inactive-value="Y"
+                                            active-value="Y"
+                                            inactive-value="N"
                                             @change="changeSwitch(scope.row)"
                                             > 
                                             </el-switch>
@@ -176,11 +177,15 @@
     export default{
         data() {
             return {
-                tablenumber:[],
+                
+                 
+                tablenumber:[
+                    
+                ],
                  ruleForm: {
                     name:'',
                     date1: '',
-                   
+                   loading:true,
                  },
                  rules: {
                        
@@ -229,7 +234,8 @@
                     formLabelWidth: '120px' ,
                     wen:1 ,
                     size:5,
-                    total:1,                   
+                    total:1,
+                                  
             }
                               
         },
@@ -288,13 +294,17 @@
  
                                 }
                     this.dataApi.ajax('adminPage',data, res => {
-                      
+                      if(res.respState=='S'){
+                          this.ruleForm.loading=false
                         this.total=res.count
                         this.tablenumber=res.vos
-                        console.log(res)
+                      }
+                       
+                       
                })
             },
             bianji(data){
+                var data=data
                     this.dataApi.ajax('adminEdit',data, res => {
                        
                         if(res.respState==='S'){
@@ -316,7 +326,7 @@
                })
             },
             changeSwitch(row){
-               
+               console.log(row.adminState)
                  var data={
                                 
                                 adminCode:row.adminCode,

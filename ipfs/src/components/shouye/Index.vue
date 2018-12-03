@@ -5,12 +5,11 @@
            
             <div class="header">
               <div class="header_left">
-                <img src="https://img02.sogoucdn.com/app/a/100520093/3c28af542f2d49f7-da1566425074a021-49652b4db4e26f742bdf91d5ddf65e2f.jpg" alt="">
                 <span> IPFS-SEC管理后台</span>
               </div>
               <div class="header_right">
 
-                <span>{{$store.state.admin_info.admin_name}}</span>
+                <span>{{msg}}</span>
             </div>
             </div>
           </el-header>
@@ -103,18 +102,25 @@ export default {
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
-      }
+      },
+      fs(){
+      var a= localStorage.permission
+      a=JSON.parse(a)
+      
+        this.msg=a.adminName
+    }
     },
   mounted() {
-    
+     this.fs()
   },
+  
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .el-header{
-    background-color: #0F7BEA;
+    background-color: #333;
     color: #333;
     text-align: center;
     line-height: 65px;
@@ -155,17 +161,17 @@ export default {
    line-height: 65px;
    
     position: relative;
-    padding-left:50px; 
+    padding-left:20px; 
     color:#ffffff;
 }
-.header_left img{
+/* .header_left img{
   width:30px;
   height:30px;
   border-radius: 15px;
   position: absolute;
   top: 16px;
   left: 0;
-}
+} */
 .header_right{
   float: right;
    font-size: 14px;

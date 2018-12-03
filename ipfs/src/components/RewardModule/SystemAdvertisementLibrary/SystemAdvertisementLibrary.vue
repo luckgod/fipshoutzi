@@ -17,6 +17,7 @@
                         <el-table-column
                             prop="adCode"
                             label="广告序号"
+                             :show-overflow-tooltip='true'
                             width="180">
                         </el-table-column>
                          <el-table-column
@@ -29,7 +30,7 @@
                         </el-table-column>
                          <el-table-column
                             prop="adTitle"
-                           
+                            :show-overflow-tooltip='true'
                             label="广告内容">
                         </el-table-column>
                          <el-table-column
@@ -47,7 +48,7 @@
                         </el-table-column>
                          <el-table-column
                             prop="adLinkAddress"
-                           
+                            :show-overflow-tooltip='true'
                             label="跳转链接"
                             width="180">
                         </el-table-column>
@@ -84,7 +85,7 @@
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccess"
                                 :before-upload="beforeAvatarUpload">
-                                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                <img v-if="imageUrl" :src="imageUrl" >
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                                 </el-upload>
                         </div>          
@@ -123,7 +124,7 @@
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccessa"
                                 :before-upload="beforeAvatarUploada">
-                                <img v-if="bimageUrl" :src="bimageUrl" class="avatar">
+                                <img v-if="bimageUrl" :src="bimageUrl" style="width:200px;hieght:200px;">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                         </div>          

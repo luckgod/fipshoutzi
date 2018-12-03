@@ -64,7 +64,7 @@
                 tablenumber:[],
                  ruleForm: {
                         pageNum:1,
-                        pageSize:5,
+                        pageSize:10,
                         sort:'CRE_TIME',
                         desc:'DESC',
                         editModel:'A-D',

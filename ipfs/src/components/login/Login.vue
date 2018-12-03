@@ -1,7 +1,7 @@
 <template>
     <div class="bg">
         <div style="position: absolute;color: white;top:35%;left: 20%;">
-            <div style="font-size: 2.3vw;">LPFS包后台管理系统</div>
+            <div style="font-size: 2.3vw;">LPFS后台管理系统</div>
             <!-- <div style="font-size: 1.5vw;margin-top: 18%">M+ red bonus</div>
             <div style="font-size: 1.5vw;">Background management system</div> -->
         </div>
@@ -55,7 +55,21 @@
                 cantclick:false
             };
         },
+         created() {
+            document.addEventListener('keydown', this.keyDownLogin)
+        },
+        destroyed() {
+            document.removeEventListener('keydown', this.keyDownLogin)
+        },
         methods: {
+            keyDownLogin(e) {
+                if (!e) {
+                    e = window.event;
+                }
+                if ((e.keyCode || e.which) === 13) {
+                  this.denglu()
+                }
+            },
             denglu(){
                 
                   
@@ -93,9 +107,9 @@
 }
 
 .bg{
-    background: url(../../assets/images/bg2.png);
+    background: url(../../assets/images/bg2.jpg);
     background-repeat: no-repeat;
-    background-size: 100% 90%;
+    background-size: 100% 100%;
     height: 100vh;
 
 }
@@ -123,8 +137,10 @@
     border-radius: 0;
     box-shadow:0 8px 18px 0 rgba(0,0,0,.12), 0 0 20px 0 rgba(0,0,0,.04);
     padding-top: 2vh;
+    padding-bottom: 1vh;
     min-width: 386px;
     max-height: 320px;
+    border-radius:2px; 
 }
 
 
