@@ -326,7 +326,7 @@
                })
             },
             changeSwitch(row){
-               console.log(row.adminState)
+            //    console.log(row.adminState)
                  var data={
                                 
                                 adminCode:row.adminCode,

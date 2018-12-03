@@ -129,7 +129,7 @@
                          })
             },
              handleClicka(scope) {
-                console.log(scope);
+                // console.log(scope);
                 
                  
                 this.$prompt('排序值', '提示', {
@@ -161,7 +161,7 @@
                    
                    
                  this.dataApi.ajax('delSysNotice',row, res => {
-                console.log(res.respState)
+                // console.log(res.respState)
                 if(res.respState=='S'){
                     this.$notify({
                             title: '成功',
@@ -181,7 +181,7 @@
             },
             xiugai(){
                 this.dataApi.ajax('editSysNotice',this.data, res => {
-               console.log(res)
+            //    console.log(res)
                }) 
             }
         },

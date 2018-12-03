@@ -81,7 +81,7 @@
                     this.setdata()
                 },
             handleClick(row) {
-                console.log(row);
+                // console.log(row);
                   
                    this.$router.push({
                                  path:'/Index/CopyBook/TextEditing',
@@ -95,7 +95,7 @@
           
             setdata(){
                     this.dataApi.ajax('pageCodex',this.data, res => {  
-                        console.log(res)              
+                        // console.log(res)              
                 this.data.total=res.count
                 this.tablenumber=res.vos
                })

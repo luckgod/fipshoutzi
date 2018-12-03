@@ -234,7 +234,7 @@
                     this.setdata()
                 },
             handleClick(row) {
-                console.log(row)
+                // console.log(row)
                this.dialogVisiblea=true
                 this.forma.adCode=row.adCode
                 this.forma.adTitle=row.adTitle

@@ -242,8 +242,7 @@
                     this.ruleForm.endTime=''
                 }
                 
-            console.log()
-            console.log()
+           
             this.dataApi.ajax('pageUser',this.ruleForm, res => {
                  
                 if(res.respState==='S'){
@@ -261,7 +260,7 @@
             },
             changeSwitch(a){
                
-                  var athis=this
+                 
                     var data={
                                 
                                 userMobile:a.userMobile,

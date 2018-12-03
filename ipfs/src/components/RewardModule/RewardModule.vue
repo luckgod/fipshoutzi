@@ -168,12 +168,12 @@
         },
          methods: {
               handleCurrentChange(val) {
-                    console.log(`当前页: ${val}`);
+                    // console.log(`当前页: ${val}`);
                     this.data.pageNum=val
                     this.setdata()
                 },
             handleClick(row) {
-                console.log(row);
+                // console.log(row);
                 this.dialogVisible=true
                 this.taoimg=row.redImageAddre
                 this.conne=row.redContent

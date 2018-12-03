@@ -86,12 +86,12 @@
         },
          methods: {
               handleCurrentChange(val) {
-                    console.log(`当前页: ${val}`);
+                    // console.log(`当前页: ${val}`);
                     this.data.pageNum=val
                       this.seleca()
                 },
             handleClick(row) {
-                console.log(row);
+                // console.log(row);
             },
             seleca(){
                  
@@ -99,7 +99,7 @@
             this.dataApi.ajax('pageInvitUser',this.data, res => {
                     
             
-               console.log(res)
+            //    console.log(res)
                 this.data.total=res.count
                 this.yaoqingren=res.invitCount
                 this.tablenumber=res.vos

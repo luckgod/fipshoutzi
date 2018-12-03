@@ -85,7 +85,7 @@
         },
          methods: {
              handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                // console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
                   
@@ -102,7 +102,7 @@
                 
                
               
-                console.log(res)
+                // console.log(res)
                 this.tablenumber=res.vos
                })
             }

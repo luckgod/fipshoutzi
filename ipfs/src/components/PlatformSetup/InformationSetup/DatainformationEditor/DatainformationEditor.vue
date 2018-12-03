@@ -110,7 +110,7 @@
         },
         methods: {
             handleClicke(tab, event){
-                console.log(this.activeName2==0);
+                // console.log(this.activeName2==0);
                 if(this.activeName2==0){
                     this.data.noticeFalg='T'
                    
@@ -145,7 +145,7 @@
                     this.dataApi.ajax('addSysNotice',this.data, res => {
                             
                 
-                    console.log(this.data.noticeImage)
+                    // console.log(this.data.noticeImage)
                     if(res.respState=='S'){
                             this.$notify({
                             title: '成功',
@@ -209,7 +209,7 @@
                 noticeCode: this.$route.query.noticeCode,
             }
              this.dataApi.ajax('singleSysNotice',data, res => {
-                        console.log(res)
+                        // console.log(res)
                         this.data.noticeImage=res.noticeImage
                         this.data.noticeTitle=res.noticeTitle
                         

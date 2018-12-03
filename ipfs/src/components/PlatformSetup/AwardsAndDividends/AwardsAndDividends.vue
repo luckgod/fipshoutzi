@@ -81,7 +81,7 @@
                                         }
                                 this.dataApi.ajax('editDict',data, res => {
                                 
-                                   console.log(res)
+                                //    console.log(res)
                                
                                 })
                                   var datab={ 
@@ -90,7 +90,7 @@
                                         }
                                 this.dataApi.ajax('editDict',datab, res => {
                                 
-                                   console.log(res)
+                                //    console.log(res)
                                 
                                 })
                         },
@@ -102,7 +102,7 @@
                         dictCode:'JL', 
                     }
             this.dataApi.ajax('selectChildDict',data, res => {
-               console.log(res)
+            //    console.log(res)
                 this.imageUrl=res.vos[0].dictValue
                 this.shuzi=res.vos[1].dictValue
               

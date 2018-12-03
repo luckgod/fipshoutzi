@@ -171,14 +171,14 @@
                         userMobile:this.$route.query.queryId, 
                     }
             this.dataApi.ajax('singleUserNode',data, res => {
-                console.log(res)
+                // console.log(res)
                 this.rewardNumber=res.rewardNodeNumber
                })
                   
              
             },
              seleca(){
-                 console.log()
+                 
                     if (this.ruleForm.date1&&!this.ruleForm.date2) {
                      this.showMsg('请选择结束时间','warning');
                      return;
