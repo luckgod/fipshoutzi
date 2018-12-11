@@ -60,6 +60,7 @@
                         <el-table-column
                             prop="changeCode"
                             label="流水号"
+                              :show-overflow-tooltip='true'
                             width="180">
                         </el-table-column>
                         <el-table-column

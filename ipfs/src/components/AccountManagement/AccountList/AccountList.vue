@@ -12,14 +12,14 @@
                     <el-form-item label="输入搜索：">
                         <el-input v-model="ruleForm.name" placeholder="账号/姓名"></el-input>
                     </el-form-item>
-                   <el-form-item label="奖励类型 ：">
-                       <el-select v-model="value" placeholder="系统奖励">
+                   <el-form-item label="">
+                       <!-- <el-select v-model="value" placeholder="系统奖励">
                                     <el-option
                                         v-for="item in options"
                                         :key="item.value"
                                         :label="item.label"
                                         :value="item.value">
-                                    </el-option>
+                                    </el-option> -->
                                 </el-select>
                                 <el-button type="primary" @click="seledat">查询</el-button>
                                  <el-button type="success" @click="dialogVisible = true">添加</el-button>
@@ -84,10 +84,10 @@
                             <template slot-scope="scope" >
                                             <el-switch
                                              v-model="scope.row.adminState"
-                                            active-color="#13ce66"
-                                            inactive-color="#ff4949"
-                                            active-value="Y"
-                                            inactive-value="N"
+                                            active-color="#ccc"
+                                            inactive-color="#13ce66"
+                                            active-value="N"
+                                            inactive-value="Y"
                                             @change="changeSwitch(scope.row)"
                                             > 
                                             </el-switch>

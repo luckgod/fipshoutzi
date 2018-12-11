@@ -19,6 +19,9 @@ import InformationSetup from '@/components/PlatformSetup/InformationSetup/Inform
 import DatainformationEditor from '@/components/PlatformSetup/InformationSetup/DatainformationEditor/DatainformationEditor.vue'
 import OperationLog from '@/components/PlatformSetup/OperationLog/OperationLog.vue'
 
+import WeUiUploads from '@/components/public/WeUiUploads.vue'
+Vue.component('we-ui-uploads', WeUiUploads)
+
 Vue.use(Router)
 
 export default new Router({

@@ -27,7 +27,7 @@
                        
                           <el-table-column
                             prop="userInvitTime"
-                            label="变动时间">
+                            label="邀请成功时间">
                         </el-table-column>
                        
                        

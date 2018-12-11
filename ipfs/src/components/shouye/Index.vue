@@ -7,10 +7,18 @@
               <div class="header_left">
                 <span> IPFS-SEC管理后台</span>
               </div>
+               <div class="header_righta"  @click="exit">
+
+                 <span class='tuichu'>退出</span>
+               
+            </div>
               <div class="header_right">
 
                 <span>{{msg}}</span>
+               
             </div>
+            
+            
             </div>
           </el-header>
           <el-container>
@@ -108,6 +116,20 @@ export default {
       a=JSON.parse(a)
       
         this.msg=a.adminName
+    },
+    exit(){
+
+          this.dataApi.ajax('adminLogout',this.data, res => {                
+               if(res.respState=='S'){
+                  this.$notify({
+                                            title: '成功',
+                                            message: '退出账号成功',
+                                            type: 'success'
+                                            });
+                                            this.$router.push('/login')
+               }
+              //  if(res)
+                })
     }
     },
   mounted() {
@@ -178,6 +200,7 @@ export default {
    line-height: 65px;
    padding: 0 20px;
    background: #409EFF;
+   margin-right:20px; 
    color: #ffffff;
 }
  .el-main{
@@ -187,6 +210,23 @@ export default {
    bottom: 0;
    right: 0;
    
+ }
+ .header_righta{
+float: right;
+   font-size: 14px;
+   line-height: 65px;
+   padding: 0 20px;
+  background: rgb(28, 89, 150);
+  margin-right:20px; 
+   color: #ffffff;
+ }
+  .header_righta:hover{
+     background:#ffffff;
+ 
+   color: rgb(28, 89, 150);
+  }
+ .tuichu{
+  
  }
  
 </style>

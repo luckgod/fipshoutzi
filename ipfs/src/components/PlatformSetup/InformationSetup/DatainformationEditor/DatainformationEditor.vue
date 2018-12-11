@@ -13,7 +13,7 @@
                      <el-button type="success" @click="addw">提交</el-button>
                     </el-form-item> 
                      <el-form-item  >
-                    <!-- <el-button type="primary" :span="6" @click="$router.go(-1)">返回</el-button> -->
+                    <el-button type="primary" :span="6" @click="$router.go(-1)">返回</el-button>
                     </el-form-item>
                    
                 </el-form-item>  
@@ -33,7 +33,7 @@
                         <el-input v-model="data.noticeTitle" placeholder=" 文案标题" style="width:300px;"></el-input>
                         
                     </el-form-item>
-                    <el-upload
+                    <!-- <el-upload
                                 class="avatar-uploader"
                                 action="https://jsonplaceholder.typicode.com/posts/"
                                 :show-file-list="false"
@@ -42,10 +42,21 @@
                                 :before-upload="beforeAvatarUpload">
                                 <img v-if="data.noticeImage" :src="data.noticeImage" style="width:200px;hieght:200px;">
                                 <i v-else class="el-icon-plus avatar-uploader-icon" style="width:200px;hieght:200px;"></i>
-                                </el-upload>
+                                </el-upload> -->
+                                
+                    <el-form-item label="封面图" style="padding-top:50px">
+                            <we-ui-uploads :images="data.noticeImage"
+                                       :maxCount="1"
+                                       :maxSize="1024*1024"
+                                       @uploading="uploading"></we-ui-uploads>
                             <el-dialog :visible.sync="dialogVisible">
                             <img width="100%" :src="dialogImageUrl" alt="" >
+                         
                             </el-dialog>
+                             </el-form-item>
+                              <el-form-item label="(尺寸:230*146)" style="margin-top:-20px;margin-left:70px">
+                                   </el-form-item>
+                                
                                 <el-tabs type="border-card" style="line-height:0; margin-top:20px;" v-model="activeName2" @tab-click="handleClicke">
                                         <el-tab-pane label="图文">
                                             <template>
@@ -98,7 +109,7 @@
                         noticeTitle:'',
                         noticeContent:'',
                         noticeType:'Z',
-                        noticeImage:'',
+                        noticeImage:[],
                         noticeFalg:'T'  
                 },
                
@@ -135,17 +146,25 @@
             onEditorChange(){//内容改变事件
             },
          addw(){
-            if( this.$route.query.tip=='T'){
+             if(this.data.noticeImage.length==0){
+                  this.$notify.error({
+                                title: '错误',
+                                message: '图片不能为空',
+                                });
+             }else{
+                   if( this.$route.query.tip=='T'){
                         if(this.data.noticeFalg=='T'){
                         this.data.noticeContent=this.titcon
                     }else{
                         this.data.noticeContent=this.linkcon
                     }
-
+          
+           this.data.noticeImage=this.data.noticeImage[0]
+           
                     this.dataApi.ajax('addSysNotice',this.data, res => {
                             
                 
-                    // console.log(this.data.noticeImage)
+                  
                     if(res.respState=='S'){
                             this.$notify({
                             title: '成功',
@@ -153,6 +172,7 @@
                             type: 'success'
                             });
                             this.$router.push('/Index/InformationSetup')
+                    this.data.noticeImage=[]
                             // router.go(-1)
                     }else{
                         this.$notify.error({
@@ -173,10 +193,13 @@
                             noticeCode:this.$route.query.noticeCode,
                             noticeTitle:this.data.noticeTitle,
                             noticeContent:this.data.noticeContent,
-                            noticeImage:this.data.noticeImage,
+                            noticeImage:this.data.noticeImage+'',
                             noticeFalg:this.data.noticeFalg,
 
                         }
+                        console.log('')
+             }
+          
                     this.dataApi.ajax('editSysNotice',data, res => {
                             
                 
@@ -209,11 +232,16 @@
                 noticeCode: this.$route.query.noticeCode,
             }
              this.dataApi.ajax('singleSysNotice',data, res => {
-                        // console.log(res)
-                        this.data.noticeImage=res.noticeImage
+                         console.log(res.noticeFalg)
+                         if(res.noticeImage){
+                              this.data.noticeImage=[res.noticeImage];
+                         }else{
+                            this.data.noticeImage=[];
+                         }
+                        console.log(res.noticeTitle)
                         this.data.noticeTitle=res.noticeTitle
                         
-                        if(this.activeName2==0){
+                        if(res.noticeFalg=='T'){
                              this.titcon=res.noticeContent   
                         }else{
                              this.linkcon=res.noticeContent  
@@ -255,7 +283,13 @@
                             }
                             return isJPG && isLt2M;
         },
-       
+        uploading(f) {
+               this.dataApi.upload('upload', f.file, res => {
+                    if (res.respState == 'S') {
+                        f.images.splice(f.index,1,res.localPath)
+                    }
+                });
+        },
         },
         mounted() {
             if(this.$route.query.tip=='B'){

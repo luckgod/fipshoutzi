@@ -1,12 +1,13 @@
 <template>
 <div>
  <el-card class="box-card  box-cardheader">
-      <el-form ref="form" :model="form" label-width="180px" >
-            <el-form-item label="每日系统奖励个数：">
+      <el-form ref="form" :model="form" label-width="200px" >
+            <el-form-item label="每小时系统奖励SEC个数：">
            
-    <el-input v-model="shuzi" size='smell' placeholder="每小时总奖励不能低于0.20个SEC，最小二位小数，每个奖励涨幅10%" style="width:50%"></el-input>
+    <el-input v-model="shuzi" size='smell' placeholder="" style="width:10%"></el-input>
+    <span>(每小时总奖励不能低于0.20个SEC，最小二位小数，每个奖励涨幅10%)</span>
      <div class="tanchuang">
-         <span>新用户默认头像:</span>
+         <span style="margin-left:-130px;">新用户默认头像:</span>
           <el-upload
             class="avatar-uploader"
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -14,7 +15,7 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
             
-            <img v-if="imageUrl" :src="imageUrl" >
+            <img v-if="imageUrl" :src="imageUrl"  style="width:50px;height50px;">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
         
@@ -62,7 +63,7 @@
 
                         },
                         beforeAvatarUpload(file) {
-                            const isJPG = file.type === 'image/jpeg';
+                            const isJPG = true;
                             const isLt2M = file.size / 1024 / 1024 < 2;
 
                             if (!isJPG) {
@@ -82,6 +83,12 @@
                                 this.dataApi.ajax('editDict',data, res => {
                                 
                                 //    console.log(res)
+                                if(res.respState==='S'){
+                                        this.$notify({
+                                        title: '成功',
+                                        message: '提交成功',
+                                        type: 'success'
+                                        });}
                                
                                 })
                                   var datab={ 
@@ -92,6 +99,12 @@
                                 
                                 //    console.log(res)
                                 
+                                if(res.respState==='S'){
+                                        this.$notify({
+                                        title: '成功',
+                                        message: '提交成功',
+                                        type: 'success'
+                                        });}
                                 })
                         },
                       

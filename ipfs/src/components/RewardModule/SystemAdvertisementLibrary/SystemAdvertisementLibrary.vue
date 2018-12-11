@@ -57,10 +57,20 @@
                         <el-table-column
                        
                         label="操作"
-                        width="100">
+                        width="200">
                         <template slot-scope="scope">
                             <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
-                            <el-button @click="handleClicka(scope.row)"  type="text" size="small">禁用</el-button> 
+                            <!-- <el-button @click="handleClicka(scope.row)"  type="text" size="small">禁用</el-button>  -->
+                            <el-switch
+                                v-model="scope.row.adState"
+                                active-color="#ccc"
+                                inactive-color="#13ce66"
+                                active-value="J"
+                                inactive-value="T"
+                                active-text='关'
+                                inactive-text='开'
+                                  @change="changeSwitch(scope.row)">
+                            </el-switch>
                         </template>
                         </el-table-column>
                         
@@ -77,33 +87,56 @@
                         :modal="false"
                         >
                         <!-- tupian -->
-                        <div class="tanchuang">
-                         <span>图片:</span>
-                                <el-upload
+                         <el-form ref="form"  label-width="80px">
+                       
+                        <!-- <el-form-item label="图片:"> -->
+                            <!-- <div style="display:block;border:1px solid #000;width:78px;hieght:78px;">
+                                 <el-upload
+                                
                                 class="avatar-uploader"
                                 action="https://jsonplaceholder.typicode.com/posts/"
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccess"
                                 :before-upload="beforeAvatarUpload">
-                                <img v-if="imageUrl" :src="imageUrl" >
-                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                </el-upload>
-                        </div>          
-                        
+                                <img v-if="imageUrl" :src="imageUrl"  >
+                                <i v-else class="el-icon-plus avatar-uploader-icon" </i>
+                                </el-upload> 
+                            </div> -->
+                               
+
+                               <el-form-item label="封面图" style="padding-top:50px">
+                            <we-ui-uploads :images="imageUrl"
+                                       :maxCount="1"
+                                       :maxSize="1024*1024"
+                                       @uploading="uploading"></we-ui-uploads>
+                            <!-- <el-dialog :visible.sync="dialogVisiblee"> -->
+                            <img width="100%" :src="dialogImageUrl" alt="" >
+                            
+                            <!-- </el-dialog> -->
+                             </el-form-item>
+                            
+                                 </el-form-item>
+                            
+                        </el-form>
+                           <el-form ref="form"  label-width="290px">
+                           <el-form-item label="(尺寸640*350)"  style="margin-top:-70px;">
+                              </el-form-item>
+                               </el-form>
                         <!-- shurukuang -->
                         <el-form ref="form"  label-width="80px">
                             <el-form-item label="内容:">
-                                <el-input v-model="form.con" style="width:70%;"></el-input>
+                                <el-input v-model="form.con" style="width:92%;"></el-input>
                             </el-form-item>
                         </el-form>
                         <el-form ref="form"  label-width="80px">
                             <el-form-item label="链接:">
-                                <el-input v-model="form.linj" style="width:70%;"></el-input>
+                                <el-input v-model="form.linj" style="width:92%;"></el-input>
                             </el-form-item>
                         </el-form>
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="addpro">确 定</el-button>
-                            <el-button @click="dialogVisible=true">取 消</el-button>
+                            <el-button @click="dialogVisible=false">取 消</el-button>
+                            <!-- dialogVisible=true -->
                               
                         </span>
                     </el-dialog>
@@ -117,32 +150,35 @@
                         >
                         <!-- tupian -->
                         <div class="tanchuang">
-                         <span>图片:</span>
+                         <span style="margin-left:20px">图片:</span>
                        <el-upload
                                 class="avatar-uploader"
                                 action="https://jsonplaceholder.typicode.com/posts/"
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccessa"
                                 :before-upload="beforeAvatarUploada">
-                                <img v-if="bimageUrl" :src="bimageUrl" style="width:200px;hieght:200px;">
-                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                <img v-if="bimageUrl" :src="bimageUrl" style="width:80px;hieght:80px;margin-left:-300px;margin-top:50px">
+                                <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
                         </el-upload>
                         </div>          
-                        
+                         <el-form ref="form"  label-width="200px">
+                           <el-form-item label="(尺寸640*350)"  style="margin-top:-50px;margin-left:-20px">
+                              </el-form-item>
+                               </el-form>
                         <!-- shurukuang -->
                        <el-form ref="form"  label-width="80px">
-                            <el-form-item label="内容a:">
-                                <el-input v-model="forma.con" style="width:70%;"></el-input>
+                            <el-form-item label="内容:">
+                                <el-input v-model="forma.adTitle" style="width:92%;"></el-input>
                             </el-form-item>
                         </el-form>
                         <el-form ref="form"  label-width="80px">
                             <el-form-item label="链接:">
-                                <el-input v-model="forma.linj" style="width:70%;"></el-input>
+                                <el-input v-model="forma.linj" style="width:92%;"></el-input>
                             </el-form-item>
                         </el-form>
                         <span slot="footer" class="dialog-footer">
                             <el-button @click="addproa">确 定</el-button>
-                            <el-button @click="dialogVisiblea=true">取 消</el-button>
+                            <el-button @click="dialogVisiblea=false">取 消</el-button>
                               
                         </span>
                     </el-dialog>        
@@ -168,10 +204,12 @@
         data() {
             return {
                     msg:true,
+                    dialogVisiblee:false,
                     dialogVisible:false,
                     dialogVisiblea:false,
-                    imageUrl: '',
+                    imageUrl: [],
                     bimageUrl: '',
+                    dialogImageUrl:'',
                    
                  ruleForm: {
                    
@@ -234,48 +272,83 @@
                     this.setdata()
                 },
             handleClick(row) {
-                // console.log(row)
-               this.dialogVisiblea=true
+                console.log(row.adTitle)
+                this.dialogVisiblea=true
                 this.forma.adCode=row.adCode
                 this.forma.adTitle=row.adTitle
                 this.forma.linj=row.adLinkAddress
                 this.forma.con=row.adTitle
                 this.forma.adState=row.adState
                 this.bimageUrl=row.adImageAddress
+                
                        
             },
              addproa(){
-               this.xiugai(this.forma.adState)
-             },
-            xiugai( zhi){
-                 var athis=this
-                var data={
+                //  console.log(this.forma.linj)
+                 console.log(this.forma.adTitle)
+                  var data={
                        
                         adCode:this.forma.adCode,
                         adTitle:this.forma.adTitle,
                         adLinkAddress:this.forma.linj,
                         adImageAddress:this.bimageUrl,
-                        adState:zhi,
+                       
                         }
-                        this.dataApi.ajax('editSysAd',data, res => {
+               this.dataApi.ajax('editSysAd',data, res => {
                                 if(res.respState==='S'){
                                         this.$notify({
                                         title: '成功',
                                         message: '提交成功',
                                         type: 'success'
                                         });
-                                athis.dialogVisiblea=false
+                                this.dialogVisiblea=false
+                                 this.setdata()
                                 }
                         })
-            },
-             handleClicka(row) {
+             },
+           
+            // xiugai( zhi){
+            //      var athis=this
+            //     var data={
+                       
+            //             adCode:this.forma.adCode,
+            //             adTitle:this.forma.adTitle,
+            //             adLinkAddress:this.forma.linj,
+            //             adImageAddress:this.bimageUrl,
+            //             adState:zhi,
+            //             }
+            //             this.dataApi.ajax('editSysAd',data, res => {
+            //                     if(res.respState==='S'){
+            //                             this.$notify({
+            //                             title: '成功',
+            //                             message: '提交成功',
+            //                             type: 'success'
+            //                             });
+            //                     athis.dialogVisiblea=false
+            //                     }
+            //             })
+            // },
+             changeSwitch(row) {
                  this.forma.adCode=row.adCode
                 this.forma.adTitle=row.adTitle
                 this.forma.linj=row.adLinkAddress
                 this.forma.con=row.adTitle
+                this.forma.adState=row.adState
                  this.bimageUrl=row.adImageAddress
+                
                 if(row.adState==='T'){
-                   this.xiugai('J')
+                   //this.xiugai('J')
+                     this.dataApi.ajax('editSysAd',this.forma, res => {
+                                if(res.respState==='S'){
+                                        this.$notify({
+                                        title: '成功',
+                                        message: '提交成功',
+                                        type: 'success'
+                                        });
+                                this.dialogVisible=false
+                                  this.setdata()
+                                }
+                        })
                      
                 }else{
                  this.$notify({
@@ -286,13 +359,21 @@
                 }
             },
             addpro(){
-               
+               console.log(this.imageUrl.length==0)
+               if(this.imageUrl.length==0){
+                  
+                        this.$notify.error({
+                            title: '错误',
+                            message:'图片不能为空',
+                            });
+                            this.dialogVisible=false
+               }else{
                 var athis=this
                 var data={
                        
                         adTitle:this.form.con,
                         adLinkAddress:this.form.linj,
-                        adImageAddress:this.imageUrl,
+                        adImageAddress:this.imageUrl+'',
                         adMark:'DESC',
                         }
                         this.dataApi.ajax('addSysAd',data, res => {
@@ -303,8 +384,11 @@
                                         type: 'success'
                                         });
                                      athis.dialogVisible=false
+                                      this.setdata()
                                 }
                         })
+               }
+                
               
                
                 },
@@ -328,8 +412,8 @@
 
                         },
                         beforeAvatarUpload(file) {
-                            const isJPG = file.type === 'image/jpeg';
-                            const isLt2M = file.size / 1024 / 1024 < 2;
+                            const isJPG = true;
+                            const isLt2M =true;
 
                             if (!isJPG) {
                             this.$message.error('上传头像图片只能是 JPG 格式!');
@@ -359,8 +443,8 @@
 
                         },
                         beforeAvatarUploada(file) {
-                            const isJPG = file.type === 'image/jpeg';
-                            const isLt2M = file.size / 1024 / 1024 < 2;
+                            const isJPG = true;
+                            const isLt2M = true;
 
                             if (!isJPG) {
                             this.$message.error('上传头像图片只能是 JPG 格式!');
@@ -380,7 +464,16 @@
                               this.data.total=res.count
                                 this.tablenumber=res.vos
                             })
-                        }
+                        },
+                        uploading(f) {
+                        this.dataApi.upload('upload', f.file, res => {
+                                if (res.respState == 'S') {
+                                    f.images.splice(f.index,1,res.localPath)
+                                }
+                });
+        },
+                        
+                        
              
         },
         mounted() {
@@ -422,7 +515,7 @@
   }
     .box-card-two{
       margin-top:10px;
-      height: 100vh; 
+     
   }
   .el-table{
       line-height: 30px;   
@@ -446,7 +539,7 @@
    .tanchuang{
        padding-bottom: 8%;
    }
-.avatar-uploader .el-upload {
+ .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
@@ -459,14 +552,14 @@
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
+    width: 78px;
+    height: 78px;
+    line-height: 78px;
     text-align: center;
   }
   .avatar {
-    width: 178px;
-    height: 178px;
+    width: 78px;
+    height: 78px;
     display: block;
   }
 </style>

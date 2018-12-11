@@ -52,13 +52,17 @@
                         style="width: 100%">
                         <el-table-column
                             prop="userRedCode"
+                             :show-overflow-tooltip='true'
                             label="奖励编号"
                             width="180">
                         </el-table-column>
                         <el-table-column
-                            prop="redCode"
+                            prop="redTypeFlag"
                             label="奖励类型"
                             width="180">
+                            <template slot-scope="scope">
+                                {{scope.row.redTypeFlag=='T'?'体验红包':'其他'}}
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="userMobile"
@@ -143,7 +147,7 @@
                         pageNum:1,
                         pageSize:10,
                         total:0,
-                        sort:'CRE_TIME',
+                        sort:'RECEIVE_TIME',
                         desc:'DESC',
                         redCode:'',
                         redState:'L',
@@ -201,9 +205,11 @@
                     this.data.startTime=''
                     this.data.endTime=''
                 }
-                this.dataApi.ajax('pageUserReceiveRed',this.data, res => {                
+                this.dataApi.ajax('pageUserReceiveRed',this.data, res => {  
+                           
                 this.data.total=res.count
                 this.tablenumber=res.vos
+                console.log(this.tablenumber)       
                })
             }
         },

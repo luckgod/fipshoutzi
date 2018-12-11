@@ -131,7 +131,7 @@
              handleClicka(scope) {
                 // console.log(scope);
                 
-                 
+                 var athis=this
                 this.$prompt('排序值', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -143,12 +143,14 @@
                 this.data.creTime=scope.creTime
                 this.data.noticeImage=scope.noticeImage
                 this.data.noticeType=scope.noticeType
-               
-                this.xiugai() 
+                        
+                     this.xiugai() 
                     this.$message({
                         type: 'success',
                         message: '排序值: ' + value
                     });
+
+                    // athis.handleCurrentChange(this.form.pageNum)
                     }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -181,7 +183,9 @@
             },
             xiugai(){
                 this.dataApi.ajax('editSysNotice',this.data, res => {
-            //    console.log(res)
+                  if(res.respState=='S'){
+                      this.updata();
+                  }
                }) 
             }
         },

@@ -113,10 +113,13 @@
                             <template slot-scope="scope" >
                                             <el-switch
                                             v-model="scope.row.userState"
-                                            active-color="#ff4949"
-                                            inactive-color="#13ce66"
-                                            active-value="D"
-                                            inactive-value="Y"
+                                            active-color="#13ce66"
+                                            inactive-color="#ccc"
+                                            active-value="Y"
+                                            inactive-value="D"
+                                             
+                                            inactive-text='关'
+                                            active-text='开'
                                             @change="changeSwitch(scope.row)"
                                             > 
                                             
@@ -248,8 +251,8 @@
                 if(res.respState==='S'){
                     
                 this.ruleForm.pageNum=res.pageNum  
-                this.ruleForm.pageSize=res.pageSize             
-                this.ruleForm.total=res.pageCount
+                // this.ruleForm.pageSize=res.pageSize             
+                // this.ruleForm.total=res.count
 
                 this.shuju=res.vos
                 }    
@@ -285,11 +288,27 @@
                       }
                     })
             },
+            shujua(){
+                this.dataApi.ajax('pageUser',this.ruleForm, res => {
+                 console.log(res)
+                if(res.respState==='S'){
+                    
+                this.ruleForm.pageNum=res.pageNum  
+                this.ruleForm.pageSize=res.pageSize             
+                this.ruleForm.total=res.count
+
+                this.shuju=res.vos
+                }    
+               
+
+                
+               })
+            },
         },
-       
+        
         
         mounted() {
-            this.cha()
+            this.shujua()
             
         },
 

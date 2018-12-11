@@ -1,7 +1,7 @@
 <template>
     <div class="bg">
-        <div style="position: absolute;color: white;top:35%;left: 20%;">
-            <div style="font-size: 2.3vw;">LPFS后台管理系统</div>
+        <div style="position: absolute;color: white;top:20%;left: 40%;">
+            <div style="font-size: 2.3vw;">IPFS后台管理系统</div>
             <!-- <div style="font-size: 1.5vw;margin-top: 18%">M+ red bonus</div>
             <div style="font-size: 1.5vw;">Background management system</div> -->
         </div>
@@ -107,7 +107,7 @@
 }
 
 .bg{
-    background: url(../../assets/images/bg2.jpg);
+    background: url(../../assets/images/bg2.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     height: 100vh;
@@ -131,8 +131,8 @@
 .login_card{
     width:23%;
     position: absolute;
-    right:20%;
-    top: 35%;
+    right:39%;
+    top: 40%;
     height: 25%;
     border-radius: 0;
     box-shadow:0 8px 18px 0 rgba(0,0,0,.12), 0 0 20px 0 rgba(0,0,0,.04);
